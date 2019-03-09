@@ -54,8 +54,7 @@ public abstract class AbstractLevel {
 		mapSize= new Rectangle(tab[0], tab[1]);
 	}
 	
-	public void drawLevel(Graphics g) throws IOException
-	{
+	public void drawLevel(Graphics g) {
 		map.drawMap(g);
 		g.drawImage(player.getImage(), player.getX(), player.getY(), null);
 	}

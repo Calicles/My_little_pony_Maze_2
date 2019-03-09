@@ -23,12 +23,51 @@ public class Level extends AbstractLevel implements ILevel {
 	public void deselected() {selected= false;}
 	
 	@Override
-	public void drawLevel(Graphics g) throws IOException {
+	public void drawLevel(Graphics g) {
 		if(!running) {
-			endImage= ImageIO.read(new File(endImageUrl));
+			try {
+				endImage= ImageIO.read(new File(endImageUrl));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			g.drawImage(endImage, 0, 0, null);
 		}else
 			super.drawLevel(g);
+	}
+
+	@Override
+	public void drawMiniMap(Graphics g, int echelle) {
+
+	}
+
+	@Override
+	public int getScreenX() {
+		return 0;
+	}
+
+	@Override
+	public int getScreenY() {
+		return 0;
+	}
+
+	@Override
+	public int getScreenWidth() {
+		return 0;
+	}
+
+	@Override
+	public int getScreenHeight() {
+		return 0;
+	}
+
+	@Override
+	public int getPlayerX() {
+		return 0;
+	}
+
+	@Override
+	public int getPlayerY() {
+		return 0;
 	}
 
 }

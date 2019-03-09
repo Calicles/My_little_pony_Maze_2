@@ -34,8 +34,13 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 		buildThinkPattern();
 		greyCell.start();
 	}
-	
-	private void buildThinkPattern() {
+
+    @Override
+    public Coordinates memorizMoves() {
+        return null;
+    }
+
+    private void buildThinkPattern() {
 		greyCell= new Thread(()->{
 			thinking= true;
 			while(true){
@@ -62,7 +67,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 	private void checkLastVectors() {
 		Rectangle tile;
 		if(lastVectors.getX() < 0 || lastVectors.getX() > 0) {
-			if(ownPosition.getY() != 0 && (tile= this.checkOnUpTiles(this.ownPosition, map)) == null) {
+			if(ownPosition.getBeginY() != 0 && (tile= this.checkOnUpTiles(this.ownPosition, map)) == null) {
 				yDirection= -4; xDirection= 0;
 			}else if(ownPosition.getEndY() != map.getHeight() && (tile= this.checkOnDownTiles(ownPosition, map)) == null) {
 				yDirection= 4; xDirection= 0;
@@ -75,7 +80,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 				yDirection= 0;
 			}
 		}else {
-			if(ownPosition.getX() != 0 && (tile= this.checkLeftTiles(ownPosition, map)) == null) {
+			if(ownPosition.getBeginX() != 0 && (tile= this.checkLeftTiles(ownPosition, map)) == null) {
 				xDirection= -4; yDirection= 0;
 			}else if(ownPosition.getEndX() != map.getWidth() && (tile= this.checkRightTiles(ownPosition, map)) == null) {
 				xDirection= 4; yDirection= 0;
@@ -130,7 +135,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 			return new Coordinates(0, 0);
 	}
 
-	public void think(Rectangle position, Coordinates player1, Coordinates player2) {
+	public void think(Rectangle position, Coordinates player) {
 		// TODO Auto-generated method stub
 		
 	}

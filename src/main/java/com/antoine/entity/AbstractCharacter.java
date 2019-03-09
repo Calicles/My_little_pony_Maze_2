@@ -34,7 +34,7 @@ public abstract class AbstractCharacter extends AbstractImage {
 	protected ITransfert_strategy deplacement;
 
 	/**
-	 * clé de animation.
+	 * clé du champ animation.
 	 * 0 bas
 	 * 1 gauche
 	 * 2 droite

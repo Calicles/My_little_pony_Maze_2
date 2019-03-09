@@ -3,46 +3,58 @@ package com.antoine.manager;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import com.antoine.contracts.ILevel;
 import com.antoine.contracts.Presentateur;
-import com.antoine.modele.level.Level;
-import com.antoine.modele.level.Level2;
-import com.antoine.modele.level.Level3;
-import com.antoine.modele.level.AbstractLevel;
 import com.antoine.contracts.LevelListener;
+import com.antoine.services.Assembler;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 public class LevelManager implements Presentateur {
 
-	private Level levelApple;
-	private Level levelRarity;
-	private Level levelRainbow;
-	private Level2 levelFlutter;
-	private Level3 levelPinky;
-	private AbstractLevel levelRunning;
+	private ILevel levelApple;
+	private ILevel levelRarity;
+	private ILevel levelRainbow;
+	private ILevel levelFlutter;
+	private ILevel levelPinky;
+	private ILevel levelRunning;
 	private ArrayList<LevelListener> listeners;
+	private  Assembler assembler;
 	
-	public LevelManager() throws IOException {
+	public LevelManager() throws IOException, ParserConfigurationException, SAXException,
+			ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException,
+			IllegalAccessException {
+
 		listeners= new ArrayList<>();
-		levelApple= new Level("map/level.txt", "images/fin/apple.png");
-		levelRarity= new Level("map/levelRarity.txt", "images/fin/apple.png");
-		levelRainbow= new Level("map/levelRainbow.txt", "images/fin/apple.png");
+		assembler= new Assembler();
+		levelApple= (ILevel) assembler.newInstance("levelApple");
+		levelRarity= (ILevel) assembler.newInstance("levelRarity");
+		levelRainbow= (ILevel) assembler.newInstance("levelRainbow");
 		levelRunning= levelApple;
 		levelApple.selected();
 		levelFlutter= null;
 		levelPinky= null;
 	}
-	
+
+
 	public int getMapWidth() {return levelRunning.getMapWidth();}
 	public int getMapHeight() {return levelRunning.getMapHeight();}
 
-	private void switchLevel3() throws IOException {
-		levelRunning= levelPinky= new Level3("map/levelPinky.txt", "images/fin/apple.png");
+	private void switchLevel3() throws IOException, ClassNotFoundException, NoSuchMethodException,
+			InvocationTargetException, InstantiationException, IllegalAccessException {
+
+		levelRunning= levelPinky= (ILevel) assembler.newInstance("levelPinky");
 		levelFlutter= null;
 	}
 	
-	private void switchLevel2() throws IOException {
-		levelRunning= levelFlutter= new Level2("map/levelFlutter.txt", "images/fin/apple.png");
+	private void switchLevel2() throws IOException, ClassNotFoundException, NoSuchMethodException,
+			InvocationTargetException, InstantiationException, IllegalAccessException {
+
+		levelRunning= levelFlutter= (ILevel) assembler.newInstance("levelFlutter");
 		levelApple=null; levelRarity= null; levelRainbow= null;
 	}
 	
@@ -78,7 +90,9 @@ public class LevelManager implements Presentateur {
 	}
 
 	@Override
-	public void playerMoves(int xVector, int yVector) throws IOException {
+	public void playerMoves(int xVector, int yVector) throws IOException, ClassNotFoundException,
+			NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+
 		if(levelPinky== null && levelFlutter== null &&
 				!levelApple.isRunning()
 				&& !levelRarity.isRunning() 

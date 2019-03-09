@@ -72,4 +72,15 @@ public class Rectangle {
 		this.beginY= y;
     }
 
+    public void setCoordinates(Coordinates position) {
+		this.beginX= position.getX();
+		this.beginY= position.getY();
+
+    }
+
+    public void translate(Coordinates vectors) {
+		beginX += vectors.getX(); endX += vectors.getX();
+		beginY += vectors.getY(); endY += vectors.getY();
+
+    }
 }

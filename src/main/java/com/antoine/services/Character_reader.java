@@ -33,7 +33,10 @@ public class Character_reader {
 			}
 
 			
-		}catch(Throwable t) {System.out.print(t);}
+		}catch(Throwable t) {
+			t.printStackTrace();
+			throw new RuntimeException("Erreur de Lecture d'image animation");
+		}
 
 		return map;
 	}

@@ -131,8 +131,23 @@ public class Level3 extends AbstractLevel implements ILevel {
 
 		 return vector.isZero();
 	 }
-	 
-	 @Override
+
+	@Override
+	public void selected() {
+
+	}
+
+	@Override
+	public void deselected() {
+
+	}
+
+	@Override
+	public boolean isSelected() {
+		return false;
+	}
+
+	@Override
 	 public boolean playerMovesLeft() {
 		Coordinates vector;
 

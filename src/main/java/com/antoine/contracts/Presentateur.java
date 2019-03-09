@@ -2,11 +2,12 @@ package com.antoine.contracts;
 
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public interface Presentateur {
 
 
-    void playerMoves(int xVector, int yVector) throws IOException;
+    void playerMoves(int xVector, int yVector) throws IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
 
     Dimension getDimension();
 
@@ -33,4 +34,22 @@ public interface Presentateur {
     boolean isLevelPinkyNull();
 
     void playerMovesReleased();
+
+    int getMapHeight();
+
+    int getScreenX();
+
+    int getScreenY();
+
+    int getScreenWidth();
+
+    int getScreenHeight();
+
+    int getPlayerX();
+
+    int getPlayerY();
+
+    int getMapWidth();
+
+    void drawMiniMap(Graphics g, int echelle);
 }

@@ -3,6 +3,7 @@ package com.antoine.vue;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JPanel;
 
@@ -38,12 +39,9 @@ public class SpecialPanel extends JPanel implements LevelListener{
 		this.repaint();
 	}
 	
-	public void playerAnimeLeft() {presentateur.playerAnimeLeft();}
-	public void playerAnimeRight() {presentateur.playerAnimeRight();}
-	public void playerAnimeUp() {presentateur.playerAnimeUp();}
-	public void playerAnimeDown() {presentateur.playerAnimeDown();}
-	
-	public void playerMoves(int xVector, int yVector) throws IOException {
+	public void playerMoves(int xVector, int yVector) throws IOException, ClassNotFoundException,
+			NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
 		presentateur.playerMoves(xVector, yVector);
 	}
 

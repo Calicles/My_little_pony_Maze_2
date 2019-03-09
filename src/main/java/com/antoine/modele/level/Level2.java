@@ -38,6 +38,41 @@ public class Level2 extends AbstractLevel implements ILevel {
 			}
 	}
 
+	@Override
+	public void drawMiniMap(Graphics g, int echelle) {
+
+	}
+
+	@Override
+	public int getScreenX() {
+		return 0;
+	}
+
+	@Override
+	public int getScreenY() {
+		return 0;
+	}
+
+	@Override
+	public int getScreenWidth() {
+		return 0;
+	}
+
+	@Override
+	public int getScreenHeight() {
+		return 0;
+	}
+
+	@Override
+	public int getPlayerX() {
+		return 0;
+	}
+
+	@Override
+	public int getPlayerY() {
+		return 0;
+	}
+
 	protected void drawPlayer(Graphics g) {
 		int screenPosY= playerScreenPositionY();
 		g.drawImage(player.getImage(), player.getX(), screenPosY, null);
@@ -69,7 +104,22 @@ public class Level2 extends AbstractLevel implements ILevel {
 			x= 0; y++;
 		}
 	}
-	
+
+	@Override
+	public void selected() {
+
+	}
+
+	@Override
+	public void deselected() {
+
+	}
+
+	@Override
+	public boolean isSelected() {
+		return false;
+	}
+
 	@Override
 	public boolean playerMovesUp() {
 		if(!isOnTop(-8) && isOnTopScreen())
