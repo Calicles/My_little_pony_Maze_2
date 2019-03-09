@@ -9,17 +9,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import model.Coordinates;
-import model.NetEvent;
-import model.TransferEvent;
-import network.NetWork;
-import services.Assembler;
-import services.LevelFactory;
-import type.AbstractLevel;
-import type.AbstractMap;
-import type.Controller;
-import type.LevelListener;
-import type.NetworkListener;
 
 public class LevelManager implements Controller, NetworkListener {
 	
