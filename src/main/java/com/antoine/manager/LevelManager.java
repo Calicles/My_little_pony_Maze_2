@@ -10,9 +10,7 @@ import com.antoine.contracts.ILevel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
 import com.antoine.services.Assembler;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 
 public class LevelManager implements Presentateur {
 
@@ -25,12 +23,10 @@ public class LevelManager implements Presentateur {
 	private ArrayList<LevelListener> listeners;
 	private  Assembler assembler;
 	
-	public LevelManager() throws IOException, ParserConfigurationException, SAXException,
-			ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException,
-			IllegalAccessException {
+	public LevelManager()  {
 
 		listeners= new ArrayList<>();
-		assembler= new Assembler();
+		assembler= new Assembler("./config/conf.xml");
 		levelApple= (ILevel) assembler.newInstance("levelApple");
 		levelRarity= (ILevel) assembler.newInstance("levelRarity");
 		levelRainbow= (ILevel) assembler.newInstance("levelRainbow");

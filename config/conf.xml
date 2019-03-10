@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration SYSTEM "conf.dtd">
+<configuration>
+	<screen class="java.awt.Dimension">
+		<size width="" height="">960</size>
+		<size width="" height="">640</size>
+		<size width="" height="">320</size>
+	</screen>
+	<beans>
+		<bean id="levelApple" class="com.antoine.modele.level.Level">
+			<parameters nbr="3">
+				<parameter id="levelAppleEndImage" value="./ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<injection id="levelApple_player" class="com.antoine.entity.Player" method="setPlayer">
+					<parameters nbr="2">
+						<paramInjection id="levelApple_player_animationFilePath" value="./ressources/setPonyAnimation/set.txt" method="setAnimation"/>
+						<injection id="levelApple_player_position" class="com.antoine.geometry.Coordinates" method="setPosition">
+							<parameters nbr="2">
+								<paramInjection id="levelApple_player_positionX" value="40" method="setX"/>
+								<paramInjection id="levelApple_player_positionY" value="50" method="setY"/>
+							</parameters>
+						</injection>
+					</parameters>
+				</injection>
+				<injection id="levelApple_map" class="com.antoine.modele.map.Map" method="setMap">
+					<parameters nbr="2">
+						<parameter id="level_apple_map_tileSet" value="./ressources/maps/tileSet.txt" method="setTileSet"/>
+						<parameter id="levelApple_map_mapFilePath" value="./ressources/maps/map.txt" method="setMap"/>
+					</parameters>
+				</injection>
+			</parameters>
+		</bean>
+	</beans>
+</configuration>

@@ -1,4 +1,4 @@
-package com.antoine.vue;
+package com.antoine.vue.frame;
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
@@ -11,6 +11,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.antoine.contracts.Presentateur;
 import com.antoine.manager.LevelManager;
+import com.antoine.vue.panel.ButtonPanel;
+import com.antoine.vue.panel.SpecialPanel;
 import org.xml.sax.SAXException;
 
 public class Frame extends JFrame {

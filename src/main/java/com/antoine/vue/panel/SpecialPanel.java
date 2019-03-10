@@ -1,4 +1,4 @@
-package com.antoine.vue;
+package com.antoine.vue.panel;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

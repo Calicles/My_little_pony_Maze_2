@@ -1,0 +1,53 @@
+tileSet 17
+0 images/levelApple/herbe.png
+-1 images/tapis1.png
+-2 images/tapis2.png
+-3 images/tapis3.png
+-4 images/tapis4.png
+2 images/levelApple/place1.png
+3 images/levelApple/place2.png
+4 images/levelApple/place3.png
+5 images/levelApple/place4.png
+6 images/levelApple/wall1.png
+7 images/levelApple/wall2.png
+8 images/levelApple/wall3.png
+9 images/levelApple/wall4.png
+10 images/levelApple/wall5.png
+11 images/levelApple/wall6.png
+12 images/levelApple/wall7.png
+13 images/levelApple/wall8.png
+taille 20 20
+09 12 13 12 13 12 13 06 07 12 13 06 07 12 13 06 07 12 -2 -2
+07 00 00 -1 00 00 00 06 07 00 00 06 07 00 00 06 07 00 -3 -4
+07 00 00 00 00 00 00 06 07 00 00 06 07 00 00 06 07 00 00 00
+07 08 09 08 09 00 00 06 07 00 00 08 09 00 00 06 07 00 00 06
+09 10 11 08 09 00 00 06 07 00 00 10 11 00 00 06 07 00 00 06
+07 00 00 08 09 00 00 06 07 00 00 12 13 00 00 06 07 00 00 06
+07 00 00 08 09 00 00 08 09 00 00 00 00 00 00 06 07 00 00 06
+07 00 00 08 09 00 00 10 11 00 00 00 00 00 00 06 07 00 00 06
+07 00 00 08 09 00 00 12 13 02 03 06 07 00 00 06 07 00 00 06
+07 00 00 08 09 00 00 00 00 04 05 08 09 00 00 06 07 00 00 06
+07 00 00 08 09 00 00 00 00 00 00 08 09 00 00 06 07 00 00 06
+07 00 00 08 09 08 09 08 09 00 00 08 09 00 00 06 07 00 00 06
+07 00 00 10 11 10 11 10 11 00 00 08 09 00 00 06 07 00 00 06
+07 00 00 00 00 00 00 00 00 00 00 08 09 00 00 06 07 00 00 06
+07 00 00 00 00 00 00 00 00 00 00 08 09 00 00 08 09 00 00 06
+07 00 00 08 09 08 09 08 09 08 09 08 09 00 00 08 09 00 00 06
+07 00 00 10 11 10 11 10 11 10 11 10 11 00 00 10 11 00 00 06
+07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 06
+07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 06
+07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07
+player 40 50
+4 3
+images/pony/apple/face1.png
+images/pony/apple/face2.png
+images/pony/apple/face3.png
+images/pony/apple/gauche1.png
+images/pony/apple/gauche2.png
+images/pony/apple/gauche3.png
+images/pony/apple/droite1.png
+images/pony/apple/droite2.png
+images/pony/apple/droite3.png
+images/pony/apple/dos1.png
+images/pony/apple/dos2.png
+images/pony/apple/dos3.png

@@ -9,12 +9,22 @@ public class Coordinates {
 		this.y= y;
 	}
 
+	public Coordinates(){}
+
 	public int getX() {return x;}
 	public int getY() {return y;}
 	
 	public void setCoordinates(Coordinates newPosition) {
 		this.x= newPosition.getX();
 		this.y= newPosition.getY();
+	}
+
+	public void setX(String x){
+		this.x= Integer.parseInt(x);
+	}
+
+	public void setY(String y){
+		this.y= Integer.parseInt(y);
 	}
 	
 	public void translate(Coordinates vectors) {
