@@ -9,6 +9,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import com.antoine.contracts.ILevel;
+import com.antoine.contracts.IVisiteur;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;

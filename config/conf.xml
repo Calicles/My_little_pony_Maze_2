@@ -12,7 +12,7 @@
 				<parameter id="levelAppleEndImage" value="./ressources/images/fin/apple.png" method="setEndImageUrl" />
 				<injection id="levelApple_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="2">
-						<paramInjection id="levelApple_player_animationFilePath" value="./ressources/setPonyAnimation/set.txt" method="setAnimation"/>
+						<paramInjection id="levelApple_player_animationFilePath" value="./ressources/setPonyAnimation/setApple.txt" method="setAnimation"/>
 						<injection id="levelApple_player_position" class="com.antoine.geometry.Coordinates" method="setPosition">
 							<parameters nbr="2">
 								<paramInjection id="levelApple_player_positionX" value="40" method="setX"/>
@@ -23,8 +23,8 @@
 				</injection>
 				<injection id="levelApple_map" class="com.antoine.modele.map.Map" method="setMap">
 					<parameters nbr="2">
-						<parameter id="level_apple_map_tileSet" value="./ressources/maps/tileSet.txt" method="setTileSet"/>
-						<parameter id="levelApple_map_mapFilePath" value="./ressources/maps/map.txt" method="setMap"/>
+						<parameter id="level_apple_map_tileSet" value="./ressources/maps/levelApple/tileSet.txt" method="setTileSet"/>
+						<parameter id="levelApple_map_mapFilePath" value="./ressources/maps/levelApple/map.txt" method="setMap"/>
 					</parameters>
 				</injection>
 			</parameters>

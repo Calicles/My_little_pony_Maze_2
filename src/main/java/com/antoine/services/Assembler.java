@@ -20,20 +20,34 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * <b>Classe de container et d'injection de dépendance.</b>
+ * <p>gère une mémoire cache pour reconstituer les beans</p>
  * @author antoine
  */
 public class Assembler {
-	
-	private Map<String, String> id_class;	//gestion d'un cache
+
+	/*
+	association entre l'id du bean et sa classe
+	 */
+	private Map<String, String> id_class;
+
+	/*
+	association entre id bean et l'id de ses paramètres sous forme d'array
+	 */
 	private Map<String, String[]> idBean_idParameters;
+
+	/*
+	id_paramètre et leur valeur
+	 */
 	private Map<String, String> idParam_value;
+
+	/*
+	id_paramètre et leur méthode d'injection
+	 */
 	private Map<String, String> idParam_methods;
 
 	/**
-	 *
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws ParserConfigurationException
+	 * Construit l'assembleur selon
+	 * @param filePath le path du fichier de configuration
 	 */
 	public Assembler(String filePath) {
 		idBean_idParameters= new HashMap<>();
@@ -46,9 +60,6 @@ public class Assembler {
 
 	/**
 	 *
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws ParserConfigurationException
 	 */
 	private void parse(String filePath) {
 		SAXParserFactory factory= SAXParserFactory.newInstance();
@@ -81,13 +92,6 @@ public class Assembler {
 	 *
 	 * @param id
 	 * @return
-	 * @throws ClassNotFoundException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
 	 */
 	private Object getBean(String id) {
 
@@ -136,8 +140,15 @@ public class Assembler {
 	 */
 	class XMLHandler extends DefaultHandler {
 
-
+		/*
+		id du bean courrant
+		 */
 		private Stack<String> currentBean= new Stack<>();
+
+		/*
+		utilisé pour ranger le paramètre au prochain index libre
+		dans l'array de la Map idBean_parameters
+		 */
 		private Stack<Integer> indexCurrentBean= new Stack<>();
 
 		/**
@@ -146,7 +157,6 @@ public class Assembler {
 		 * @param lName
 		 * @param qName
 		 * @param attr
-		 * @throws SAXException
 		 */
 		@Override
 		public void startElement(String nameSpaceURI, String lName, String qName,
@@ -174,6 +184,11 @@ public class Assembler {
 
 		}
 
+
+		/**
+		 *
+		 * @param attr
+		 */
 		private void registerInjection(Attributes attr) {
 			int index= indexCurrentBean.pop();
 
@@ -185,6 +200,11 @@ public class Assembler {
 
 		}
 
+
+		/**
+		 *
+		 * @param attr
+		 */
 		private void registerParameter(Attributes attr) {
 
 			String idParam= "";
@@ -209,7 +229,12 @@ public class Assembler {
 			}
 		}
 
-
+		/**
+		 *
+		 * @param uri
+		 * @param localName
+		 * @param qName
+		 */
 		@Override
 		public void endElement(String uri, String localName, String qName) {
 

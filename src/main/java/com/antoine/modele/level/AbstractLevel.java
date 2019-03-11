@@ -7,10 +7,12 @@ import java.io.IOException;
 
 import com.antoine.contracts.IEntity;
 import com.antoine.contracts.IMap;
+import com.antoine.contracts.IStructure;
+import com.antoine.contracts.IVisiteur;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
-public abstract class AbstractLevel {
+public abstract class AbstractLevel implements IStructure {
 
 	protected IMap map;
 	protected IEntity player;
@@ -34,6 +36,16 @@ public abstract class AbstractLevel {
 		exit= tileToRectangle(map.findExit());
 		setMapSize();
 	}
+
+	/*
+	pour test
+	 */
+	public IEntity getPlayer(){return player;}
+	public String getEndImageUrl(){return endImageUrl;}
+	public IMap getMap(){return map;}
+	/*
+	fin pour test
+	 */
 
 	public void setEndImageUrl(String endImageUrl){
 		this.endImageUrl= endImageUrl;
@@ -139,6 +151,11 @@ public abstract class AbstractLevel {
 		int endX= tile.getX() + tile_width * 2;
 		int endY= tile.getY() + tile_height * 2;
 		return new Rectangle(tile.getX(), endX, tile.getY(), endY);
+
+	}
+
+	public void accept(IVisiteur visiteur){
+		visiteur.visit(this);
 	}
 
 }

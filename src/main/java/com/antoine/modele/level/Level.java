@@ -1,6 +1,7 @@
 package com.antoine.modele.level;
 
 import com.antoine.contracts.ILevel;
+import com.antoine.contracts.IVisiteur;
 
 import java.awt.Graphics;
 import java.io.File;
@@ -62,12 +63,12 @@ public class Level extends AbstractLevel implements ILevel {
 
 	@Override
 	public int getPlayerX() {
-		return 0;
+		return player.getX();
 	}
 
 	@Override
 	public int getPlayerY() {
-		return 0;
+		return player.getY();
 	}
 
 }
