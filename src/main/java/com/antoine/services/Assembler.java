@@ -96,30 +96,34 @@ public class Assembler {
 	private Object getBean(String id) {
 
 		Object bean= null;
-
 		try {
 			Method m;
 			Class<?> beanClass = Class.forName(id_class.get(id));
 			Constructor<?> beanConstructor = beanClass.getConstructor();
 			bean = beanConstructor.newInstance();
+			if(idBean_idParameters.containsKey(id)) {
 
-			String[] parameters = idBean_idParameters.get(id);
+				String[] parameters = idBean_idParameters.get(id);
 
-			for (int i = 0; i < parameters.length; i++) {
+				for (int i = 0; i < parameters.length; i++) {
 
-				if (id_class.containsKey(parameters[i])) {
-					Object o = getBean(parameters[i]);
-					if(o.getClass().getInterfaces().length != 0) {
-						m = beanClass.getMethod(idParam_methods.get(parameters[i]), o.getClass().getInterfaces());
-					}else
-						m= beanClass.getMethod(idParam_methods.get(parameters[i]), o.getClass());
-					m.invoke(bean, o);
+					if (id_class.containsKey(parameters[i])) {
 
-				} else {
+						Object o = getBean(parameters[i]);
+						if (o.getClass().getInterfaces().length != 0) {
 
-					String param = idParam_value.get(parameters[i]);
-					m = beanClass.getMethod(idParam_methods.get(parameters[i]), parameters[i].getClass());
-					m.invoke(bean, param);
+							m = beanClass.getMethod(idParam_methods.get(parameters[i]), o.getClass().getInterfaces());
+						} else
+							m = beanClass.getMethod(idParam_methods.get(parameters[i]), o.getClass());
+						m.invoke(bean, o);
+
+					} else {
+
+						String param = idParam_value.get(parameters[i]);
+						m = beanClass.getMethod(idParam_methods.get(parameters[i]), parameters[i].getClass());
+						m.invoke(bean, param);
+					}
+
 				}
 			}
 

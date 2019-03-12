@@ -4,6 +4,7 @@ import com.antoine.contracts.IA;
 import com.antoine.contracts.IMap;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
+import com.antoine.geometry.Tile;
 
 public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 	
@@ -65,7 +66,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 	}
 
 	private void checkLastVectors() {
-		Rectangle tile;
+		Tile tile;
 		if(lastVectors.getX() < 0 || lastVectors.getX() > 0) {
 			if(ownPosition.getBeginY() != 0 && (tile= this.checkOnUpTiles(this.ownPosition, map)) == null) {
 				yDirection= -4; xDirection= 0;
@@ -123,7 +124,6 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 		}catch(InterruptedException ie) {}
 	}
 
-	@Override
 	public Coordinates memorizeMoves() {
 		if(!thinking) {
 			// finished thinking
@@ -140,4 +140,8 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 		
 	}
 
+	@Override
+	Coordinates memorizeMoves(Rectangle position, IMap map) {
+		return null;
+	}
 }

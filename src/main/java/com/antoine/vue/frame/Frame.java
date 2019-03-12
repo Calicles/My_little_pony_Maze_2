@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFrame;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.manager.LevelManager;
 import com.antoine.vue.panel.ButtonPanel;
@@ -19,9 +20,7 @@ public class Frame extends JFrame {
 
 	private SpecialPanel panel;
 	
-	public Frame() throws IOException, NoSuchMethodException, IllegalAccessException,
-			SAXException, InstantiationException, ParserConfigurationException,
-			InvocationTargetException, ClassNotFoundException {
+	public Frame() {
 
 		Presentateur presentateur= new LevelManager();
 		ButtonPanel buttons= new ButtonPanel(presentateur);
@@ -37,56 +36,44 @@ public class Frame extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
+
+	public void setPrincipalPanel(IPanel principalPanel){
+
+	}
+
+	public void setButtonPanel(IPanel buttonPanel){
+
+	}
 	
 	private class InternImageListener implements KeyListener {
 
 		@Override
+		public void keyTyped(KeyEvent keyEvent) {
+
+		}
+
+		@Override
 		public void keyPressed(KeyEvent e) {
+
 			this.moves(e);
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+			if ((e.getKeyCode() == KeyEvent.VK_RIGHT) || (e.getKeyCode() == KeyEvent.VK_LEFT)||
+					(e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_DOWN))
 				panel.playerMovesReleased();
-			else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-				panel.playerMovesReleased();
-			else if (e.getKeyCode() == KeyEvent.VK_UP)
-				panel.playerMovesReleased();
-			else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-				panel.playerMovesReleased();
-		}
-
-		@Override
-		public void keyTyped(KeyEvent e) {
-			this.moves(e);
 		}
 
 		private void moves(KeyEvent e) {
-
-			try{
-
-				if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-					panel.playerMoves(4, 0);
-				else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					panel.playerMoves(-4, 0);
-				} else if (e.getKeyCode() == KeyEvent.VK_UP)
-					panel.playerMoves(0, -4);
-				else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-					panel.playerMoves(0, 4);
-			}catch(IOException ioe){
-				ioe.printStackTrace();
-			} catch (InstantiationException e1) {
-				e1.printStackTrace();
-			} catch (InvocationTargetException e1) {
-				e1.printStackTrace();
-			} catch (NoSuchMethodException e1) {
-				e1.printStackTrace();
-			} catch (IllegalAccessException e1) {
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+				panel.playerMovesRight();
+			else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				panel.playerMovesLeft();
+			} else if (e.getKeyCode() == KeyEvent.VK_UP)
+				panel.playerMovesUp();
+			else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+				panel.playerMovesDown();
 
 		}
 		

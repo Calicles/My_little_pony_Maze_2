@@ -10,8 +10,6 @@ import java.util.HashMap;
 public interface IMap {
 
 
-    int[][] getTiles();
-
     int getTile_width();
 
     int getTile_height();
@@ -29,4 +27,6 @@ public interface IMap {
     Tile[][] getMap();
 
     HashMap<Integer, BufferedImage> getTileSet();
+
+    Tile isSolidTileOnRoad(Rectangle rectangle);
 }

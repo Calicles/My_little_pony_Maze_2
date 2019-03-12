@@ -40,15 +40,13 @@ public class LevelManager implements Presentateur {
 	public int getMapWidth() {return levelRunning.getMapWidth();}
 	public int getMapHeight() {return levelRunning.getMapHeight();}
 
-	private void switchLevel3() throws IOException, ClassNotFoundException, NoSuchMethodException,
-			InvocationTargetException, InstantiationException, IllegalAccessException {
+	private void switchLevel3() {
 
 		levelRunning= levelPinky= (ILevel) assembler.newInstance("levelPinky");
 		levelFlutter= null;
 	}
 	
-	private void switchLevel2() throws IOException, ClassNotFoundException, NoSuchMethodException,
-			InvocationTargetException, InstantiationException, IllegalAccessException {
+	private void switchLevel2() {
 
 		levelRunning= levelFlutter= (ILevel) assembler.newInstance("levelFlutter");
 		levelApple=null; levelRarity= null; levelRainbow= null;
@@ -85,47 +83,49 @@ public class LevelManager implements Presentateur {
 		return !levelRainbow.isSelected() && levelRainbow.isRunning();
 	}
 
-	@Override
-	public void playerMoves(int xVector, int yVector) throws IOException, ClassNotFoundException,
-			NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-
-		if(levelPinky== null && levelFlutter== null &&
-				!levelApple.isRunning()
-				&& !levelRarity.isRunning() 
-				&& !levelRainbow.isRunning()) {
-			switchLevel2();
-		}else if(levelApple== null && levelFlutter!= null &&
-				!levelFlutter.isRunning()) {
-			switchLevel3();
-		}else {
-			if(xVector == 0) {
-				if(yVector < 0) {
-					this.playerMovesUp();
-				}else {
-					this.playerMovesDown();
-				}
-			}else {
-				if(xVector < 0) {
-					this.playerMovesLeft();
-				}else {
-					this.playerMovesRight();
-				}
-			}
-		}	
+	public void playerMovesLeft(){
+		if(!isLevelOver()){
+			levelRunning.playerMovesLeft();
+		}
 		this.fireUpdate();
 	}
 
-	public void playerMovesLeft() {
-		levelRunning.playerMovesLeft();
+	public void playerMovesRight(){
+		if(!isLevelOver()){
+			levelRunning.playerMovesRight();
+		}
+		this.fireUpdate();
 	}
-	public void playerMovesRight() {
-		levelRunning.playerMovesRight();
+
+	public void playerMovesUp(){
+		if(!isLevelOver()){
+			levelRunning.playerMovesUp();
+		}
+		this.fireUpdate();
 	}
-	public void playerMovesUp() {
-		levelRunning.playerMovesUp();
+
+	public void playerMovesDown(){
+		if(!isLevelOver()){
+			levelRunning.playerMovesDown();
+		}
+		this.fireUpdate();
 	}
-	public void playerMovesDown() {
-		levelRunning.playerMovesDown();
+
+	private boolean isLevelOver(){
+
+		if(levelPinky== null && levelFlutter== null &&
+				!levelApple.isRunning()
+				&& !levelRarity.isRunning()
+				&& !levelRainbow.isRunning()) {
+			switchLevel2();
+			return true;
+
+		}else if(levelApple== null && levelFlutter!= null &&
+				!levelFlutter.isRunning()) {
+			switchLevel3();
+			return true;
+		}
+		return false;
 	}
 
 	public void playerMovesReleased(){

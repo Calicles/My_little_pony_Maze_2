@@ -41,7 +41,7 @@ public class Player extends AbstractCharacter implements IEntity {
 		Coordinates vector= deplacement.memorizeMoves(this.position, map);
 		
 		//Change les coordonnes du perso
-		position.setCoordinates(position.getBeginX() + vector.getX(), position.getBeginY() + vector.getY());
+		position.translate(vector.getX(), vector.getY());
 		
 		//change la sprite
 		changeSprite(vector);

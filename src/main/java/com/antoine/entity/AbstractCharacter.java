@@ -62,7 +62,7 @@ public abstract class AbstractCharacter extends AbstractImage {
 	 * @param position les coordonnées de départ du personnage
 	 */
 	public void setPosition(Coordinates position) {
-		this.position= new Rectangle(position, position.getY(), getHeight());
+		this.position= new Rectangle(position, position.getX() + getWidth(), position.getY() + getHeight());
 	}
 
 	public void setAnimation(String animationSet){

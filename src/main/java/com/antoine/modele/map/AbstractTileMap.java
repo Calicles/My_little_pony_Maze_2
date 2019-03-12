@@ -34,11 +34,15 @@ public abstract class AbstractTileMap {
 	public void setMap(String fileMapUrl){
 		int[][] buffer;
 		buffer = Map_reader.readMap(fileMapUrl);
+		this.tile_width= tileSet.get(0).getWidth();
+		this.tile_height= tileSet.get(0).getHeight();
 		initMap(buffer);
 	}
 	
 	public int getTile_width() {return tile_width;}
 	public int getTile_height() {return tile_height;}
+	public int getWidth(){return map[0].length * tile_width;}
+	public int getHeight(){ return map.length * tile_height;}
 	public Tile[][] getMap(){return map;}
 	public HashMap<Integer, BufferedImage> getTileSet() {return tileSet;}
 	

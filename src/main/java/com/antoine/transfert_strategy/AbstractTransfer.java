@@ -15,12 +15,12 @@ public abstract class AbstractTransfer {
 		this.vector= vector;
 	}
 	
-	abstract Coordinates memorizeMoves();
+	abstract Coordinates memorizeMoves(Rectangle position, IMap map);
 
 
 	public void adaptVectors(Rectangle position, IMap map) {
 		
-		//On cherche si vecteur null pas de calcul !
+		//On cherche si vecteur null pas de calcul
 		if(xDirection != 0 || yDirection !=0) {
 			
 			//On cherche la direction
@@ -29,7 +29,7 @@ public abstract class AbstractTransfer {
 				checkLeft(position, map);
 				
 			}else if(xDirection > 0) {
-				
+
 				checkRight(position, map);
 				
 			}else if(yDirection < 0) {
@@ -46,7 +46,8 @@ public abstract class AbstractTransfer {
 	
 	protected void checkLeft(Rectangle position, IMap map) {
 		
-		Rectangle tile;
+		Tile tile;
+
 		int playerX= position.getBeginX();
 		
 		if(playerX < map.getTile_width()){
@@ -57,26 +58,25 @@ public abstract class AbstractTransfer {
 			
 		}else if((tile= checkLeftTiles(position, map)) != null) {
 			
-			if(tile.getEndX() - playerX >= -4)
-				xDirection= (tile.getEndX()+1) - playerX;
+			if((tile.getX() + map.getTile_width()) - playerX >= -4)
+				xDirection= (tile.getX() + map.getTile_width() + 1) - playerX;
 		}
 		yDirection= 0;
 	}
 	
 	protected void checkRight(Rectangle position, IMap map) {
 		
-		Rectangle tile;
+		Tile tile;
 		int playerEndX= position.getEndX();
-		
-		if(position.getEndX() > (map.getWidth() - map.getTile_width())){
-			if(playerEndX >= map.getWidth() - 4) {
-			
+
+		if(playerEndX > (map.getWidth() - map.getTile_width())){
+			if(playerEndX >= (map.getWidth() - 4)) {
 				xDirection= map.getWidth() - playerEndX;
-		}
-			
+			}
+
 		}else if((tile= checkRightTiles(position, map)) != null) {
-			if(tile.getBeginX() - position.getEndX() <= 4)
-				xDirection= tile.getBeginX() - (position.getEndX() + 1);
+			if(tile.getX() - position.getEndX() <= 4)
+				xDirection= tile.getX() - (position.getEndX() + 1);
 
 		}
 		yDirection= 0;
@@ -84,7 +84,7 @@ public abstract class AbstractTransfer {
 	
 	protected void checkUp(Rectangle position, IMap map) {
 		
-		Rectangle tile;
+		Tile tile;
 		int playerY= position.getBeginY();
 		
 		if(playerY <= map.getTile_height()){
@@ -95,8 +95,8 @@ public abstract class AbstractTransfer {
 			
 		}else if((tile= checkOnUpTiles(position, map)) != null){
 			
-			if(tile.getEndY() - playerY >= -4)
-				yDirection= (tile.getEndY()+1) - playerY;
+			if((tile.getY() + map.getTile_height()) - playerY >= -4)
+				yDirection= (tile.getY() + map.getTile_height()+1) - playerY;
 			
 		}
 		xDirection= 0;
@@ -104,21 +104,21 @@ public abstract class AbstractTransfer {
 	
 	protected void checkDown(Rectangle position, IMap map) {
 		
-		Rectangle tile;
+		Tile tile;
 		int playerEndY= position.getEndY();
 
-		if(playerEndY >= (map.getHeight() - map.getHeight())) {
-				if(playerEndY > map.getHeight() - 4) {
+		if(playerEndY >= (map.getHeight() - map.getTile_height())) {
+				if(playerEndY > (map.getHeight() - 4)) {
 					yDirection= map.getHeight() - position.getEndY();
 				}
 		}else if((tile= checkOnDownTiles(position, map)) != null) {
-			if(tile.getBeginY() - playerEndY <= 4)
-				yDirection= tile.getBeginY() - (playerEndY+1);
+			if(tile.getY() - playerEndY <= 4)
+				yDirection= tile.getY() - (playerEndY+1);
 		}
 		xDirection= 0;
 	}
 	
-	protected Rectangle checkOnDownTiles(Rectangle position, IMap map) {
+	protected Tile checkOnDownTiles(Rectangle position, IMap map) {
 
 		int x, y, endX;
 		
@@ -126,9 +126,9 @@ public abstract class AbstractTransfer {
 		endX= position.getEndX() / map.getTile_width();
 		y= position.getEndY() / map.getTile_height() +1;
 
-		return isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, 0), map);
+		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, y));
 	}
-	protected Rectangle checkOnUpTiles(Rectangle position, IMap map) {
+	protected Tile checkOnUpTiles(Rectangle position, IMap map) {
 
 		int x, y, endX;
 		
@@ -136,20 +136,20 @@ public abstract class AbstractTransfer {
 		endX= position.getEndX() / map.getTile_width();
 		y= position.getBeginY() / map.getTile_height() -1;
 		
-		return isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, 0), map);
+		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, y));
 	}
-	protected Rectangle checkRightTiles(Rectangle position, IMap map) {
+	protected Tile checkRightTiles(Rectangle position, IMap map) {
 		
 		int x, y, endY;
 		
 		x= position.getEndX() / map.getTile_width() +1;
 		y= position.getBeginY() / map.getTile_height();
 		endY= position.getEndY() / map.getTile_height();
-		
-		return isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), 0, endY), map);
+
+		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), x, endY));
 	}
 	
-	protected Rectangle checkLeftTiles(Rectangle position, IMap map) {
+	protected Tile checkLeftTiles(Rectangle position, IMap map) {
 		
 		int x, y, endY;
 		
@@ -157,25 +157,7 @@ public abstract class AbstractTransfer {
 		y= position.getBeginY() / map.getTile_height();
 		endY= position.getEndY() / map.getTile_height();
 		
-		return isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), 0, endY), map);
-	}
-	
-	protected Rectangle isSolidTileOnRoad(Rectangle surface, IMap map) {
-		int[][] tiles= map.getTiles();
-		for(int i= surface.getBeginY(); i <= (surface.getEndY() - surface.getEndY()); i++) {
-			
-			for(int j= surface.getBeginX(); j <= (surface.getEndX() - surface.getEndX()); j++) {
-				
-				if(Tile.isSolid(tiles[i][j])){
-					int x= j * map.getTile_width();
-					int y= i * map.getTile_height();
-					return new Rectangle(new Coordinates(x, y),
-							map.getTile_width(), map.getTile_height());
-					
-				}
-			}
-		}
-		return null;
+		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), x, endY));
 	}
 	
 }

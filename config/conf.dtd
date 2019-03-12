@@ -7,7 +7,7 @@
 <!ATTLIST size width CDATA #REQUIRED>
 <!ATTLIST size height CDATA #REQUIRED>
 
-<!ELEMENT beans (bean)>
+<!ELEMENT beans (bean+)>
 
 <!ELEMENT bean (parameters)>
 <!ATTLIST bean id ID #REQUIRED>

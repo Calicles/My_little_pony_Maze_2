@@ -2,12 +2,16 @@ package com.antoine.contracts;
 
 import java.awt.*;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 public interface Presentateur {
 
+    void playerMovesLeft();
 
-    void playerMoves(int xVector, int yVector) throws IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
+    void playerMovesRight();
+
+    void playerMovesUp();
+
+    void playerMovesDown();
 
     Dimension getDimension();
 

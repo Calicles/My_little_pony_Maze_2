@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.antoine.contracts.IMap;
+import com.antoine.geometry.Rectangle;
+import com.antoine.geometry.Tile;
 
 public class Map extends AbstractTileMap implements IMap {
 	
@@ -14,21 +16,5 @@ public class Map extends AbstractTileMap implements IMap {
 
 	public Map(){
 		super();
-	}
-
-
-	@Override
-	public int[][] getTiles() {
-		return new int[0][];
-	}
-
-	@Override
-	public int getWidth() {
-		return 0;
-	}
-
-	@Override
-	public int getHeight() {
-		return 0;
 	}
 }
