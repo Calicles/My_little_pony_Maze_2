@@ -2,6 +2,7 @@ package com.antoine.entity;
 
 
 import com.antoine.contracts.IA;
+import com.antoine.contracts.IEnnemi;
 import com.antoine.contracts.IMap;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
@@ -14,7 +15,7 @@ import com.antoine.geometry.Rectangle;
  *
  * @author antoine
  */
-public class Boss extends AbstractCharacter {
+public class Boss extends AbstractCharacter implements IEnnemi {
 
 	
 	private IA transfer_strategy;
