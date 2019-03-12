@@ -1,18 +1,4 @@
-tileSet 13
-0 images/levelRarity/ice2.png
--1 images/tapis1.png
--2 images/tapis2.png
--3 images/tapis3.png
--4 images/tapis4.png
-6 images/levelRarity/icewall1.png
-7 images/levelRarity/icewall2.png
-8 images/levelRarity/icewall3.png
-9 images/levelRarity/icewall4.png
-10 images/levelRarity/icewall5.png
-11 images/levelRarity/icewall6.png
-12 images/levelRarity/icewall7.png
-13 images/levelRarity/icewall8.png
-taille 20 20
+20 20
 07 12 13 12 13 12 13 12 13 06 07 12 13 12 13 12 13 12 13 06
 09 00 00 00 00 00 00 00 00 08 09 00 00 00 00 00 00 00 00 08
 07 00 00 00 00 00 00 00 00 06 07 00 00 00 00 00 00 00 00 06
@@ -33,17 +19,3 @@ taille 20 20
 09 00 00 08 09 00 00 00 00 00 00 00 00 00 00 08 09 00 00 08
 07 -2 -2 06 07 00 00 00 00 00 00 00 00 00 00 06 07 00 00 06
 09 -3 -4 08 09 08 09 08 09 08 09 08 09 08 09 08 09 08 09 08
-player 572 570
-4 3
-images/pony/rarity/face1.png
-images/pony/rarity/face2.png
-images/pony/rarity/face3.png
-images/pony/rarity/gauche1.png
-images/pony/rarity/gauche2.png
-images/pony/rarity/gauche3.png
-images/pony/rarity/droite1.png
-images/pony/rarity/droite2.png
-images/pony/rarity/droite3.png
-images/pony/rarity/dos1.png
-images/pony/rarity/dos2.png
-images/pony/rarity/dos3.png

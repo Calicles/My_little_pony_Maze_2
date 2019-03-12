@@ -1,7 +1,6 @@
 package com.antoine.Main;
 
 import com.antoine.vue.frame.Frame;
-import org.xml.sax.SAXException;
 
 import javax.swing.*;
 

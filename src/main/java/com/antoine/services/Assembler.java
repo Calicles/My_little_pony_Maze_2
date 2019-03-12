@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -112,7 +109,10 @@ public class Assembler {
 						Object o = getBean(parameters[i]);
 						if (o.getClass().getInterfaces().length != 0) {
 
-							m = beanClass.getMethod(idParam_methods.get(parameters[i]), o.getClass().getInterfaces());
+							if(o.getClass().getInterfaces().length > 1){
+								m= findMethod(bean.getClass(), o.getClass().getInterfaces(), parameters[i]);
+							}else
+								m = beanClass.getMethod(idParam_methods.get(parameters[i]), o.getClass().getInterfaces());
 						} else
 							m = beanClass.getMethod(idParam_methods.get(parameters[i]), o.getClass());
 						m.invoke(bean, o);
@@ -135,6 +135,29 @@ public class Assembler {
 
 		return bean;
 	
+	}
+
+	private Method findMethod(Class<?> aClass, Class<?>[] interfaces, String idParam) {
+		String methodName= idParam_methods.get(idParam);
+		Method[] methods= aClass.getMethods();
+
+		for(int i= 0; i < methods.length; i++){
+			if(methodName.equals(methods[i].getName())){
+				Class<?>[] paramterTypes= methods[i].getParameterTypes();
+
+				for(Class<?> c:paramterTypes){
+					for(Class<?> c2:interfaces){
+						if(c.getName().equals(c2.getName())){
+							return methods[i];
+						}
+					}
+
+				}
+
+			}
+
+		}
+		return null;
 	}
 
 	/**

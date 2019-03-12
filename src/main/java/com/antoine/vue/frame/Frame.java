@@ -44,6 +44,24 @@ public class Frame extends JFrame {
 	public void setButtonPanel(IPanel buttonPanel){
 
 	}
+
+	public void setMiniMap(IPanel miniMap){
+
+		Presentateur presentateur= new LevelManager();
+		ButtonPanel buttons= new ButtonPanel(presentateur);
+		panel= new SpecialPanel(presentateur);
+		this.setLayout(new BorderLayout());
+		this.add(panel, BorderLayout.CENTER);
+		this.add(buttons, BorderLayout.SOUTH);
+		this.addKeyListener(new InternImageListener());
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.pack();
+		this.setTitle("My Little Pony");
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
+
+	}
 	
 	private class InternImageListener implements KeyListener {
 

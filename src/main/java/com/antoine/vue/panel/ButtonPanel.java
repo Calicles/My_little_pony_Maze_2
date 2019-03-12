@@ -1,17 +1,13 @@
 package com.antoine.vue.panel;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 
+import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
-import com.antoine.vue.panel.JMiniMap;
 
-public class ButtonPanel extends JPanel implements LevelListener{
+public class ButtonPanel extends JPanel implements LevelListener, IPanel {
 
 	private Presentateur presentateur;
 	private JButton appleButton, rarityButton, rainbowButton;
@@ -22,8 +18,31 @@ public class ButtonPanel extends JPanel implements LevelListener{
 	public ButtonPanel(Presentateur presentateur) {
 		this.presentateur= presentateur;
 		map= new JMiniMap(presentateur);
-		init();
 		mapAdded= false;
+		init();
+	}
+
+	public ButtonPanel(){
+
+	}
+
+	public void setPresentateur(Presentateur presentateur){
+		this.presentateur= presentateur;
+		init();
+		map= new JMiniMap(presentateur);
+		mapAdded= false;
+	}
+
+	public void setAppleButton(String appleButtonImagePath){
+		appleButton= new JButton(new ImageIcon(appleButtonImagePath));
+	}
+
+	public void setRarityButton(String rarityButtonImagePath){
+		rarityButton= new JButton(new ImageIcon(rarityButtonImagePath));
+	}
+
+	public void setRainbowButton(String rainbowButtonImagePath){
+		rainbowButton= new JButton(new ImageIcon(rainbowButtonImagePath));
 	}
 
 	@Override 
@@ -57,9 +76,9 @@ public class ButtonPanel extends JPanel implements LevelListener{
 	}
 
 	private void init() {
-		appleButton= new JButton(new ImageIcon("images/boutons/apple.png"));
-		rarityButton= new JButton(new ImageIcon("images/boutons/rarity.png"));
-		rainbowButton= new JButton(new ImageIcon("images/boutons/rainbow.png"));
+		appleButton= new JButton(new ImageIcon(("./ressources/images/boutons/apple.png")));
+		rarityButton= new JButton(new ImageIcon("./ressources/images/boutons/rarity.png"));
+		rainbowButton= new JButton(new ImageIcon("./ressources/images/boutons/rainbow.png"));
 		appleButton.setPreferredSize(new Dimension(75, 75));
 		rarityButton.setPreferredSize(new Dimension(75, 75));
 		rainbowButton.setPreferredSize(new Dimension(75, 75));
@@ -76,7 +95,7 @@ public class ButtonPanel extends JPanel implements LevelListener{
 		rarityButton.addActionListener(e->presentateur.switchLevelRarity());
 		rainbowButton.addActionListener(e->presentateur.switchLevelRainbow());
 		presentateur.AddListener(this);
-		this.setBackground(Color.BLACK);
+		this.setBackground(Color.PINK);
 		update();
 	}
 	

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import com.antoine.contracts.ILevel;
+import com.antoine.contracts.IMap;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.DoubleBoxes;
 import com.antoine.geometry.Rectangle;
@@ -22,6 +23,11 @@ public class Level3 extends AbstractLevel implements ILevel {
 
 	public Level3(){
 		super();
+	}
+
+	@Override
+	public void setMap(IMap map){
+		super.setMap(map);
 		initBoxes();
 	}
 
@@ -55,6 +61,7 @@ public class Level3 extends AbstractLevel implements ILevel {
 		int rowMax= boxes.getScreenEndY() / tile_height;
 		int colMax= boxes.getScreenEndX() / tile_width;
 		int x= 0, y= 0;
+
 		if(boxes.getScreenEndY() % 32 != 0) rowMax ++;
 		for(int i= row; i<rowMax; i++) {
 			for(int j= col; j<colMax; j++) {
@@ -63,7 +70,6 @@ public class Level3 extends AbstractLevel implements ILevel {
 				x= tile.getX() - boxes.getScreenBeginX();
 				g.drawImage(set.get(tile.getTile_num()), x, 
 						y, null);
-				if(y < 0) System.out.println(y);
 			}
 		}
 	}

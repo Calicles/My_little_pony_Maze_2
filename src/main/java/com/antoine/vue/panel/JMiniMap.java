@@ -5,10 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
+import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
 
-public class JMiniMap extends JPanel implements LevelListener {
+public class JMiniMap extends JPanel implements LevelListener, IPanel {
 	
 	public static final int ECHELLE= 10;
 	
@@ -17,6 +18,10 @@ public class JMiniMap extends JPanel implements LevelListener {
 	public JMiniMap(Presentateur presentateur) {
 		this.presentateur= presentateur;
 		this.setListener();
+	}
+
+	public JMiniMap(){
+
 	}
 
 	public int getHeight() {return presentateur.getMapHeight() / ECHELLE;}

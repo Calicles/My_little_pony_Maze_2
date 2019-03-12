@@ -1,31 +1,4 @@
-tileSet 26
-0 images/levelFlutter/sol.png
--1 images/tapis1.png
--2 images/tapis2.png
--3 images/tapis3.png
--4 images/tapis4.png
--5 images/levelFlutter/sol.png
-2 images/levelApple/place1.png
-3 images/levelApple/place2.png
-4 images/levelApple/place3.png
-5 images/levelApple/place4.png
-6 images/levelFlutter/haut1.png
-7 images/levelFlutter/haut2.png
-8 images/levelFlutter/haut3.png
-9 images/levelFlutter/bordG.png
-10 images/levelFlutter/bordD.png
-11 images/levelFlutter/bas1.png
-12 images/levelFlutter/bas2.png
-13 images/levelFlutter/bas3.png
-14 images/levelFlutter/mur1.png
-15 images/levelFlutter/mur2.png
-16 images/levelFlutter/mur3.png
-17 images/levelFlutter/mur4.png
-18 images/levelFlutter/mur5.png
-19 images/levelFlutter/mur6.png
-20 images/levelFlutter/mur7.png
-21 images/levelFlutter/mur8.png
-taille 40 20
+40 20
 06 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 08
 09 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 10
 09 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 10
@@ -47,7 +20,7 @@ taille 40 20
 09 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 10 09 -5 -5 10
 11 12 12 12 12 12 12 12 12 12 12 12 16 00 00 10 09 00 00 10
 06 07 07 20 20 20 20 08 06 20 20 08 09 00 00 10 09 00 00 10
-09 00 00 00 00 00 00 17 09 00 00 10 09 00 00 10 09 00 00 10
+09 00 00 00 -1 00 00 17 09 00 00 10 09 00 00 10 09 00 00 10
 09 00 00 00 00 00 00 17 09 00 00 10 09 00 00 10 09 00 00 10
 11 12 12 12 16 00 00 17 09 00 00 10 09 00 00 10 09 00 00 10
 06 07 07 08 09 00 00 17 09 00 00 19 21 00 00 10 09 00 00 10
@@ -64,19 +37,5 @@ taille 40 20
 09 00 00 14 12 12 12 12 12 12 12 13 09 00 00 10 09 00 00 10
 09 00 00 19 07 07 07 07 07 07 07 07 21 00 00 10 09 00 00 10
 09 00 00 00 00 00 00 00 00 00 00 00 00 00 00 10 09 00 00 10
-09 00 00 00 00 00 00 00 00 00 00 00 00 00 00 10 09 -1 -2 10
+09 00 00 00 00 00 00 00 00 00 00 00 00 00 00 10 09 -2 -2 10
 11 12 12 12 12 12 12 12 12 12 12 12 12 12 12 13 09 -3 -4 10
-player 40 690
-4 3
-images/pony/flutter/face1.png
-images/pony/flutter/face2.png
-images/pony/flutter/face3.png
-images/pony/flutter/gauche1.png
-images/pony/flutter/gauche2.png
-images/pony/flutter/gauche3.png
-images/pony/flutter/droite1.png
-images/pony/flutter/droite2.png
-images/pony/flutter/droite3.png
-images/pony/flutter/dos1.png
-images/pony/flutter/dos2.png
-images/pony/flutter/dos3.png

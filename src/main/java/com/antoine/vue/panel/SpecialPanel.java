@@ -6,16 +6,21 @@ import java.io.IOException;
 
 import javax.swing.JPanel;
 
+import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
 
-public class SpecialPanel extends JPanel implements LevelListener{
+public class SpecialPanel extends JPanel implements LevelListener, IPanel {
 	
 	private Presentateur presentateur;
 	
 	public SpecialPanel(Presentateur model) {
 		this.presentateur= model;
 		this.presentateur.AddListener(this);
+	}
+
+	public SpecialPanel(){
+
 	}
 	
 	
@@ -38,11 +43,6 @@ public class SpecialPanel extends JPanel implements LevelListener{
 		this.repaint();
 	}
 	
-	public void playerMoves(int xVector, int yVector)  {
-
-		//presentateur.playerMoves(xVector, yVector);
-	}
-
 	public void playerMovesLeft(){
 		presentateur.playerMovesLeft();
 	}

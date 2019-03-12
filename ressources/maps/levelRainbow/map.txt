@@ -1,20 +1,4 @@
-tileSet 15
-0 images/levelRainbow/sol1.png
--1 images/tapis1.png
--2 images/tapis2.png
--3 images/tapis3.png
--4 images/tapis4.png
-2 images/levelRainbow/centre1.png
-3 images/levelRainbow/centre2.png
-4 images/levelRainbow/centre3.png
-5 images/levelRainbow/centre4.png
-6 images/levelRainbow/mur1.png
-7 images/levelRainbow/mur2.png
-8 images/levelRainbow/mur3.png
-9 images/levelRainbow/mur4.png
-10 images/levelRainbow/mur5.png
-11 images/levelRainbow/mur6.png
-taille 20 20
+20 20
 09 10 11 10 11 10 11 06 07 -2 -2 06 07 10 11 06 07 10 11 06
 07 00 00 00 00 00 00 06 07 -3 -4 00 00 00 00 00 00 00 00 06
 07 00 00 00 00 00 00 06 07 00 00 00 00 00 00 00 00 00 00 06
@@ -35,17 +19,3 @@ taille 20 20
 07 00 00 06 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 06
 07 00 00 08 09 00 00 00 00 00 00 00 00 00 00 00 00 00 00 06
 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07
-player 40 570
-4 3
-images/pony/rainbow/face1.png
-images/pony/rainbow/face2.png
-images/pony/rainbow/face3.png
-images/pony/rainbow/gauche1.png
-images/pony/rainbow/gauche2.png
-images/pony/rainbow/gauche3.png
-images/pony/rainbow/droite1.png
-images/pony/rainbow/droite2.png
-images/pony/rainbow/droite3.png
-images/pony/rainbow/dos1.png
-images/pony/rainbow/dos2.png
-images/pony/rainbow/dos3.png
