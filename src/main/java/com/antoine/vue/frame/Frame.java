@@ -3,18 +3,15 @@ package com.antoine.vue.frame;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
-import javax.swing.JFrame;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.swing.*;
 
 import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.manager.LevelManager;
 import com.antoine.vue.panel.ButtonPanel;
+import com.antoine.vue.panel.JCardPane;
 import com.antoine.vue.panel.SpecialPanel;
-import org.xml.sax.SAXException;
 
 public class Frame extends JFrame {
 
@@ -49,6 +46,8 @@ public class Frame extends JFrame {
 
 		Presentateur presentateur= new LevelManager();
 		ButtonPanel buttons= new ButtonPanel(presentateur);
+		//JPanel downPane= new JCardPane();
+
 		panel= new SpecialPanel(presentateur);
 		this.setLayout(new BorderLayout());
 		this.add(panel, BorderLayout.CENTER);

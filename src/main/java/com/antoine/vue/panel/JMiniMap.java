@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import com.antoine.afficheur.AfficheurMiniMap;
 import com.antoine.contracts.IPanel;
-import com.antoine.contracts.IVisiteur;
+import com.antoine.contracts.IAfficheur;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
 
@@ -16,7 +16,7 @@ public class JMiniMap extends JPanel implements LevelListener, IPanel {
 	public static final int ECHELLE= 10;
 	
 	private Presentateur presentateur;
-	private IVisiteur afficheurMiniMap;
+	private IAfficheur afficheurMiniMap;
 
 	public JMiniMap(Presentateur presentateur) {
 		this.presentateur= presentateur;
@@ -89,7 +89,7 @@ public class JMiniMap extends JPanel implements LevelListener, IPanel {
 		this.repaint();
 	}
 	
-	public void setListener() {
+	private void setListener() {
 		this.presentateur.AddListener(this);
 	}
 

@@ -3,7 +3,7 @@ package com.antoine.afficheur;
 import com.antoine.contracts.IEntity;
 import com.antoine.contracts.IMap;
 import com.antoine.contracts.IStructure;
-import com.antoine.contracts.IVisiteur;
+import com.antoine.contracts.IAfficheur;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 import com.antoine.modele.level.Level;
@@ -14,7 +14,7 @@ import com.antoine.services.ImageReader;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-public class AfficheurLevel extends AbstractAfficheur implements IVisiteur {
+public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
 
 
 
@@ -62,7 +62,7 @@ public class AfficheurLevel extends AbstractAfficheur implements IVisiteur {
             }
         }
     }
-    public void drawLevel2(IStructure structure) {
+    private void drawLevel2(IStructure structure) {
         if(structure.isRunning()) {
             drawScreen(structure);
             drawPlayer(structure);
@@ -102,13 +102,13 @@ public class AfficheurLevel extends AbstractAfficheur implements IVisiteur {
         }
     }
     private int playerScreenPositionY(IEntity player, IMap map) {
-        int coef=0;
+        int coef;
         int tile_height= map.getTile_height();
         coef= player.getY() / (tile_height * 20);
         return player.getY() - (coef * (tile_height * 20));
     }
 
-    public void drawLevel3(IStructure structure) {
+    private void drawLevel3(IStructure structure) {
         if(structure.isRunning()) {
             drawScreenLevel3(structure);
             drawPlayerLevel3(structure);
@@ -131,7 +131,7 @@ public class AfficheurLevel extends AbstractAfficheur implements IVisiteur {
         int col= screen.getBeginX() / tile_width;
         int rowMax= screen.getEndY() / tile_height;
         int colMax= screen.getEndX() / tile_width;
-        int x= 0, y= 0;
+        int x, y;
 
         if(screen.getEndY() % 32 != 0) rowMax ++;
         for(int i= row; i<rowMax; i++) {
@@ -145,7 +145,7 @@ public class AfficheurLevel extends AbstractAfficheur implements IVisiteur {
         }
     }
 
-    protected void drawPlayerLevel3(IStructure structure) {
+    private void drawPlayerLevel3(IStructure structure) {
         IEntity player= structure.getPlayer();
         Rectangle screen= structure.getScreen();
         int screenPosY= playerScreenPositionY(player, screen);
@@ -153,12 +153,11 @@ public class AfficheurLevel extends AbstractAfficheur implements IVisiteur {
         g.drawImage(player.getImage(), screenPosX, screenPosY, null);
     }
 
-    protected int playerScreenPositionY(IEntity player, Rectangle screen) {
-        int posY= player.getY() - screen.getBeginY();
-        return posY;
+    private int playerScreenPositionY(IEntity player, Rectangle screen) {
+        return player.getY() - screen.getBeginY();
     }
-    protected int playerScreenPositionX(IEntity player, Rectangle screen) {
-        int posX= player.getX() - screen.getBeginX();
-        return posX;
+
+    private int playerScreenPositionX(IEntity player, Rectangle screen) {
+        return player.getX() - screen.getBeginX();
     }
 }

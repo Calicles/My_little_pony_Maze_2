@@ -52,5 +52,5 @@ public interface Presentateur {
 
     int getMapWidth();
 
-    void accept(IVisiteur visiteur);
+    void accept(IAfficheur visiteur);
 }

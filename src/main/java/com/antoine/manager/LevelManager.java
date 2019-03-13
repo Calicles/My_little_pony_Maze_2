@@ -1,7 +1,6 @@
 package com.antoine.manager;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 import com.antoine.contracts.*;
@@ -81,48 +80,48 @@ public class LevelManager implements Presentateur, IStructure {
 	}
 
 	public void playerMovesLeft(){
-		if(!isLevelOver()){
+		if(isLevelRunning()){
 			levelRunning.playerMovesLeft();
 		}
 		this.fireUpdate();
 	}
 
 	public void playerMovesRight(){
-		if(!isLevelOver()){
+		if(isLevelRunning()){
 			levelRunning.playerMovesRight();
 		}
 		this.fireUpdate();
 	}
 
 	public void playerMovesUp(){
-		if(!isLevelOver()){
+		if(isLevelRunning()){
 			levelRunning.playerMovesUp();
 		}
 		this.fireUpdate();
 	}
 
 	public void playerMovesDown(){
-		if(!isLevelOver()){
+		if(isLevelRunning()){
 			levelRunning.playerMovesDown();
 		}
 		this.fireUpdate();
 	}
 
-	private boolean isLevelOver(){
+	private boolean isLevelRunning(){
 
 		if(levelPinky== null && levelFlutter== null &&
 				!levelApple.isRunning()
 				&& !levelRarity.isRunning()
 				&& !levelRainbow.isRunning()) {
 			switchLevel2();
-			return true;
+			return false;
 
 		}else if(levelApple== null && levelFlutter!= null &&
 				!levelFlutter.isRunning()) {
 			switchLevel3();
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public void playerMovesReleased(){
@@ -185,7 +184,7 @@ public class LevelManager implements Presentateur, IStructure {
 	}
 
 	@Override
-	public void accept(IVisiteur visiteur) {
+	public void accept(IAfficheur visiteur) {
 		visiteur.visit((IStructure) this.levelRunning);
 	}
 

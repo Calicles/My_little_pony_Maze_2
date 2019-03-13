@@ -18,13 +18,13 @@ public interface ILevel {
 
     boolean isRunning();
 
-    boolean playerMovesLeft();
+    void playerMovesLeft();
 
-    boolean playerMovesRight();
+    void playerMovesRight();
 
-    boolean playerMovesUp();
+    void playerMovesUp();
 
-    boolean playerMovesDown();
+    void playerMovesDown();
 
     void playerMovesReleased();
 

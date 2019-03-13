@@ -2,20 +2,19 @@ package com.antoine.vue.panel;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.io.IOException;
 
 import javax.swing.JPanel;
 
 import com.antoine.afficheur.AfficheurLevel;
 import com.antoine.contracts.IPanel;
-import com.antoine.contracts.IVisiteur;
+import com.antoine.contracts.IAfficheur;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
 
 public class SpecialPanel extends JPanel implements LevelListener, IPanel {
 	
 	private Presentateur presentateur;
-	private IVisiteur afficheur;
+	private IAfficheur afficheur;
 	
 	public SpecialPanel(Presentateur model) {
 		this.presentateur= model;

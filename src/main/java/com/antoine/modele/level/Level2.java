@@ -6,7 +6,7 @@ import com.antoine.geometry.Rectangle;
 
 public class Level2 extends AbstractLevel implements ILevel {
 	
-	protected Rectangle screen;
+	private Rectangle screen;
 
 
 	public Level2(){
@@ -66,33 +66,33 @@ public class Level2 extends AbstractLevel implements ILevel {
 	}
 
 	@Override
-	public boolean playerMovesUp() {
+	public void playerMovesUp() {
 		if(!isOnTop(-8) && isOnTopScreen())
 			loadMap(0, -20, -player.getHeight());
-		return super.playerMovesUp();
+		super.playerMovesUp();
 	}
 	@Override
-	public boolean playerMovesDown() {
+	public void playerMovesDown() {
 		if(!isOnBottom(4) && isOnBottomScreen())
 			loadMap(0, 20, player.getHeight());
-		return super.playerMovesDown();
+		super.playerMovesDown();
 	}
 	
-	protected boolean isOnBottomScreen() {
+	private boolean isOnBottomScreen() {
 		return (playerScreenPositionY() + player.getHeight()) > 
 			(20 * tile_height - 4);
 	}
 
-	protected boolean isOnTopScreen() {
+	private boolean isOnTopScreen() {
 		return playerScreenPositionY() <= 4;
 	}
 	
-	protected void loadMap(int xVector, int yVector, int playerVector) {
+	private void loadMap(int xVector, int yVector, int playerVector) {
 		screen.translate(xVector, yVector);
 		player.translate(new Coordinates(0, playerVector));
 	}
 
-	protected int playerScreenPositionY() {
+	private int playerScreenPositionY() {
 		int coef=0;
 		coef= player.getY() / (tile_height * 20);
 		return player.getY() - (coef * (tile_height * 20));

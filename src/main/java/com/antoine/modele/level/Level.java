@@ -1,18 +1,10 @@
 package com.antoine.modele.level;
 
 import com.antoine.contracts.ILevel;
-import com.antoine.contracts.IVisiteur;
-
-import java.awt.Graphics;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 
 public class Level extends AbstractLevel implements ILevel {
 	
-	protected boolean selected;
+	private boolean selected;
 
 	public Level(){
 		super();

@@ -2,7 +2,7 @@ package com.antoine.contracts;
 
 import java.awt.*;
 
-public interface IVisiteur {
+public interface IAfficheur {
 
     void visit(IStructure structure);
 

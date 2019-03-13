@@ -18,7 +18,7 @@ public class Character_reader {
 			String line;
 			int directionNumber= Integer.parseInt(bounds[0]);
 			int imagePerDirection= Integer.parseInt(bounds[1]);
-			BufferedImage[] tab= null;
+			BufferedImage[] tab;
 			
 			for(int i= 0; i < directionNumber; i++) {
 				

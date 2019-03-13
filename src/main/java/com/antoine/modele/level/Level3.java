@@ -21,7 +21,7 @@ public class Level3 extends AbstractLevel implements ILevel {
 		initBoxes();
 	}
 
-	protected void initBoxes() {
+	private void initBoxes() {
 		Rectangle screen= new Rectangle(0, 20*tile_width, 20*tile_height,
 				40* tile_height);
 		Rectangle scrollBox= new Rectangle(5*tile_width, 15*tile_width,
@@ -30,9 +30,10 @@ public class Level3 extends AbstractLevel implements ILevel {
 	}
 
 	 @Override
-	 public boolean playerMovesUp() {
+	 public void playerMovesUp() {
 		Coordinates vector;
 
+		checkRunning();
 		player.movesUp();
 		vector= player.memorizeMoves(map);
 
@@ -40,13 +41,13 @@ public class Level3 extends AbstractLevel implements ILevel {
 				 boxes.isPlayerOnTopScroll(player.getY()+ vector.getY()))
 			 boxes.scroll(0, vector.getY() );
 
-		 return vector.isZero();
 	 }
 	 
 	 @Override
-	 public boolean playerMovesDown() {
+	 public void playerMovesDown() {
 		Coordinates vector;
 
+		checkRunning();
 		player.movesDown();
 		vector= player.memorizeMoves(map);
 
@@ -55,7 +56,6 @@ public class Level3 extends AbstractLevel implements ILevel {
 						 player.getHeight() + vector.getY()))
 			 boxes.scroll(0, vector.getY());
 
-		 return vector.isZero();
 	 }
 
 	@Override
@@ -74,9 +74,10 @@ public class Level3 extends AbstractLevel implements ILevel {
 	}
 
 	@Override
-	 public boolean playerMovesLeft() {
-		Coordinates vector;
+	 public void playerMovesLeft() {
+		 Coordinates vector;
 
+		 checkRunning();
 		 player.movesLeft();
 		 vector= player.memorizeMoves(map);
 
@@ -84,13 +85,13 @@ public class Level3 extends AbstractLevel implements ILevel {
 				 boxes.isPlayerOnLeftScroll(player.getX() + vector.getX()))
 			 boxes.scroll(vector.getX(), 0);
 
-		 return vector.isZero();
 	 }
 	 
 	 @Override
-	 public boolean playerMovesRight() {
+	 public void playerMovesRight() {
 		Coordinates vector;
 
+		checkRunning();
 		player.movesRight();
 		vector= player.memorizeMoves(map);
 
@@ -98,7 +99,6 @@ public class Level3 extends AbstractLevel implements ILevel {
 				 boxes.isPlayerOnRightScroll(player.getX() + player.getWidth() + vector.getX()))
 			 boxes.scroll(vector.getX(), 0);
 
-		 return vector.isZero();
 	 }
 	 
 	 private boolean screenOnRight() {
@@ -145,4 +145,5 @@ public class Level3 extends AbstractLevel implements ILevel {
 	public Rectangle getScreen() {
 		return boxes.getScreen();
 	}
+
 }

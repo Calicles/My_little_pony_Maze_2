@@ -2,7 +2,7 @@ package com.antoine.geometry;
 
 public class Coordinates {
 	
-	protected int x, y;
+	private int x, y;
 	
 	public Coordinates(int x, int y) {
 		this.x= x;

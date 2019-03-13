@@ -16,7 +16,7 @@ public class ImageReader {
      * Importe le fichier sous forme de BufferedImage.
      * @param imageUrl url du fichier
      * @return une BufferedImage
-     * @throws RuntimeException
+     * @throws RuntimeException si erreur à la lecture du fichier
      */
     public static BufferedImage lireImage(String imageUrl) {
         try {

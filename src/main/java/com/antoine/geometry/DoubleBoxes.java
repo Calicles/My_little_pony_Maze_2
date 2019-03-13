@@ -8,8 +8,8 @@ package com.antoine.geometry;
  */
 public class DoubleBoxes {
 
-	Rectangle screen;
-	Rectangle scrollBox;
+	private Rectangle screen;
+	private Rectangle scrollBox;
 
 	public DoubleBoxes(Rectangle screen, Rectangle scrollBox) {
 		this.screen= screen;
@@ -22,7 +22,6 @@ public class DoubleBoxes {
 	public int getScreenEndY() {return screen.getEndY();}
 	public int getScreenWidth(){return screen.getWidth();}
 	public int getScreenHeight(){return screen.getHeight();}
-	public Rectangle getScrollBox() {return scrollBox;}// to remove
 
 	public boolean isPlayerOnTopScroll(int yPosition) {
 		return yPosition <= scrollBox.getBeginY();

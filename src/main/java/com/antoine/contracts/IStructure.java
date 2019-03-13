@@ -4,7 +4,7 @@ import com.antoine.geometry.Rectangle;
 
 public interface IStructure {
 
-    void accept(IVisiteur visiteur);
+    void accept(IAfficheur visiteur);
 
     IMap getMap();
 

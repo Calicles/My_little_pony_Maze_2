@@ -8,7 +8,7 @@ public abstract class AbstractAfficheur {
 
     protected Graphics g;
 
-    abstract void visit(IStructure structure);
+    public abstract void visit(IStructure structure);
 
     public void setGraphics(Graphics g){
         this.g= g;

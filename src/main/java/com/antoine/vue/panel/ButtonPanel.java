@@ -48,7 +48,7 @@ public class ButtonPanel extends JPanel implements LevelListener, IPanel {
 	@Override 
 	public Dimension getPreferredSize() {
 		int width=(int) presentateur.getDimension().getWidth();
-		int height=(int) presentateur.getDimension().getHeight() * 2 /map.ECHELLE;
+		int height=(int) presentateur.getDimension().getHeight() * 2 /JMiniMap.ECHELLE;
 		if(!mapAdded) {
 		int d= map.getHeight();
 		return new Dimension(width, height);

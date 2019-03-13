@@ -1,14 +1,12 @@
 package com.antoine.modele.level;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import com.antoine.contracts.IEntity;
 import com.antoine.contracts.IMap;
 import com.antoine.contracts.IStructure;
-import com.antoine.contracts.IVisiteur;
+import com.antoine.contracts.IAfficheur;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
@@ -17,15 +15,15 @@ public abstract class AbstractLevel implements IStructure {
 	protected IMap map;
 	protected IEntity player;
 	protected Rectangle mapSize;
-	protected Rectangle exit;
+	private Rectangle exit;
 	protected BufferedImage endImage;
 	
-	protected String endImageUrl;
-	protected boolean running;
+	private String endImageUrl;
+	private boolean running;
 	protected int tile_width, tile_height;
 	
 
-	public AbstractLevel(){
+	protected AbstractLevel(){
 		running= true;
 	}
 
@@ -37,15 +35,14 @@ public abstract class AbstractLevel implements IStructure {
 		setMapSize();
 	}
 
-	/*
-	pour test
-	 */
+	@Override
 	public IEntity getPlayer(){return player;}
+
+	@Override
 	public String getEndImageUrl(){return endImageUrl;}
+
+	@Override
 	public IMap getMap(){return map;}
-	/*
-	fin pour test
-	 */
 
 	public void setEndImageUrl(String endImageUrl){
 		this.endImageUrl= endImageUrl;
@@ -54,16 +51,17 @@ public abstract class AbstractLevel implements IStructure {
 	public void setPlayer(IEntity player){
 		this.player= player;
 	}
-	
+
 	public int getMapWidth(){return mapSize.getWidth();}
 	public int getMapHeight(){return mapSize.getHeight();}
 
 	public Dimension getDimension() {return mapSize.getDimension();}
 	public boolean isRunning() {return running;}
 
+	@Override
 	public Rectangle getScreen(){ return null;}
 
-	public void setMapSize() {
+	private void setMapSize() {
 		int[] tab= map.getDimension();
 		mapSize= new Rectangle(tab[0], tab[1]);
 	}
@@ -72,48 +70,32 @@ public abstract class AbstractLevel implements IStructure {
 		player.movesReleased();
 	}
 	
-	public boolean playerMovesLeft() {
-		if(isPlayerOnExit()) {
-			running= false;
-			return false;
-		}
-
+	public void playerMovesLeft() {
+		checkRunning();
 		player.movesLeft();
 
-		return player.memorizeMoves(map).isZero();
+		player.memorizeMoves(map);
 	}
 
-	public boolean playerMovesRight() {
-		if(isPlayerOnExit()) {
-			running= false;
-			return false;
-		}
-
+	public void playerMovesRight() {
+		checkRunning();
 		player.movesRight();
 
-		return player.memorizeMoves(map).isZero();
+		player.memorizeMoves(map);
 	}
 
-	public boolean playerMovesUp() {
-		if (isPlayerOnExit()) {
-			running = false;
-			return false;
-		}
-
+	public void playerMovesUp() {
+		checkRunning();
 		player.movesUp();
 
-		return player.memorizeMoves(map).isZero();
+		player.memorizeMoves(map);
 
 	}
 
-	public boolean playerMovesDown() {
-		if(isPlayerOnExit()) {
-			running= false;
-			return false;
-		}
-
+	public void playerMovesDown() {
+		checkRunning();
 		player.movesDown();
-		return player.memorizeMoves(map).isZero();
+		player.memorizeMoves(map);
 
 	}
 	
@@ -127,20 +109,20 @@ public abstract class AbstractLevel implements IStructure {
 		return mapSize.isOnRight(x + toTest);
 	}
 
-	public boolean isOnTop(int toTest) {
+	protected boolean isOnTop(int toTest) {
 		return mapSize.isOnTop(player.getY() + toTest);
 	}
 
-	public boolean isOnBottom(int toTest) {
+	protected boolean isOnBottom(int toTest) {
 		int y= player.getY() + player.getHeight();
 		return mapSize.isOnBottom(y + toTest);
 	}
 
-	public boolean isIEntityInBox(Rectangle entity, Rectangle rec) {
+	private boolean isIEntityInBox(Rectangle entity, Rectangle rec) {
 		return Rectangle.isInBox(rec, entity);
 	}
 
-	public boolean isPlayerOnExit() {
+	private boolean isPlayerOnExit() {
 		return isIEntityInBox(player.toRectangle(), exit);
 	}
 
@@ -151,9 +133,13 @@ public abstract class AbstractLevel implements IStructure {
 
 	}
 
-	public void accept(IVisiteur visiteur){
+	public void accept(IAfficheur visiteur){
 		visiteur.visit(this);
 	}
 
-
+	protected void checkRunning(){
+		if(isPlayerOnExit()){
+			running= false;
+		}
+	}
 }

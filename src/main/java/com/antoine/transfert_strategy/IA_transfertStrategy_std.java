@@ -66,6 +66,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 	}
 
 	private void checkLastVectors() {
+		/*
 		Tile tile;
 		if(lastVectors.getX() < 0 || lastVectors.getX() > 0) {
 			if(ownPosition.getBeginY() != 0 && (tile= this.checkOnUpTiles(this.ownPosition, map)) == null) {
@@ -93,7 +94,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 				xDirection= 0;
 			}
 		}
-		
+		*/
 	}
 
 	private void manHuntPlayer() {
@@ -101,7 +102,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 		
 	}
 
-	public void think(Coordinates ownPosition, Coordinates player1, Coordinates player2) {
+	public void think(Coordinates ownPosition, Coordinates player1) {
 		update(ownPosition, player1);
 		
 		synchronized(this) {
@@ -121,7 +122,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements IA {
 				thinking= false;
 				wait();
 			}
-		}catch(InterruptedException ie) {}
+		}catch(InterruptedException ignored) {}
 	}
 
 	public Coordinates memorizeMoves() {
