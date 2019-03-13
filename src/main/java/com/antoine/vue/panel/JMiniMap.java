@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
+import com.antoine.afficheur.AfficheurMiniMap;
 import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
@@ -66,7 +67,7 @@ public class JMiniMap extends JPanel implements LevelListener, IPanel {
 	}
 
 	private void drawLevel(Graphics g) {
-		presentateur.drawMiniMap(g, ECHELLE);
+		presentateur.accept(new AfficheurMiniMap(g));
 	}
 
 	private void drawBackGround(Graphics g) {

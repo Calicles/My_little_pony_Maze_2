@@ -57,20 +57,17 @@ public abstract class AbstractLevel implements IStructure {
 	
 	public int getMapWidth(){return mapSize.getWidth();}
 	public int getMapHeight(){return mapSize.getHeight();}
-	
+
 	public Dimension getDimension() {return mapSize.getDimension();}
 	public boolean isRunning() {return running;}
+
+	public Rectangle getScreen(){ return null;}
 
 	public void setMapSize() {
 		int[] tab= map.getDimension();
 		mapSize= new Rectangle(tab[0], tab[1]);
 	}
-	
-	public void drawLevel(Graphics g) {
-		map.drawMap(g);
-		g.drawImage(player.getImage(), player.getX(), player.getY(), null);
-	}
-	
+
 	public void playerMovesReleased(){
 		player.movesReleased();
 	}
@@ -157,5 +154,6 @@ public abstract class AbstractLevel implements IStructure {
 	public void accept(IVisiteur visiteur){
 		visiteur.visit(this);
 	}
+
 
 }

@@ -1,5 +1,7 @@
 package com.antoine.contracts;
 
+import com.antoine.geometry.Rectangle;
+
 import java.awt.*;
 
 public interface ILevel {
@@ -26,8 +28,6 @@ public interface ILevel {
 
     void playerMovesReleased();
 
-    void drawLevel(Graphics g);
-
     Dimension getDimension();
 
     void drawMiniMap(Graphics g, int echelle);
@@ -43,4 +43,12 @@ public interface ILevel {
     int getPlayerX();
 
     int getPlayerY();
+
+    IMap getMap();
+
+    IEntity getPlayer();
+
+    String getEndImageUrl();
+
+    Rectangle getScreen();
 }

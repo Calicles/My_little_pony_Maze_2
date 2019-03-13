@@ -2,12 +2,6 @@ package com.antoine.modele.level;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-
-import javax.imageio.ImageIO;
 
 import com.antoine.contracts.ILevel;
 import com.antoine.contracts.IMap;
@@ -39,47 +33,8 @@ public class Level3 extends AbstractLevel implements ILevel {
 		this.boxes= new DoubleBoxes(screen, scrollBox);
 	}
 	
-	@Override
-	public void drawLevel(Graphics g) {
-		if(running) {
-			drawScreen(g);
-			drawPlayer(g);
-		} else
-			try {
-				g.drawImage(ImageIO.read(new File(endImageUrl)), 0, 0, null);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	}
 
-	private void drawScreen(Graphics g) {
-		Tile tile= null;
-		Tile[][] map= this.map.getMap();
-		HashMap<Integer, BufferedImage> set= this.map.getTileSet();
-		int row= boxes.getScreenBeginY() / tile_height;
-		int col= boxes.getScreenBeginX() / tile_width;
-		int rowMax= boxes.getScreenEndY() / tile_height;
-		int colMax= boxes.getScreenEndX() / tile_width;
-		int x= 0, y= 0;
 
-		if(boxes.getScreenEndY() % 32 != 0) rowMax ++;
-		for(int i= row; i<rowMax; i++) {
-			for(int j= col; j<colMax; j++) {
-				tile= map[i][j];
-				y= tile.getY() - boxes.getScreenBeginY();
-				x= tile.getX() - boxes.getScreenBeginX();
-				g.drawImage(set.get(tile.getTile_num()), x, 
-						y, null);
-			}
-		}
-	}
-
-	protected void drawPlayer(Graphics g) {
-		int screenPosY= playerScreenPositionY();
-		int screenPosX= playerScreenPositionX();
-		g.drawImage(player.getImage(), screenPosX, screenPosY, null);
-	}
-	
 	public void drawMiniMap(Graphics g, int ECHELLE) {
 		Color old= g.getColor();
 		Tile[][] map= this.map.getMap();
@@ -98,15 +53,6 @@ public class Level3 extends AbstractLevel implements ILevel {
 			}
 		}
 		g.setColor(old);
-	}
-	
-	protected int playerScreenPositionY() {
-		int posY= player.getY() - boxes.getScreenBeginY();
-		return posY;
-	}
-	protected int playerScreenPositionX() {
-		int posX= player.getX() - boxes.getScreenBeginX();
-		return posX;
 	}
 	
 	 @Override
@@ -221,4 +167,8 @@ public class Level3 extends AbstractLevel implements ILevel {
 		return player.getY();
 	}
 
+	@Override
+	public Rectangle getScreen() {
+		return boxes.getScreen();
+	}
 }

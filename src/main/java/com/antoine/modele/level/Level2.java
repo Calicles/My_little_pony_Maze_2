@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
 
 import com.antoine.contracts.ILevel;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
-import com.antoine.geometry.Tile;
 
 public class Level2 extends AbstractLevel implements ILevel {
 	
@@ -25,22 +25,15 @@ public class Level2 extends AbstractLevel implements ILevel {
 	}
 
 
-	@Override
-	public void drawLevel(Graphics g) {
-		if(running) {
-			drawScreen(g);
-			drawPlayer(g);
-		} else
-			try {
-				g.drawImage(ImageIO.read(new File(endImageUrl)), 0, 0, null);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	}
 
 	@Override
 	public void drawMiniMap(Graphics g, int echelle) {
 
+	}
+
+	@Override
+	public Rectangle getScreen(){
+		return screen;
 	}
 
 	@Override
@@ -71,38 +64,6 @@ public class Level2 extends AbstractLevel implements ILevel {
 	@Override
 	public int getPlayerY() {
 		return 0;
-	}
-
-	protected void drawPlayer(Graphics g) {
-		int screenPosY= playerScreenPositionY();
-		g.drawImage(player.getImage(), player.getX(), screenPosY, null);
-	}
-	
-	protected int playerScreenPositionY() {
-		int coef=0;
-		coef= player.getY() / (tile_height * 20);
-		return player.getY() - (coef * (tile_height * 20));
-	}
-
-	protected void drawScreen(Graphics g) {
-		Tile tile= null;
-		Tile[][] map= this.map.getMap();
-		HashMap<Integer, BufferedImage> set= this.map.getTileSet();
-		int row= screen.getBeginY();
-		int col= screen.getBeginX();
-		int rowMax= screen.getEndY();
-		int colMax= screen.getEndX();
-		int x= 0, y= 0;
-		
-		for(int i= row; i<rowMax; i++) {
-			for(int j= col; j<colMax; j++) {
-				tile= map[i][j];
-				g.drawImage(set.get(tile.getTile_num()), x * tile_width, 
-						y * tile_height, null);
-				x++;
-			}
-			x= 0; y++;
-		}
 	}
 
 	@Override
@@ -145,6 +106,12 @@ public class Level2 extends AbstractLevel implements ILevel {
 	protected void loadMap(int xVector, int yVector, int playerVector) {
 		screen.translate(xVector, yVector);
 		player.translate(new Coordinates(0, playerVector));
+	}
+
+	protected int playerScreenPositionY() {
+		int coef=0;
+		coef= player.getY() / (tile_height * 20);
+		return player.getY() - (coef * (tile_height * 20));
 	}
 
 }

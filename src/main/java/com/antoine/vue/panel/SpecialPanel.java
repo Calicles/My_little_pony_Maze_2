@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.swing.JPanel;
 
+import com.antoine.afficheur.AfficheurLevel;
 import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
@@ -32,11 +33,7 @@ public class SpecialPanel extends JPanel implements LevelListener, IPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		try {
-			presentateur.draw(g);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		presentateur.accept(new AfficheurLevel(g));
 	}
 	
 	public void update() {

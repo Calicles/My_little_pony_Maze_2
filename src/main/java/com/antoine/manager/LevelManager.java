@@ -2,17 +2,14 @@ package com.antoine.manager;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import com.antoine.contracts.ILevel;
-import com.antoine.contracts.Presentateur;
-import com.antoine.contracts.LevelListener;
+import com.antoine.contracts.*;
+import com.antoine.geometry.Rectangle;
 import com.antoine.services.Assembler;
 
 
-public class LevelManager implements Presentateur {
+public class LevelManager implements Presentateur, IStructure {
 
 	private ILevel levelApple;
 	private ILevel levelRarity;
@@ -133,10 +130,6 @@ public class LevelManager implements Presentateur {
 		this.fireUpdate();
 	}
 
-	public void draw(Graphics g) throws IOException {
-		levelRunning.drawLevel(g);
-	}
-	
 	public Dimension getDimension() {
 		return levelRunning.getDimension();
 	}
@@ -194,5 +187,34 @@ public class LevelManager implements Presentateur {
 	public int getPlayerY() {
 		return levelPinky.getPlayerY();
 	}
-	
+
+	@Override
+	public void accept(IVisiteur visiteur) {
+		visiteur.visit((IStructure) this.levelRunning);
+	}
+
+	@Override
+	public IMap getMap() {
+		return levelRunning.getMap();
+	}
+
+	@Override
+	public IEntity getPlayer() {
+		return levelRunning.getPlayer();
+	}
+
+	@Override
+	public boolean isRunning() {
+		return levelRunning.isRunning();
+	}
+
+	@Override
+	public String getEndImageUrl() {
+		return levelRunning.getEndImageUrl();
+	}
+
+	@Override
+	public Rectangle getScreen() {
+		return levelRunning.getScreen();
+	}
 }

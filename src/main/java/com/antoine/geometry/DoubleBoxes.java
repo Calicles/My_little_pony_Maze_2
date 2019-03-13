@@ -42,4 +42,7 @@ public class DoubleBoxes {
 		scrollBox.translate(xVector, yVector);
 	}
 
+    public Rectangle getScreen() {
+		return this.screen;
+    }
 }
