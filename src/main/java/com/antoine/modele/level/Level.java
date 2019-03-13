@@ -23,12 +23,6 @@ public class Level extends AbstractLevel implements ILevel {
 	public void selected() {selected= true;}
 	public void deselected() {selected= false;}
 	
-
-	@Override
-	public void drawMiniMap(Graphics g, int echelle) {
-
-	}
-
 	@Override
 	public int getScreenX() {
 		return 0;

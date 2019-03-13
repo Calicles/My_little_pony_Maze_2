@@ -52,7 +52,5 @@ public interface Presentateur {
 
     int getMapWidth();
 
-    void drawMiniMap(Graphics g, int echelle);
-
     void accept(IVisiteur visiteur);
 }

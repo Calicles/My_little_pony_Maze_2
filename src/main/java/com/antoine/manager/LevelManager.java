@@ -160,10 +160,6 @@ public class LevelManager implements Presentateur, IStructure {
 		return levelPinky == null;
 	}
 
-	public void drawMiniMap(Graphics g, int ECHELLE) {
-		levelPinky.drawMiniMap(g, ECHELLE);
-	}
-
 	public int getScreenX() {
 		return levelPinky.getScreenX();
 	}

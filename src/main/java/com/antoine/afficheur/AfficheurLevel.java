@@ -11,16 +11,11 @@ import com.antoine.modele.level.Level2;
 import com.antoine.modele.level.Level3;
 import com.antoine.services.ImageReader;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class AfficheurLevel extends AbstractAfficheur implements IVisiteur {
 
-
-    public AfficheurLevel(Graphics g){
-        super(g);
-    }
 
 
     @Override

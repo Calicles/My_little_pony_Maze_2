@@ -8,16 +8,19 @@ import javax.swing.JPanel;
 
 import com.antoine.afficheur.AfficheurLevel;
 import com.antoine.contracts.IPanel;
+import com.antoine.contracts.IVisiteur;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
 
 public class SpecialPanel extends JPanel implements LevelListener, IPanel {
 	
 	private Presentateur presentateur;
+	private IVisiteur afficheur;
 	
 	public SpecialPanel(Presentateur model) {
 		this.presentateur= model;
 		this.presentateur.AddListener(this);
+		this.afficheur= new AfficheurLevel();
 	}
 
 	public SpecialPanel(){
@@ -33,7 +36,9 @@ public class SpecialPanel extends JPanel implements LevelListener, IPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		presentateur.accept(new AfficheurLevel(g));
+		afficheur.setGraphics(g);
+		presentateur.accept(afficheur);
+		afficheur.freeGraphics();
 	}
 	
 	public void update() {

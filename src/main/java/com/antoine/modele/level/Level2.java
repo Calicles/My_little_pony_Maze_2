@@ -1,14 +1,5 @@
 package com.antoine.modele.level;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-
 import com.antoine.contracts.ILevel;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
@@ -21,13 +12,6 @@ public class Level2 extends AbstractLevel implements ILevel {
 	public Level2(){
 		super();
 		screen= new Rectangle(0, 20, 20, 40);
-
-	}
-
-
-
-	@Override
-	public void drawMiniMap(Graphics g, int echelle) {
 
 	}
 

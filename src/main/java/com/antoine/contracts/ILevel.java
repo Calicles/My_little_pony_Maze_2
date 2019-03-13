@@ -30,8 +30,6 @@ public interface ILevel {
 
     Dimension getDimension();
 
-    void drawMiniMap(Graphics g, int echelle);
-
     int getScreenX();
 
     int getScreenY();

@@ -1,14 +1,10 @@
 package com.antoine.modele.level;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 import com.antoine.contracts.ILevel;
 import com.antoine.contracts.IMap;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.DoubleBoxes;
 import com.antoine.geometry.Rectangle;
-import com.antoine.geometry.Tile;
 
 public class Level3 extends AbstractLevel implements ILevel {
 	
@@ -32,29 +28,7 @@ public class Level3 extends AbstractLevel implements ILevel {
 				25*tile_height, 35*tile_height);
 		this.boxes= new DoubleBoxes(screen, scrollBox);
 	}
-	
 
-
-	public void drawMiniMap(Graphics g, int ECHELLE) {
-		Color old= g.getColor();
-		Tile[][] map= this.map.getMap();
-		int num= 0, x, y;
-		int width= tile_width / ECHELLE;
-		int height= tile_height / ECHELLE;
-		g.setColor(Color.ORANGE);
-		for(int i=0; i<map.length; i++) {
-			for(int j=0;j<map[0].length;j++) {
-				num= map[i][j].getTile_num();
-				x= map[i][j].getX() / ECHELLE;
-				y= map[i][j].getY() / ECHELLE;
-				if(num > Tile.SOLID) {
-					g.fillRect(x, y, width, height);
-				}
-			}
-		}
-		g.setColor(old);
-	}
-	
 	 @Override
 	 public boolean playerMovesUp() {
 		Coordinates vector;
