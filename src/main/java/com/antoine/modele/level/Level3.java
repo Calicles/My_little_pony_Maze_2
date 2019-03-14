@@ -37,10 +37,33 @@ public class Level3 extends AbstractLevel implements ILevel {
 		player.movesUp();
 		vector= player.memorizeMoves(map);
 
-		 if(!screenOnTop() && 
+		scrollUp(vector);
+	 }
+
+	 protected void scrollUp(Coordinates vector){
+		 if(!screenOnTop() &&
 				 boxes.isPlayerOnTopScroll(player.getY()+ vector.getY()))
 			 boxes.scroll(0, vector.getY() );
+	 }
 
+	 protected void scrollDown(Coordinates vector){
+		 if(!screenOnBottom() &&
+				 boxes.isPlayerOnBottomScroll(player.getY()+
+						 player.getHeight() + vector.getY()))
+			 boxes.scroll(0, vector.getY());
+	 }
+
+	 protected void scrollLeft(Coordinates vector){
+		 if(!screenOnLeft() &&
+				 boxes.isPlayerOnLeftScroll(player.getX() + vector.getX()))
+			 boxes.scroll(vector.getX(), 0);
+
+	 }
+
+	 protected void scrollRight(Coordinates vector){
+		 if(!screenOnRight() &&
+				 boxes.isPlayerOnRightScroll(player.getX() + player.getWidth() + vector.getX()))
+			 boxes.scroll(vector.getX(), 0);
 	 }
 	 
 	 @Override
@@ -51,11 +74,7 @@ public class Level3 extends AbstractLevel implements ILevel {
 		player.movesDown();
 		vector= player.memorizeMoves(map);
 
-		 if(!screenOnBottom() &&
-				 boxes.isPlayerOnBottomScroll(player.getY()+
-						 player.getHeight() + vector.getY()))
-			 boxes.scroll(0, vector.getY());
-
+		scrollDown(vector);
 	 }
 
 	@Override
@@ -81,10 +100,7 @@ public class Level3 extends AbstractLevel implements ILevel {
 		 player.movesLeft();
 		 vector= player.memorizeMoves(map);
 
-		 if(!screenOnLeft() && 
-				 boxes.isPlayerOnLeftScroll(player.getX() + vector.getX()))
-			 boxes.scroll(vector.getX(), 0);
-
+		 scrollLeft(vector);
 	 }
 	 
 	 @Override
@@ -95,10 +111,7 @@ public class Level3 extends AbstractLevel implements ILevel {
 		player.movesRight();
 		vector= player.memorizeMoves(map);
 
-		 if(!screenOnRight() &&
-				 boxes.isPlayerOnRightScroll(player.getX() + player.getWidth() + vector.getX()))
-			 boxes.scroll(vector.getX(), 0);
-
+   		scrollRight(vector);
 	 }
 	 
 	 private boolean screenOnRight() {

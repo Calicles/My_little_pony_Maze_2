@@ -19,7 +19,7 @@ public abstract class AbstractLevel implements IStructure {
 	protected BufferedImage endImage;
 	
 	private String endImageUrl;
-	private boolean running;
+	protected boolean running;
 	protected int tile_width, tile_height;
 	
 

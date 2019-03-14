@@ -1,4 +1,10 @@
 package com.antoine.contracts;
 
-public interface IEnnemi {
+import com.antoine.geometry.Rectangle;
+
+public interface IEnnemi extends IEntity {
+
+    void think(Rectangle playerPosition);
+
+    void memorizeMozes();
 }

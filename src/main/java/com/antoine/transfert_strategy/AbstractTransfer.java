@@ -118,7 +118,7 @@ public abstract class AbstractTransfer {
 		xDirection= 0;
 	}
 	
-	private Tile checkOnDownTiles(Rectangle position, IMap map) {
+	protected Tile checkOnDownTiles(Rectangle position, IMap map) {
 
 		int x, y, endX;
 		
@@ -128,7 +128,7 @@ public abstract class AbstractTransfer {
 
 		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, y));
 	}
-	private Tile checkOnUpTiles(Rectangle position, IMap map) {
+	protected Tile checkOnUpTiles(Rectangle position, IMap map) {
 
 		int x, y, endX;
 		
@@ -138,7 +138,7 @@ public abstract class AbstractTransfer {
 		
 		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, y));
 	}
-	private Tile checkRightTiles(Rectangle position, IMap map) {
+	protected Tile checkRightTiles(Rectangle position, IMap map) {
 		
 		int x, y, endY;
 		
@@ -149,7 +149,7 @@ public abstract class AbstractTransfer {
 		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), x, endY));
 	}
 	
-	private Tile checkLeftTiles(Rectangle position, IMap map) {
+	protected Tile checkLeftTiles(Rectangle position, IMap map) {
 		
 		int x, y, endY;
 		
