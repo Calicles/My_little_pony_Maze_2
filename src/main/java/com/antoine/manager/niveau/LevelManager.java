@@ -1,4 +1,4 @@
-package com.antoine.manager;
+package com.antoine.manager.niveau;
 
 import java.awt.Dimension;
 import java.util.ArrayList;

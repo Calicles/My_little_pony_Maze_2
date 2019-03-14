@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  * @author antoine
  */
-class MusicPlayer extends Thread{
+public class MusicPlayer extends Thread{
   
   AudioInputStream ais=null;
   SourceDataLine line;
