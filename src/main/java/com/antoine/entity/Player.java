@@ -54,7 +54,7 @@ public class Player extends AbstractCharacter implements IEntity {
 	 * <p>donne la référence d'un sprite immobile
 	 * au champ image pour affichage</p>
 	 */
-	public void animationStoped() {
+	private void animationStoped() {
 		animIndex= 0;
 		image= animation.get(direction)[1];
 	}
@@ -73,7 +73,7 @@ public class Player extends AbstractCharacter implements IEntity {
 	/**
 	 * <p>Simule une translation
 	 * (pour autre raison que déplacement clavier</p>
-	 * @param vector
+	 * @param vector vecteur de la translation
 	 */
 	@Override
 	public void translate(Coordinates vector) {

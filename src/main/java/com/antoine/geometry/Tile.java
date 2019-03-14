@@ -2,8 +2,8 @@ package com.antoine.geometry;
 
 public class Tile {
 	
-	public static final int SOLID= 6;
-	public static final int EXIT= -1;
+	private static final int SOLID= 6;
+	private static final int EXIT= -1;
 
 	private int tile_num;
 	private int x;
@@ -22,8 +22,5 @@ public class Tile {
 	public boolean isSolid() {return tile_num >= SOLID;}
 	public boolean isExit() {return tile_num == EXIT;}
 
-	public static boolean isSolid(int tile_number){
-		return tile_number >= SOLID;
-	}
-	
+	public static int getSolidNum(){return SOLID;}
 }

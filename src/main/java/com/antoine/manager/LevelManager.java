@@ -1,18 +1,14 @@
 package com.antoine.manager;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import com.antoine.contracts.ILevel;
-import com.antoine.contracts.Presentateur;
-import com.antoine.contracts.LevelListener;
+import com.antoine.contracts.*;
+import com.antoine.geometry.Rectangle;
 import com.antoine.services.Assembler;
 
 
-public class LevelManager implements Presentateur {
+public class LevelManager implements Presentateur, IStructure {
 
 	private ILevel levelApple;
 	private ILevel levelRarity;
@@ -84,48 +80,48 @@ public class LevelManager implements Presentateur {
 	}
 
 	public void playerMovesLeft(){
-		if(!isLevelOver()){
+		if(isLevelRunning()){
 			levelRunning.playerMovesLeft();
 		}
 		this.fireUpdate();
 	}
 
 	public void playerMovesRight(){
-		if(!isLevelOver()){
+		if(isLevelRunning()){
 			levelRunning.playerMovesRight();
 		}
 		this.fireUpdate();
 	}
 
 	public void playerMovesUp(){
-		if(!isLevelOver()){
+		if(isLevelRunning()){
 			levelRunning.playerMovesUp();
 		}
 		this.fireUpdate();
 	}
 
 	public void playerMovesDown(){
-		if(!isLevelOver()){
+		if(isLevelRunning()){
 			levelRunning.playerMovesDown();
 		}
 		this.fireUpdate();
 	}
 
-	private boolean isLevelOver(){
+	private boolean isLevelRunning(){
 
 		if(levelPinky== null && levelFlutter== null &&
 				!levelApple.isRunning()
 				&& !levelRarity.isRunning()
 				&& !levelRainbow.isRunning()) {
 			switchLevel2();
-			return true;
+			return false;
 
 		}else if(levelApple== null && levelFlutter!= null &&
 				!levelFlutter.isRunning()) {
 			switchLevel3();
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public void playerMovesReleased(){
@@ -133,10 +129,6 @@ public class LevelManager implements Presentateur {
 		this.fireUpdate();
 	}
 
-	public void draw(Graphics g) throws IOException {
-		levelRunning.drawLevel(g);
-	}
-	
 	public Dimension getDimension() {
 		return levelRunning.getDimension();
 	}
@@ -167,10 +159,6 @@ public class LevelManager implements Presentateur {
 		return levelPinky == null;
 	}
 
-	public void drawMiniMap(Graphics g, int ECHELLE) {
-		levelPinky.drawMiniMap(g, ECHELLE);
-	}
-
 	public int getScreenX() {
 		return levelPinky.getScreenX();
 	}
@@ -194,5 +182,34 @@ public class LevelManager implements Presentateur {
 	public int getPlayerY() {
 		return levelPinky.getPlayerY();
 	}
-	
+
+	@Override
+	public void accept(IAfficheur visiteur) {
+		visiteur.visit((IStructure) this.levelRunning);
+	}
+
+	@Override
+	public IMap getMap() {
+		return levelRunning.getMap();
+	}
+
+	@Override
+	public IEntity getPlayer() {
+		return levelRunning.getPlayer();
+	}
+
+	@Override
+	public boolean isRunning() {
+		return levelRunning.isRunning();
+	}
+
+	@Override
+	public String getEndImageUrl() {
+		return levelRunning.getEndImageUrl();
+	}
+
+	@Override
+	public Rectangle getScreen() {
+		return levelRunning.getScreen();
+	}
 }

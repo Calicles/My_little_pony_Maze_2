@@ -18,8 +18,6 @@ public interface IMap {
 
     int[] getDimension();
 
-    void drawMap(Graphics g);
-
     int getWidth();
 
     int getHeight();

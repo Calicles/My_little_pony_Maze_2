@@ -2,21 +2,24 @@ package com.antoine.vue.panel;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.io.IOException;
 
 import javax.swing.JPanel;
 
+import com.antoine.afficheur.AfficheurLevel;
 import com.antoine.contracts.IPanel;
+import com.antoine.contracts.IAfficheur;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
 
 public class SpecialPanel extends JPanel implements LevelListener, IPanel {
 	
 	private Presentateur presentateur;
+	private IAfficheur afficheur;
 	
 	public SpecialPanel(Presentateur model) {
 		this.presentateur= model;
 		this.presentateur.AddListener(this);
+		this.afficheur= new AfficheurLevel();
 	}
 
 	public SpecialPanel(){
@@ -32,11 +35,9 @@ public class SpecialPanel extends JPanel implements LevelListener, IPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		try {
-			presentateur.draw(g);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		afficheur.setGraphics(g);
+		presentateur.accept(afficheur);
+		afficheur.freeGraphics();
 	}
 	
 	public void update() {

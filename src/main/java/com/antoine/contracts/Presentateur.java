@@ -1,7 +1,6 @@
 package com.antoine.contracts;
 
 import java.awt.*;
-import java.io.IOException;
 
 public interface Presentateur {
 
@@ -16,8 +15,6 @@ public interface Presentateur {
     Dimension getDimension();
 
     void AddListener(LevelListener listener);
-
-    void draw(Graphics g) throws IOException;
 
     boolean isLevelsNull();
 
@@ -55,5 +52,5 @@ public interface Presentateur {
 
     int getMapWidth();
 
-    void drawMiniMap(Graphics g, int echelle);
+    void accept(IAfficheur visiteur);
 }

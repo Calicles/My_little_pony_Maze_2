@@ -18,7 +18,7 @@ public abstract class AbstractTransfer {
 	abstract Coordinates memorizeMoves(Rectangle position, IMap map);
 
 
-	public void adaptVectors(Rectangle position, IMap map) {
+	protected void adaptVectors(Rectangle position, IMap map) {
 		
 		//On cherche si vecteur null pas de calcul
 		if(xDirection != 0 || yDirection !=0) {
@@ -44,7 +44,7 @@ public abstract class AbstractTransfer {
 		
 	}
 	
-	protected void checkLeft(Rectangle position, IMap map) {
+	private void checkLeft(Rectangle position, IMap map) {
 		
 		Tile tile;
 
@@ -64,7 +64,7 @@ public abstract class AbstractTransfer {
 		yDirection= 0;
 	}
 	
-	protected void checkRight(Rectangle position, IMap map) {
+	private void checkRight(Rectangle position, IMap map) {
 		
 		Tile tile;
 		int playerEndX= position.getEndX();
@@ -82,7 +82,7 @@ public abstract class AbstractTransfer {
 		yDirection= 0;
 	}
 	
-	protected void checkUp(Rectangle position, IMap map) {
+	private void checkUp(Rectangle position, IMap map) {
 		
 		Tile tile;
 		int playerY= position.getBeginY();
@@ -102,7 +102,7 @@ public abstract class AbstractTransfer {
 		xDirection= 0;
 	}
 	
-	protected void checkDown(Rectangle position, IMap map) {
+	private void checkDown(Rectangle position, IMap map) {
 		
 		Tile tile;
 		int playerEndY= position.getEndY();
@@ -118,7 +118,7 @@ public abstract class AbstractTransfer {
 		xDirection= 0;
 	}
 	
-	protected Tile checkOnDownTiles(Rectangle position, IMap map) {
+	private Tile checkOnDownTiles(Rectangle position, IMap map) {
 
 		int x, y, endX;
 		
@@ -128,7 +128,7 @@ public abstract class AbstractTransfer {
 
 		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, y));
 	}
-	protected Tile checkOnUpTiles(Rectangle position, IMap map) {
+	private Tile checkOnUpTiles(Rectangle position, IMap map) {
 
 		int x, y, endX;
 		
@@ -138,7 +138,7 @@ public abstract class AbstractTransfer {
 		
 		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, y));
 	}
-	protected Tile checkRightTiles(Rectangle position, IMap map) {
+	private Tile checkRightTiles(Rectangle position, IMap map) {
 		
 		int x, y, endY;
 		
@@ -149,7 +149,7 @@ public abstract class AbstractTransfer {
 		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), x, endY));
 	}
 	
-	protected Tile checkLeftTiles(Rectangle position, IMap map) {
+	private Tile checkLeftTiles(Rectangle position, IMap map) {
 		
 		int x, y, endY;
 		

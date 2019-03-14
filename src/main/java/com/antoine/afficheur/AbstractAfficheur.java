@@ -1,12 +1,20 @@
 package com.antoine.afficheur;
 
+import com.antoine.contracts.IStructure;
+
 import java.awt.*;
 
-public class AbstractAfficheur {
+public abstract class AbstractAfficheur {
 
-    Graphics g;
+    protected Graphics g;
 
-    public AbstractAfficheur(Graphics g){
+    public abstract void visit(IStructure structure);
+
+    public void setGraphics(Graphics g){
         this.g= g;
+    }
+
+    public void freeGraphics(){
+        this.g= null;
     }
 }

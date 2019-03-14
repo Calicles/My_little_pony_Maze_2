@@ -74,8 +74,8 @@ public class Assembler {
 
 	/**
 	 *
-	 * @param id
-	 * @return
+	 * @param id correspondant au fichier de config
+	 * @return une instance
 	 */
 	public Object newInstance(String id) {
 		if(!id_class.containsKey(id)){
@@ -87,8 +87,8 @@ public class Assembler {
 
 	/**
 	 *
-	 * @param id
-	 * @return
+	 * @param id corrspondant au fichier de config
+	 * @return une instance
 	 */
 	private Object getBean(String id) {
 
@@ -137,6 +137,13 @@ public class Assembler {
 	
 	}
 
+	/**
+	 * <p>Trouve la méthode d'une classe en fonction de son nom et des types possible de paramètre</p>
+	 * @param aClass dont la méthode est à trouver
+	 * @param interfaces les types du paramètre
+	 * @param idParam correspondant au fichier de config
+	 * @return la méthode correspondant au type de son objet en paramètre, null sinon
+	 */
 	private Method findMethod(Class<?> aClass, Class<?>[] interfaces, String idParam) {
 		String methodName= idParam_methods.get(idParam);
 		Method[] methods= aClass.getMethods();
@@ -162,13 +169,13 @@ public class Assembler {
 
 	/**
 	 * <b>Classe interne pour gérer la lecture du fichier .xml</b>
-	 * <p>lecture en mode event</p>
+	 * <p>lecture en mode event et gestion de l'enregistrement d'un bean en mémoire cache</p>
 	 * @author antoine
 	 */
 	class XMLHandler extends DefaultHandler {
 
 		/*
-		id du bean courrant
+		id du bean courrant, au fil de la lecture du document
 		 */
 		private Stack<String> currentBean= new Stack<>();
 
@@ -179,11 +186,11 @@ public class Assembler {
 		private Stack<Integer> indexCurrentBean= new Stack<>();
 
 		/**
-		 *
-		 * @param nameSpaceURI
-		 * @param lName
-		 * @param qName
-		 * @param attr
+		 *<p>au démarrage de la lecture d'un tag</p>
+		 * @param nameSpaceURI non utilisé
+		 * @param lName non utilisé
+		 * @param qName nom du tag
+		 * @param attr l'array de ses attributs
 		 */
 		@Override
 		public void startElement(String nameSpaceURI, String lName, String qName,
@@ -213,8 +220,8 @@ public class Assembler {
 
 
 		/**
-		 *
-		 * @param attr
+		 *<p>enregistre en mémoire cache le nom de l'injection pour le bean courant</p>
+		 * @param attr l'array des attributs du tag
 		 */
 		private void registerInjection(Attributes attr) {
 			int index= indexCurrentBean.pop();
@@ -229,8 +236,8 @@ public class Assembler {
 
 
 		/**
-		 *
-		 * @param attr
+		 *<p>enregistre en mémoire cache le paramètre à injecter au bean courant</p>
+		 * @param attr l'array des attributs du tag
 		 */
 		private void registerParameter(Attributes attr) {
 
@@ -257,10 +264,10 @@ public class Assembler {
 		}
 
 		/**
-		 *
-		 * @param uri
-		 * @param localName
-		 * @param qName
+		 *<p>déclenché à la lecture de balise fermante</p>
+		 * @param uri non utilisé
+		 * @param localName non utilisé
+		 * @param qName nom du tag
 		 */
 		@Override
 		public void endElement(String uri, String localName, String qName) {
@@ -273,8 +280,8 @@ public class Assembler {
 
 
 		/**
-		 *
-		 * @param attr
+		 *<p>enregistre en mémoire cache le nom du bean courant et sa classe</p>
+		 * @param attr l'array des attributs du tag
 		 */
 		private void registerBean(Attributes attr) {
 

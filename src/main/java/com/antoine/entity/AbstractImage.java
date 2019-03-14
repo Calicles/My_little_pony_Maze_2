@@ -3,7 +3,6 @@ package com.antoine.entity;
 import com.antoine.services.ImageReader;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Classe gérant une image et ses dimensions.
@@ -16,7 +15,7 @@ public abstract class AbstractImage {
 	 */
 	protected BufferedImage image;
 
-	public void setImage(String imageUrl) throws IOException {
+	public void setImage(String imageUrl) {
 		image= ImageReader.lireImage(imageUrl);
 	}
 

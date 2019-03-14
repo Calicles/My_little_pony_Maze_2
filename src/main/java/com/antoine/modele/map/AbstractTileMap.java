@@ -1,6 +1,5 @@
 package com.antoine.modele.map;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -53,24 +52,10 @@ public abstract class AbstractTileMap {
 		return tab;
 	}
 
-	public void drawMap(Graphics g)
-	{
-		Tile tile= null;
-		for(int i=0;i<map.length;i++)
-		{
-			for(int j=0;j<map[0].length;j++)
-			{
-				tile= map[i][j];
-				g.drawImage(tileSet.get(tile.getTile_num()),
-						tile.getX(), tile.getY(), null);
-			}
-		}
-	}
-	
-	private void initMap(int[][] map)
+	private void initMap(@org.jetbrains.annotations.NotNull int[][] map)
 	{
 		this.map= new Tile[map.length][map[0].length];
-		int tile_num= 0;
+		int tile_num;
 		for(int i=0;i<map.length;i++)
 		{
 			for(int j=0;j<map[0].length;j++)
