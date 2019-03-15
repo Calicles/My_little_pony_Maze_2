@@ -9,6 +9,7 @@ import com.antoine.geometry.Tile;
 import com.antoine.modele.level.Level;
 import com.antoine.modele.level.Level2;
 import com.antoine.modele.level.Level3;
+import com.antoine.modele.level.Level4;
 import com.antoine.services.ImageReader;
 
 import java.awt.image.BufferedImage;
@@ -23,12 +24,21 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
 
         if(structure instanceof Level){
             drawLevel1(structure);
-        }else if(structure instanceof Level2){
+        }else if(structure instanceof Level2) {
             drawLevel2(structure);
+        }else if(structure instanceof Level4){
+            drawLevel4(structure);
         }else if(structure instanceof Level3){
             drawLevel3(structure);
         }
 
+    }
+
+    private void drawLevel4(IStructure structure) {
+        IEntity boss= structure.getBoss();
+        Rectangle screen= structure.getScreen();
+        drawLevel3(structure);
+        g.drawImage(boss.getImage(), playerScreenPositionX(boss, screen), playerScreenPositionY(boss, screen), null);
     }
 
 
@@ -133,7 +143,8 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
         int colMax= screen.getEndX() / tile_width;
         int x, y;
 
-        if(screen.getEndY() % 32 != 0) rowMax ++;
+        if(screen.getEndY() % mapStruct.getTile_height() != 0) rowMax ++;
+        if(screen.getEndX() % mapStruct.getTile_width() != 0) colMax ++;
         for(int i= row; i<rowMax; i++) {
             for(int j= col; j<colMax; j++) {
                 tile= map[i][j];

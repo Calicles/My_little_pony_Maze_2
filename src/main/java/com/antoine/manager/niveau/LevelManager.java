@@ -15,6 +15,7 @@ public class LevelManager implements Presentateur, IStructure {
 	private ILevel levelRainbow;
 	private ILevel levelFlutter;
 	private ILevel levelPinky;
+	private ILevel levelTwilight;
 	private ILevel levelRunning;
 	private ArrayList<LevelListener> listeners;
 	private  Assembler assembler;
@@ -36,16 +37,24 @@ public class LevelManager implements Presentateur, IStructure {
 	public int getMapWidth() {return levelRunning.getMapWidth();}
 	public int getMapHeight() {return levelRunning.getMapHeight();}
 
+	private void switchLevel4(){
+
+		levelPinky= null;
+		levelRunning= levelTwilight= (ILevel) assembler.newInstance("levelTwilight");
+		levelTwilight.setListeners(listeners);
+		levelTwilight.start();
+	}
+
 	private void switchLevel3() {
 
-		levelRunning= levelPinky= (ILevel) assembler.newInstance("levelPinky");
 		levelFlutter= null;
+		levelRunning= levelPinky= (ILevel) assembler.newInstance("levelPinky");
 	}
 	
 	private void switchLevel2() {
 
-		levelRunning= levelFlutter= (ILevel) assembler.newInstance("levelFlutter");
 		levelApple=null; levelRarity= null; levelRainbow= null;
+		levelRunning= levelFlutter= (ILevel) assembler.newInstance("levelFlutter");
 	}
 	
 	public void switchLeveApple() {
@@ -109,16 +118,19 @@ public class LevelManager implements Presentateur, IStructure {
 
 	private boolean isLevelRunning(){
 
-		if(levelPinky== null && levelFlutter== null &&
+		if(isLevelPinkyNull() && isLevelFlutterNull() && levelTwilight == null &&
 				!levelApple.isRunning()
 				&& !levelRarity.isRunning()
 				&& !levelRainbow.isRunning()) {
 			switchLevel2();
 			return false;
 
-		}else if(levelApple== null && levelFlutter!= null &&
+		}else if(isLevelsNull() && !isLevelFlutterNull() &&
 				!levelFlutter.isRunning()) {
 			switchLevel3();
+			return false;
+		}else if(isLevelsNull() && isLevelFlutterNull() && !isLevelPinkyNull() && !levelPinky.isRunning()){
+			switchLevel4();
 			return false;
 		}
 		return true;
@@ -160,27 +172,27 @@ public class LevelManager implements Presentateur, IStructure {
 	}
 
 	public int getScreenX() {
-		return levelPinky.getScreenX();
+		return levelRunning.getScreenX();
 	}
 
 	public int getScreenY() {
-		return levelPinky.getScreenY();
+		return levelRunning.getScreenY();
 	}
 
 	public int getScreenWidth() {
-		return levelPinky.getScreenWidth();
+		return levelRunning.getScreenWidth();
 	}
 
 	public int getScreenHeight() {
-		return levelPinky.getScreenHeight();
+		return levelRunning.getScreenHeight();
 	}
 
 	public int getPlayerX() {
-		return levelPinky.getPlayerX();
+		return levelRunning.getPlayerX();
 	}
 
 	public int getPlayerY() {
-		return levelPinky.getPlayerY();
+		return levelRunning.getPlayerY();
 	}
 
 	@Override
@@ -211,5 +223,10 @@ public class LevelManager implements Presentateur, IStructure {
 	@Override
 	public Rectangle getScreen() {
 		return levelRunning.getScreen();
+	}
+
+	@Override
+	public IEntity getBoss() {
+		return levelRunning.getBoss();
 	}
 }

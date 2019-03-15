@@ -167,6 +167,59 @@
 				</injection>
 			</parameters>
 		</bean>
+		<bean id="levelTwilight" class="com.antoine.modele.level.Level4">
+			<parameters nbr="4">
+				<parameter id="levelTwilightEndImage" value="./ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<injection id="levelTwilight_player" class="com.antoine.entity.Player" method="setPlayer">
+					<parameters nbr="3">
+						<paramInjection id="levelTwilight_player_animationFilePath" value="./ressources/setPonyAnimation/setPinky.txt" method="setAnimation"/>
+						<injection id="levelTwilight_player_position" class="com.antoine.geometry.Coordinates" method="setPosition">
+							<parameters nbr="2">
+								<paramInjection id="levelTwilight_player_positionX" value="315" method="setX"/>
+								<paramInjection id="levelTwilight_player_positionY" value="960" method="setY"/>
+							</parameters>
+						</injection>
+						<injection id="levelTwilight_player_deplacement" class="com.antoine.transfert_strategy.Player_transferStrategy_std" method="setDeplacement">
+							<parameters nbr="1">
+								<injection id="levelTwilight_player_deplacement_vector" class="com.antoine.geometry.Coordinates" method="setVector">
+									<parameters nbr="2">
+										<paramInjection id="levelTwilight_player_deplacement_vector_directionX" value="4" method="setX"/>
+										<paramInjection id="levelTwilight_player_deplacement_vector_directionY" value="4" method="setY"/>
+									</parameters>
+								</injection>
+							</parameters>
+						</injection>
+					</parameters>
+				</injection>
+				<injection id="levelTwilight_map" class="com.antoine.modele.map.Map" method="setMap">
+					<parameters nbr="2">
+						<parameter id="levelTwilight_map_tileSet" value="./ressources/maps/levelTwilight/tileSet.txt" method="setTileSet"/>
+						<parameter id="levelTwilight_map_mapFilePath" value="./ressources/maps/levelTwilight/map.txt" method="setMap"/>
+					</parameters>
+				</injection>
+				<injection id="levelTwilight_boss" class="com.antoine.entity.Boss" method="setBoss">
+					<parameters nbr="3">
+						<paramInjection id="levelTwilight_boss_animationFilePath" value="./ressources/setPonyAnimation/setRainbow.txt" method="setAnimation"/>
+						<injection id="levelTwilight_boss_position" class="com.antoine.geometry.Coordinates" method="setPosition">
+							<parameters nbr="2">
+								<paramInjection id="levelTwilight_boss_positionX" value="315" method="setX"/>
+								<paramInjection id="levelTwilight_boss_positionY" value="900" method="setY"/>
+							</parameters>
+						</injection>
+						<injection id="levelTwilight_boss_deplacement" class="com.antoine.transfert_strategy.IA_transfertStrategy_std" method="setDeplacement">
+							<parameters nbr="1">
+								<injection id="levelTwilight_boss_deplacement_vector" class="com.antoine.geometry.Coordinates" method="setVector">
+									<parameters nbr="2">
+										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementX" value="4" method="setX"/>
+										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementY" value="4" method="setY"/>
+									</parameters>
+								</injection>
+							</parameters>
+						</injection>
+					</parameters>
+				</injection>
+			</parameters>
+		</bean>
 		<bean id="frame" class="com.antoine.vue.frame.Frame">
 			<parameters nbr="3">
 				<injection id="frame_principalPanel" class="com.antoine.vue.panel.SpecialPanel" method="setPrincipalPanel">

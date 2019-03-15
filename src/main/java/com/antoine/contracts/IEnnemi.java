@@ -4,7 +4,11 @@ import com.antoine.geometry.Rectangle;
 
 public interface IEnnemi extends IEntity {
 
-    void think(Rectangle playerPosition);
+    void think();
 
-    void memorizeMozes();
+    void memorizeMoves();
+
+    void setAttributes(Rectangle toRectangle, Rectangle toRectangle1, IMap map);
+
+    void startThinking();
 }

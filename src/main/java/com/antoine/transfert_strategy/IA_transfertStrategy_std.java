@@ -1,11 +1,12 @@
 package com.antoine.transfert_strategy;
 
 import com.antoine.contracts.IMap;
+import com.antoine.contracts.ITransfert_strategy;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
-public class IA_transfertStrategy_std extends AbstractTransfer {
+public class IA_transfertStrategy_std extends AbstractTransfer implements ITransfert_strategy {
 	
 	private Thread greyCell;
 	private Rectangle ownPosition, player1;
@@ -23,23 +24,28 @@ public class IA_transfertStrategy_std extends AbstractTransfer {
 		this.xDirection= 0;
 		this.yDirection= -4;
 	}
-	
+
+	public void setOwnPosition(Rectangle ownPosition){
+		this.ownPosition= ownPosition;
+	}
+
+	public void setPlayer1(Rectangle player1){
+		this.player1= player1;
+	}
+
 	public void setAttributes(Rectangle ownPosition, Rectangle player1, IMap map) {
 		this.map= map;
 		this.ownPosition= ownPosition;
 		this.player1= player1;
+	}
+
+	public void startThinking(){
 		buildThinkPattern();
 		greyCell.start();
 	}
 
-    @Override
-    public Coordinates memorizMoves() {
-        return null;
-    }
-
 	@Override
-	public void think(Rectangle position, Rectangle player) {
-//		update(ownPosition, player1);
+	public void think() {
 
 		synchronized(this) {
 			notify();
@@ -108,11 +114,6 @@ public class IA_transfertStrategy_std extends AbstractTransfer {
 		
 	}
 
-	private void update(Coordinates ownPosition, Rectangle player1) {
-		this.ownPosition.setCoordinates(ownPosition);
-		//this.player1.setCoordinates(player1);
-	}
-
 	private void pause() {
 		try {
 			synchronized(this) {
@@ -120,6 +121,36 @@ public class IA_transfertStrategy_std extends AbstractTransfer {
 				wait();
 			}
 		}catch(InterruptedException ignored) {}
+	}
+
+	@Override
+	public void released() {
+
+	}
+
+	@Override
+	public void movesLeft() {
+
+	}
+
+	@Override
+	public void movesRight() {
+
+	}
+
+	@Override
+	public void movesUp() {
+
+	}
+
+	@Override
+	public void movesDown() {
+
+	}
+
+	@Override
+	public Coordinates memorizeMoves(Rectangle position, IMap map) {
+		return null;
 	}
 
 	public Coordinates memorizeMoves() {
@@ -133,8 +164,4 @@ public class IA_transfertStrategy_std extends AbstractTransfer {
 			return new Coordinates(0, 0);
 	}
 
-	@Override
-	Coordinates memorizeMoves(Rectangle position, IMap map) {
-		return memorizeMoves();
-	}
 }

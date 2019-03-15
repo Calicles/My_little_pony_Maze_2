@@ -17,7 +17,11 @@ public interface ITransfert_strategy {
 
     Coordinates memorizeMoves(Rectangle position, IMap map);
 
-    Coordinates memorizMoves();
+    Coordinates memorizeMoves();
 
-    void think(Rectangle position, Rectangle player);
+    void think();
+
+    void setAttributes(Rectangle ownPosition, Rectangle palyer1, IMap map);
+
+    void startThinking();
 }

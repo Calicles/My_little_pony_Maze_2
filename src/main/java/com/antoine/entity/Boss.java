@@ -5,7 +5,6 @@ import com.antoine.contracts.IMap;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 
-
 /**
  * <b>Classe qui représente un ennemi</b>
  * <p>possède une Intelligence Artificielle
@@ -19,15 +18,6 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 	public Boss() {
 		super();
 	}
-
-
-	public Coordinates memorizeMoves() {
-		Coordinates vectors= deplacement.memorizMoves();
-		this.changeSprite(vectors);
-		position.translate(vectors);
-		return vectors;
-	}
-
 
 
 	@Override
@@ -52,10 +42,7 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 
 	@Override
 	public Coordinates memorizeMoves(IMap map) {
-		Coordinates vectors= deplacement.memorizMoves();
-		this.changeSprite(vectors);
-		position.translate(vectors);
-		return vectors;
+		return null;
 	}
 
 	@Override
@@ -69,14 +56,24 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 	}
 
 	@Override
-	public void think(Rectangle playerPosition) {
-		this.deplacement.think(position, playerPosition);
+	public void think() {
+		this.deplacement.think();
 	}
 
 	@Override
-	public void memorizeMozes() {
-		Coordinates vectors= deplacement.memorizMoves();
+	public void memorizeMoves() {
+		Coordinates vectors= deplacement.memorizeMoves();
 		this.changeSprite(vectors);
 		position.translate(vectors);
+	}
+
+	@Override
+	public void setAttributes(Rectangle ownPosition, Rectangle palyer1, IMap map) {
+		deplacement.setAttributes(ownPosition, palyer1, map);
+	}
+
+	@Override
+	public void startThinking() {
+		deplacement.startThinking();
 	}
 }

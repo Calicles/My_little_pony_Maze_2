@@ -1,10 +1,14 @@
 package com.antoine.modele.level;
 
+import com.antoine.contracts.IEntity;
 import com.antoine.contracts.ILevel;
 import com.antoine.contracts.IMap;
+import com.antoine.contracts.LevelListener;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.DoubleBoxes;
 import com.antoine.geometry.Rectangle;
+
+import java.util.List;
 
 public class Level3 extends AbstractLevel implements ILevel {
 	
@@ -157,6 +161,21 @@ public class Level3 extends AbstractLevel implements ILevel {
 	@Override
 	public Rectangle getScreen() {
 		return boxes.getScreen();
+	}
+
+	@Override
+	public IEntity getBoss() {
+		return null;
+	}
+
+	@Override
+	public void setListeners(List<LevelListener> listeners) {
+
+	}
+
+	@Override
+	public void start() {
+
 	}
 
 }

@@ -3,11 +3,17 @@ package com.antoine.modele.level;
 import com.antoine.contracts.IEnnemi;
 import com.antoine.contracts.ILevel;
 import com.antoine.contracts.LevelListener;
+import com.antoine.entity.Boss;
 import com.antoine.geometry.Coordinates;
 
 import java.util.List;
 
 
+/**
+ * Classe gérant un Thread qui cadence l'évolution du jeu
+ *
+ * @author antoine
+ */
 public class Level4 extends Level3 implements ILevel {
 
     private IEnnemi boss;
@@ -22,10 +28,22 @@ public class Level4 extends Level3 implements ILevel {
         init();
     }
 
+    /**
+     * <p>Doit être appelée après avoir injecté player et map</p>
+     * @param boss ennemi du niveau
+     */
     public void setBoss(IEnnemi boss){
         this.boss= boss;
+        boss.setAttributes(boss.toRectangle(), player.toRectangle(), map);
+        boss.startThinking();
     }
 
+    /*
+    for test
+     */
+    public Boss getBoss(){return (Boss) boss;}
+
+    @Override
     public void setListeners(List<LevelListener> listeners){
         this.listeners= listeners;
     }
@@ -67,7 +85,7 @@ public class Level4 extends Level3 implements ILevel {
 
         scroll(vector);
 
-        boss.memorizeMoves(map);
+        boss.memorizeMoves();
 
         checkCollision();
 
@@ -75,14 +93,14 @@ public class Level4 extends Level3 implements ILevel {
 
         checkRunning();
 
-        boss.think(player.toRectangle());
+        boss.think();
 
     }
 
     private void scroll(Coordinates vector) {
         if(!vector.isZero()){
             if (vector.getX() < 0){
-                scrollUp(vector);
+                scrollLeft(vector);
             }else if(vector.getX() > 0){
                 scrollRight(vector);
             }else if (vector.getY() < 0){

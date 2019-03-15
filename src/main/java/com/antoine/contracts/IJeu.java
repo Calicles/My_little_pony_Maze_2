@@ -3,21 +3,24 @@ package com.antoine.contracts;
 import com.antoine.geometry.Rectangle;
 
 import java.awt.*;
-import java.util.List;
 
-public interface ILevel {
-    
-    void selected();
+public interface IJeu {
 
     int getMapWidth();
 
     int getMapHeight();
 
-    void deselected();
+    void switchLeveApple();
 
-    boolean isSelected();
+    void switchLevelRarity();
 
-    boolean isRunning();
+    void switchLevelRainbow();
+
+    boolean isAppleSelectedAndRunning();
+
+    boolean isRaritySelectedAndRunning();
+
+    boolean isRainbowSelectedAndRunning();
 
     void playerMovesLeft();
 
@@ -31,6 +34,16 @@ public interface ILevel {
 
     Dimension getDimension();
 
+    void AddListener(LevelListener listener);
+
+    void removeListener(LevelListener listener);
+
+    boolean isLevelsNull();
+
+    boolean isLevelFlutterNull();
+
+    boolean isLevelPinkyNull();
+
     int getScreenX();
 
     int getScreenY();
@@ -43,17 +56,15 @@ public interface ILevel {
 
     int getPlayerY();
 
+    void accept(IAfficheur visiteur);
+
     IMap getMap();
 
     IEntity getPlayer();
 
+    boolean isRunning();
+
     String getEndImageUrl();
 
     Rectangle getScreen();
-
-    void setListeners(List<LevelListener> listeners);
-
-    void start();
-
-    IEntity getBoss();
 }
