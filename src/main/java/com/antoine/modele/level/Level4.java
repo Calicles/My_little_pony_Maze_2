@@ -20,7 +20,7 @@ public class Level4 extends Level3 implements ILevel {
     private IEnnemi boss;
     private  Thread gameLoop;
     private List<LevelListener> listeners;
-    private Coordinates startPlayerPosition, startBossPosition, startScreenPoisiton;
+    private Coordinates startPlayerPosition, startBossPosition, startScreenPoisiton, startScrollPosition;
 
     private boolean over;
 
@@ -39,10 +39,11 @@ public class Level4 extends Level3 implements ILevel {
      */
     public void setBoss(IEnnemi boss){
         this.boss= boss;
-        boss.setAttributes(boss.toRectangle(), player.toRectangle(), map);
+        this.boss.setAttributes(player.getPosition(), map);
         startBossPosition= new Coordinates(boss.getX(), boss.getY());
         startPlayerPosition= new Coordinates(player.getX(), player.getY());
         startScreenPoisiton= new Coordinates(boxes.getScreenBeginX(), boxes.getScreenBeginY());
+        startScrollPosition= new Coordinates(boxes.getScrollBeginX(), boxes.getScrollBeginY());
         boss.startThinking();
     }
 
@@ -76,9 +77,10 @@ public class Level4 extends Level3 implements ILevel {
     }
 
     private void setAll() {
-        boss.setPosition(startBossPosition);
-        player.setPosition(startPlayerPosition);
+        boss.translateTo(startBossPosition);
+        player.translateTo(startPlayerPosition);
         boxes.getScreen().setCoordinates(startScreenPoisiton);
+        boxes.getScroll().setCoordinates(startScrollPosition);
         over= false;
     }
 
@@ -91,7 +93,7 @@ public class Level4 extends Level3 implements ILevel {
     }
 
     private void animeBoss() {
-        while (boss.getY() != 12){
+        while (boss.getY() < 12){
             boss.movesDown();
             fireUpdate();
             sleep(50);

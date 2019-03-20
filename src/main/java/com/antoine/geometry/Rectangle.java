@@ -69,11 +69,15 @@ public class Rectangle {
 	}
 
     public void setCoordinates(int x, int y) {
+		this.endX= x + getWidth();
+		this.endY= y + getHeight();
 		this.beginX= x;
 		this.beginY= y;
     }
 
     public void setCoordinates(Coordinates position) {
+		this.endX= position.getX() + getWidth();
+		this.endY= position.getY() + getHeight();
 		this.beginX= position.getX();
 		this.beginY= position.getY();
 

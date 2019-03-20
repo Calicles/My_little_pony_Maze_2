@@ -44,4 +44,16 @@ public class DoubleBoxes {
     public Rectangle getScreen() {
 		return this.screen;
     }
+
+	public int getScrollBeginX() {
+		return scrollBox.getBeginX();
+	}
+
+	public int getScrollBeginY() {
+		return scrollBox.getBeginY();
+	}
+
+	public Rectangle getScroll() {
+		return scrollBox;
+	}
 }

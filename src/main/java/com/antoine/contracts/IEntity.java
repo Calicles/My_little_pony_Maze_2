@@ -33,4 +33,8 @@ public interface IEntity {
     void translate(Coordinates verector);
 
     void setPosition(Coordinates newPosition);
+
+    Rectangle getPosition();
+
+    void translateTo(Coordinates startBossPosition);
 }

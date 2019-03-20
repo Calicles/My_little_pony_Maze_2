@@ -8,7 +8,8 @@ public interface IEnnemi extends IEntity {
 
     void memorizeMoves();
 
-    void setAttributes(Rectangle toRectangle, Rectangle toRectangle1, IMap map);
+    void setAttributes(Rectangle toRectangle1, IMap map);
 
     void startThinking();
+
 }

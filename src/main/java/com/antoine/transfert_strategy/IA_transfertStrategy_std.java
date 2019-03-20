@@ -27,7 +27,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	public void setVector(Coordinates vector){
 		super.setVector(vector);
 		this.xDirection= 0;
-		this.yDirection= -vector.getY();
+		this.yDirection= vector.getY();
 		this.lastVector= new Coordinates();
 	}
 
@@ -75,6 +75,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 			manHuntPlayer();
 		}else
 			findWay();
+		System.out.println(ownPosition.getBeginX()+"    y= "+ownPosition.getBeginY());
 		this.adaptVectors(ownPosition, map);
 	}
 	
@@ -157,7 +158,8 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	@Override
 	public void released() {
-
+		xDirection= 0;
+		yDirection= 0;
 	}
 
 	@Override

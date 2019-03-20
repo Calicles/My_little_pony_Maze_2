@@ -19,7 +19,6 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 		super();
 	}
 
-
 	@Override
 	public void movesLeft() {
 
@@ -48,7 +47,7 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 
 	@Override
 	public void movesReleased() {
-
+		deplacement.released();
 	}
 
 	@Override
@@ -66,11 +65,12 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 		Coordinates vectors= deplacement.memorizeMoves();
 		this.changeSprite(vectors);
 		position.translate(vectors);
+		System.out.println("in boss   "+position.getBeginX()+"   y=  "+position.getBeginY());
 	}
 
 	@Override
-	public void setAttributes(Rectangle ownPosition, Rectangle palyer1, IMap map) {
-		deplacement.setAttributes(ownPosition, palyer1, map);
+	public void setAttributes(Rectangle palyer1, IMap map) {
+		deplacement.setAttributes(position, palyer1, map);
 	}
 
 	@Override
