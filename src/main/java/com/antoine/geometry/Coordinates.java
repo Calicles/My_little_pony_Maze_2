@@ -38,4 +38,13 @@ public class Coordinates {
 		return x != 0 && y != 0;
 	}
 
+	@Override
+	public boolean equals(Object obj){
+		if (!(obj instanceof Coordinates)){
+			return false;
+		}
+		Coordinates coordinates= (Coordinates) obj;
+		return ((x == coordinates.getX()) && (y == coordinates.getY()));
+	}
+
 }

@@ -3,6 +3,7 @@ package com.antoine.vue.panel;
 import java.awt.*;
 import javax.swing.*;
 
+import com.antoine.afficheur.AfficheurMiniMap;
 import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
@@ -48,7 +49,7 @@ public class ButtonPanel extends JPanel implements LevelListener, IPanel {
 	@Override 
 	public Dimension getPreferredSize() {
 		int width=(int) presentateur.getDimension().getWidth();
-		int height=(int) presentateur.getDimension().getHeight() * 2 /JMiniMap.ECHELLE;
+		int height=(int) presentateur.getDimension().getHeight() * 2 / AfficheurMiniMap.SCALE;
 		if(!mapAdded) {
 		int d= map.getHeight();
 		return new Dimension(width, height);

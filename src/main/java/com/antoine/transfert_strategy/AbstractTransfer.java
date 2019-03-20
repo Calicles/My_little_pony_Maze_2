@@ -52,13 +52,13 @@ public abstract class AbstractTransfer {
 		
 		if(playerX < map.getTile_width()){
 			
-			if(playerX < 4) {
+			if(playerX < vector.getX()) {
 				xDirection= 0 - playerX;
 			}
 			
 		}else if((tile= checkLeftTiles(position, map)) != null) {
 			
-			if((tile.getX() + map.getTile_width()) - playerX >= -4)
+			if((tile.getX() + map.getTile_width()) - playerX >= -vector.getX())
 				xDirection= (tile.getX() + map.getTile_width() + 1) - playerX;
 		}
 		yDirection= 0;
@@ -70,12 +70,12 @@ public abstract class AbstractTransfer {
 		int playerEndX= position.getEndX();
 
 		if(playerEndX > (map.getWidth() - map.getTile_width())){
-			if(playerEndX >= (map.getWidth() - 4)) {
+			if(playerEndX >= (map.getWidth() - vector.getX())) {
 				xDirection= map.getWidth() - playerEndX;
 			}
 
 		}else if((tile= checkRightTiles(position, map)) != null) {
-			if(tile.getX() - position.getEndX() <= 4)
+			if(tile.getX() - position.getEndX() <= vector.getX())
 				xDirection= tile.getX() - (position.getEndX() + 1);
 
 		}
@@ -89,7 +89,7 @@ public abstract class AbstractTransfer {
 		
 		if(playerY <= map.getTile_height()){
 			
-			if(playerY < 4) {
+			if(playerY < vector.getY()) {
 				yDirection= 0 - playerY;
 			}
 			
@@ -108,11 +108,11 @@ public abstract class AbstractTransfer {
 		int playerEndY= position.getEndY();
 
 		if(playerEndY >= (map.getHeight() - map.getTile_height())) {
-				if(playerEndY > (map.getHeight() - 4)) {
+				if(playerEndY > (map.getHeight() - vector.getY())) {
 					yDirection= map.getHeight() - position.getEndY();
 				}
 		}else if((tile= checkOnDownTiles(position, map)) != null) {
-			if(tile.getY() - playerEndY <= 4)
+			if(tile.getY() - playerEndY <= vector.getY())
 				yDirection= tile.getY() - (playerEndY+1);
 		}
 		xDirection= 0;

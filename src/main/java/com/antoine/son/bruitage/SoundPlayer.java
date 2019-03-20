@@ -2,6 +2,7 @@ package com.antoine.son.bruitage;
 
 
 import javax.sound.sampled.*;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -19,9 +20,9 @@ public class SoundPlayer {
      * <p>ouvre le flux de la ressource.</p>
      * @param audioPath path de la ressource audio en .wav
      */
-    private SoundPlayer(String audioPath) {
+    public SoundPlayer(String audioPath) {
 
-        try (AudioInputStream ais = AudioSystem.getAudioInputStream(getClass().getResource(audioPath))) {
+        try (AudioInputStream ais = AudioSystem.getAudioInputStream(new File(audioPath))) {
 
             clip = AudioSystem.getClip();
             clip.open(ais);
@@ -33,12 +34,13 @@ public class SoundPlayer {
 
     }
 
-    private void play(){
+    public void play(){
         clip.start();
     }
 
-    private void stop(){
+    public void stop(){
         clip.stop();
+        clip.flush();
     }
 
     /**

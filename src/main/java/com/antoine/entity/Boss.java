@@ -37,7 +37,8 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 
 	@Override
 	public void movesDown() {
-
+		deplacement.movesDown();
+		memorizeMoves();
 	}
 
 	@Override

@@ -17,4 +17,8 @@ public interface IStructure {
     Rectangle getScreen();
 
     IEntity getBoss();
+
+    int getMapHeight();
+
+    int getMapWidth();
 }

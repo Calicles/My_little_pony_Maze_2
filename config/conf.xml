@@ -176,7 +176,7 @@
 						<injection id="levelTwilight_player_position" class="com.antoine.geometry.Coordinates" method="setPosition">
 							<parameters nbr="2">
 								<paramInjection id="levelTwilight_player_positionX" value="315" method="setX"/>
-								<paramInjection id="levelTwilight_player_positionY" value="960" method="setY"/>
+								<paramInjection id="levelTwilight_player_positionY" value="850" method="setY"/>
 							</parameters>
 						</injection>
 						<injection id="levelTwilight_player_deplacement" class="com.antoine.transfert_strategy.Player_transferStrategy_std" method="setDeplacement">
@@ -199,19 +199,19 @@
 				</injection>
 				<injection id="levelTwilight_boss" class="com.antoine.entity.Boss" method="setBoss">
 					<parameters nbr="3">
-						<paramInjection id="levelTwilight_boss_animationFilePath" value="./ressources/setPonyAnimation/setRainbow.txt" method="setAnimation"/>
+						<paramInjection id="levelTwilight_boss_animationFilePath" value="./ressources/setPonyAnimation/setDiscord.txt" method="setAnimation"/>
 						<injection id="levelTwilight_boss_position" class="com.antoine.geometry.Coordinates" method="setPosition">
 							<parameters nbr="2">
-								<paramInjection id="levelTwilight_boss_positionX" value="315" method="setX"/>
-								<paramInjection id="levelTwilight_boss_positionY" value="900" method="setY"/>
+								<paramInjection id="levelTwilight_boss_positionX" value="35" method="setX"/>
+								<paramInjection id="levelTwilight_boss_positionY" value="-150" method="setY"/>
 							</parameters>
 						</injection>
 						<injection id="levelTwilight_boss_deplacement" class="com.antoine.transfert_strategy.IA_transfertStrategy_std" method="setDeplacement">
 							<parameters nbr="1">
 								<injection id="levelTwilight_boss_deplacement_vector" class="com.antoine.geometry.Coordinates" method="setVector">
 									<parameters nbr="2">
-										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementX" value="4" method="setX"/>
-										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementY" value="4" method="setY"/>
+										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementX" value="2" method="setX"/>
+										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementY" value="2" method="setY"/>
 									</parameters>
 								</injection>
 							</parameters>

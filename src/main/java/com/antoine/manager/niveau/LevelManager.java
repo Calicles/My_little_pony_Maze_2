@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.antoine.contracts.*;
 import com.antoine.geometry.Rectangle;
 import com.antoine.services.Assembler;
+import com.antoine.son.bruitage.SoundPlayer;
 
 
 public class LevelManager implements Presentateur, IStructure {
@@ -19,7 +20,9 @@ public class LevelManager implements Presentateur, IStructure {
 	private ILevel levelRunning;
 	private ArrayList<LevelListener> listeners;
 	private  Assembler assembler;
-	
+	private SoundPlayer sound;
+
+
 	public LevelManager()  {
 
 		listeners= new ArrayList<>();
@@ -31,6 +34,7 @@ public class LevelManager implements Presentateur, IStructure {
 		levelApple.selected();
 		levelFlutter= null;
 		levelPinky= null;
+		sound= new SoundPlayer("./ressources/sons/bruitage/trotDur.wav");
 	}
 
 
@@ -41,6 +45,7 @@ public class LevelManager implements Presentateur, IStructure {
 
 		levelPinky= null;
 		levelRunning= levelTwilight= (ILevel) assembler.newInstance("levelTwilight");
+		System.out.println("in");
 		levelTwilight.setListeners(listeners);
 		levelTwilight.start();
 	}
@@ -91,6 +96,7 @@ public class LevelManager implements Presentateur, IStructure {
 	public void playerMovesLeft(){
 		if(isLevelRunning()){
 			levelRunning.playerMovesLeft();
+			sound.play();
 		}
 		this.fireUpdate();
 	}
@@ -98,6 +104,7 @@ public class LevelManager implements Presentateur, IStructure {
 	public void playerMovesRight(){
 		if(isLevelRunning()){
 			levelRunning.playerMovesRight();
+			sound.play();
 		}
 		this.fireUpdate();
 	}
@@ -105,6 +112,7 @@ public class LevelManager implements Presentateur, IStructure {
 	public void playerMovesUp(){
 		if(isLevelRunning()){
 			levelRunning.playerMovesUp();
+			sound.play();
 		}
 		this.fireUpdate();
 	}
@@ -112,6 +120,7 @@ public class LevelManager implements Presentateur, IStructure {
 	public void playerMovesDown(){
 		if(isLevelRunning()){
 			levelRunning.playerMovesDown();
+			sound.play();
 		}
 		this.fireUpdate();
 	}
@@ -138,6 +147,7 @@ public class LevelManager implements Presentateur, IStructure {
 
 	public void playerMovesReleased(){
 		levelRunning.playerMovesReleased();
+		sound.stop();
 		this.fireUpdate();
 	}
 

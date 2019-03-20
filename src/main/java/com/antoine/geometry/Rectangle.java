@@ -36,7 +36,8 @@ public class Rectangle {
 		this.endY= endY;
 	}
 
-	public int getEndX() {return endX;}
+
+    public int getEndX() {return endX;}
 	public int getEndY() {return endY;}
 	public int getBeginX() {return beginX;}
 	public int getBeginY() {return beginY;}
@@ -83,4 +84,45 @@ public class Rectangle {
 		beginY += vectors.getY(); endY += vectors.getY();
 
     }
+
+	private int getSemiDiagonal() {
+		return Pythagore.calculDistance(new Coordinates(beginX, beginY), new Coordinates(endX, endY)) / 2;
+	}
+
+	public static boolean isNext(Rectangle position1, Rectangle position2, int radius) {
+
+		return Pythagore.calculDistance(position1, position2) < radius;
+	}
+
+	public static Coordinates findMiddleCoor(Rectangle position){
+		return new Coordinates(findMiddleX(position), findMiddleY(position));
+	}
+
+	public static int findMiddleX(Rectangle position){
+		return position.getBeginX() + position.getWidth() / 2;
+	}
+
+	public static int findMiddleY(Rectangle position){
+		return position.getBeginY() + position.getHeight() / 2;
+	}
+
+	public static boolean isTouching(Rectangle position1, Rectangle position2){
+		if(isNext(position1, position2, position1.getSemiDiagonal())){
+			Coordinates middle1= findMiddleCoor(position1);
+			Coordinates middle2= findMiddleCoor(position2);
+
+			int distance= Pythagore.calculDistance(middle1, middle2);
+
+			if (distance < ((position1.getHeight() / 2) + (position2.getHeight() / 2)) ||
+			 distance < ((position1.getWidth() / 2) + (position2.getWidth() / 2))){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean equalsCoordinates(Object obj){
+		return new Coordinates(beginX, beginY).equals(obj);
+	}
+
 }
