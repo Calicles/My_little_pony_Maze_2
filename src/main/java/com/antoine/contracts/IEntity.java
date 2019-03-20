@@ -31,4 +31,6 @@ public interface IEntity {
     Rectangle toRectangle();
 
     void translate(Coordinates verector);
+
+    void setPosition(Coordinates newPosition);
 }

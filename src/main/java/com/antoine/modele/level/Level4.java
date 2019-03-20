@@ -20,6 +20,9 @@ public class Level4 extends Level3 implements ILevel {
     private IEnnemi boss;
     private  Thread gameLoop;
     private List<LevelListener> listeners;
+    private Coordinates startPlayerPosition, startBossPosition, startScreenPoisiton;
+
+    private boolean over;
 
     private long before, after;
     private final long SLEEP= 1000 / 24;
@@ -27,6 +30,7 @@ public class Level4 extends Level3 implements ILevel {
     public Level4(){
         super();
         init();
+        over= false;
     }
 
     /**
@@ -36,6 +40,9 @@ public class Level4 extends Level3 implements ILevel {
     public void setBoss(IEnnemi boss){
         this.boss= boss;
         boss.setAttributes(boss.toRectangle(), player.toRectangle(), map);
+        startBossPosition= new Coordinates(boss.getX(), boss.getY());
+        startPlayerPosition= new Coordinates(player.getX(), player.getY());
+        startScreenPoisiton= new Coordinates(boxes.getScreenBeginX(), boxes.getScreenBeginY());
         boss.startThinking();
     }
 
@@ -52,15 +59,27 @@ public class Level4 extends Level3 implements ILevel {
     private void init() {
         gameLoop = new Thread(() -> {
 
-            startAnimation();
-            before = System.currentTimeMillis();
             while (running) {
-                loop();
-                after = System.currentTimeMillis();
-                sleep();
+
+                setAll();
+                startAnimation();
+
                 before = System.currentTimeMillis();
+                while (!over) {
+                    loop();
+                    after = System.currentTimeMillis();
+                    sleep();
+                    before = System.currentTimeMillis();
+                }
             }
         });
+    }
+
+    private void setAll() {
+        boss.setPosition(startBossPosition);
+        player.setPosition(startPlayerPosition);
+        boxes.getScreen().setCoordinates(startScreenPoisiton);
+        over= false;
     }
 
     private void startAnimation(){
@@ -72,7 +91,7 @@ public class Level4 extends Level3 implements ILevel {
     }
 
     private void animeBoss() {
-        while (boss.getY() != 0){
+        while (boss.getY() != 12){
             boss.movesDown();
             fireUpdate();
             sleep(50);
@@ -156,7 +175,7 @@ public class Level4 extends Level3 implements ILevel {
 
     private void checkCollision() {
         if(Rectangle.isTouching(boss.toRectangle(), player.toRectangle())){
-            throw new RuntimeException("perdu");
+            over= true;
         }
     }
 
