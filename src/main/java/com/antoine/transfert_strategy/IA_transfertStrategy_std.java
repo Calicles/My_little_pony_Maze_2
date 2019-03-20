@@ -75,7 +75,6 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 			manHuntPlayer();
 		}else
 			findWay();
-		System.out.println(ownPosition.getBeginX()+"    y= "+ownPosition.getBeginY());
 		this.adaptVectors(ownPosition, map);
 	}
 	
@@ -144,7 +143,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	}
 
 	private boolean isPlayerNext(){
-		return Rectangle.isNext(ownPosition, player1, 200);
+		return Rectangle.isNext(ownPosition, player1, (ownPosition.getSemiDiagonal() + player1.getSemiDiagonal()));
 	}
 
 	private void pause() {

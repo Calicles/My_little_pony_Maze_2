@@ -89,7 +89,7 @@ public class Rectangle {
 
     }
 
-	private int getSemiDiagonal() {
+	public int getSemiDiagonal() {
 		return Pythagore.calculDistance(new Coordinates(beginX, beginY), new Coordinates(endX, endY)) / 2;
 	}
 
@@ -110,19 +110,15 @@ public class Rectangle {
 		return position.getBeginY() + position.getHeight() / 2;
 	}
 
+	/**
+	 * <p>Détecte une collision entre rectange.</p>
+	 * @param position1 rectangle 1
+	 * @param position2 rectangle 2
+	 * @return si les rectangle se touchent true, false sinon
+	 */
 	public static boolean isTouching(Rectangle position1, Rectangle position2){
-		if(isNext(position1, position2, position1.getSemiDiagonal())){
-			Coordinates middle1= findMiddleCoor(position1);
-			Coordinates middle2= findMiddleCoor(position2);
-
-			int distance= Pythagore.calculDistance(middle1, middle2);
-
-			if (distance < ((position1.getHeight() / 2) + (position2.getHeight() / 2)) ||
-			 distance < ((position1.getWidth() / 2) + (position2.getWidth() / 2))){
-				return true;
-			}
-		}
-		return false;
+		return (position1.getBeginX() < position2.getEndX()) && (position1.getEndX() > position2.getBeginX()) &&
+				(position1.getBeginY() < position2.getEndY()) && (position1.getEndY() > position2.getEndY());
 	}
 
 	public boolean equalsCoordinates(Object obj){

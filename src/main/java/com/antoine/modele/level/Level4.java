@@ -86,9 +86,9 @@ public class Level4 extends Level3 implements ILevel {
 
     private void startAnimation(){
         Coordinates oldScreenPosition= new Coordinates(boxes.getScreenBeginX(), boxes.getScreenBeginY());
-        animescreen(0,0);
+        animescreen(0,0, 8);
         animeBoss();
-        animescreen(oldScreenPosition.getX(), oldScreenPosition.getY());
+        animescreen(oldScreenPosition.getX(), oldScreenPosition.getY(), 3);
 
     }
 
@@ -100,7 +100,7 @@ public class Level4 extends Level3 implements ILevel {
         }
     }
 
-    private void animescreen(int x, int y) {
+    private void animescreen(int x, int y, long speed) {
         Coordinates vector;
         int xDirection= 0, yDirection= 0;
 
@@ -113,9 +113,9 @@ public class Level4 extends Level3 implements ILevel {
         vector = new Coordinates(xDirection, yDirection);
         boxes.getScreen().translate(vector);
         fireUpdate();
-        sleep(10);
+        sleep(speed);
         if(!boxes.getScreen().equalsCoordinates(new Coordinates(x, y))) {
-            animescreen(x, y);
+            animescreen(x, y, speed);
         }
 
     }
@@ -152,14 +152,13 @@ public class Level4 extends Level3 implements ILevel {
 
         boss.memorizeMoves();
 
-        checkCollision();
+        boss.think();
 
         fireUpdate();
 
         checkRunning();
 
-        boss.think();
-
+        checkCollision();
     }
 
     private void scroll(Coordinates vector) {
@@ -178,6 +177,7 @@ public class Level4 extends Level3 implements ILevel {
     private void checkCollision() {
         if(Rectangle.isTouching(boss.toRectangle(), player.toRectangle())){
             over= true;
+            sleep(50);
         }
     }
 

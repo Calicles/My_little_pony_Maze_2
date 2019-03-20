@@ -65,7 +65,6 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 		Coordinates vectors= deplacement.memorizeMoves();
 		this.changeSprite(vectors);
 		position.translate(vectors);
-		System.out.println("in boss   "+position.getBeginX()+"   y=  "+position.getBeginY());
 	}
 
 	@Override
