@@ -143,7 +143,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	}
 
 	private boolean isPlayerNext(){
-		return Rectangle.isNext(ownPosition, player1, (ownPosition.getSemiDiagonal() + player1.getSemiDiagonal()));
+		return Rectangle.isNext(ownPosition, player1, 300);
 	}
 
 	private void pause() {

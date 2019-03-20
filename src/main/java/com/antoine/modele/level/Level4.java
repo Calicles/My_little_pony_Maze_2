@@ -146,19 +146,21 @@ public class Level4 extends Level3 implements ILevel {
     }
 
     private synchronized void loop() {
-        Coordinates vector= player.memorizeMoves(map);
 
-        scroll(vector);
+        if(!checkCollision()) {
 
-        boss.memorizeMoves();
+            Coordinates vector = player.memorizeMoves(map);
 
-        boss.think();
+            scroll(vector);
 
-        fireUpdate();
+            boss.memorizeMoves();
 
-        checkRunning();
+            boss.think();
 
-        checkCollision();
+            fireUpdate();
+
+            checkRunning();
+        }
     }
 
     private void scroll(Coordinates vector) {
@@ -174,11 +176,13 @@ public class Level4 extends Level3 implements ILevel {
         }
     }
 
-    private void checkCollision() {
+    private boolean checkCollision() {
         if(Rectangle.isTouching(boss.toRectangle(), player.toRectangle())){
             over= true;
             sleep(50);
+            return true;
         }
+        return false;
     }
 
     @Override

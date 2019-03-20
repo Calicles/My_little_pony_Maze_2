@@ -118,7 +118,7 @@ public class Rectangle {
 	 */
 	public static boolean isTouching(Rectangle position1, Rectangle position2){
 		return (position1.getBeginX() < position2.getEndX()) && (position1.getEndX() > position2.getBeginX()) &&
-				(position1.getBeginY() < position2.getEndY()) && (position1.getEndY() > position2.getEndY());
+				(position1.getBeginY() < position2.getEndY()) && (position1.getEndY() > position2.getBeginY());
 	}
 
 	public boolean equalsCoordinates(Object obj){
