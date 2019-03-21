@@ -1,29 +1,31 @@
 package com.antoine.geometry;
 
+/**
+ * <b>Classe de service</b>
+ * <p>utilise le théorème di pythagore</p>
+ *
+ * @author antoine
+ */
 public class Pythagore {
 
-    public static int calculDistance(Rectangle position1, Rectangle position2){
-        return (int) Math.sqrt(add(position1, position2));
-    }
 
+    /**
+     * Calcule la distance entre deux points dans R2
+     * @param position1 point 1
+     * @param position2 point 2
+     * @return la distance les séparant sous forme d'entier
+     */
     public static int calculDistance(Coordinates position1, Coordinates position2){
         return (int) Math.sqrt(square(position1.getX() - position2.getX()) + square(position1.getY() - position2.getY()));
     }
 
+    /**
+     * <p>Elève au carré</p>
+     * @param nbr entier
+     * @return le carré de nbr sous frome d'entier
+     */
     private static int square(int nbr){
         return (int) Math.pow(nbr, 2);
-    }
-
-    private static int add(Rectangle position1, Rectangle position2){
-        return (squareX(position1, position2) + squareY(position1, position2));
-    }
-
-    public static int squareX(Rectangle position1, Rectangle position2){
-        return (square(Rectangle.findMiddleX(position1) - Rectangle.findMiddleX(position2)));
-    }
-
-    public static int squareY(Rectangle position1, Rectangle position2){
-        return (square(Rectangle.findMiddleY(position1) - Rectangle.findMiddleY(position2)));
     }
 
 }

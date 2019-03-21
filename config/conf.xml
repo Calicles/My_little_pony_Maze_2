@@ -172,7 +172,7 @@
 				<parameter id="levelTwilightEndImage" value="./ressources/images/fin/apple.png" method="setEndImageUrl" />
 				<injection id="levelTwilight_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">
-						<paramInjection id="levelTwilight_player_animationFilePath" value="./ressources/setPonyAnimation/setPinky.txt" method="setAnimation"/>
+						<paramInjection id="levelTwilight_player_animationFilePath" value="./ressources/setPonyAnimation/setTwilight.txt" method="setAnimation"/>
 						<injection id="levelTwilight_player_position" class="com.antoine.geometry.Coordinates" method="setPosition">
 							<parameters nbr="2">
 								<paramInjection id="levelTwilight_player_positionX" value="315" method="setX"/>
