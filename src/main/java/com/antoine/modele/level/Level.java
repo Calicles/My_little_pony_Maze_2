@@ -1,6 +1,10 @@
 package com.antoine.modele.level;
 
+import com.antoine.contracts.IEntity;
 import com.antoine.contracts.ILevel;
+import com.antoine.contracts.LevelListener;
+
+import java.util.List;
 
 public class Level extends AbstractLevel implements ILevel {
 	
@@ -45,4 +49,18 @@ public class Level extends AbstractLevel implements ILevel {
 		return player.getY();
 	}
 
+	@Override
+	public void setListeners(List<LevelListener> listeners) {
+
+	}
+
+	@Override
+	public void start() {
+
+	}
+
+	@Override
+	public IEntity getBoss() {
+		return null;
+	}
 }

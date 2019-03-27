@@ -13,8 +13,6 @@ import com.antoine.contracts.LevelListener;
 
 public class JMiniMap extends JPanel implements LevelListener, IPanel {
 	
-	public static final int ECHELLE= 10;
-	
 	private Presentateur presentateur;
 	private IAfficheur afficheurMiniMap;
 
@@ -28,61 +26,18 @@ public class JMiniMap extends JPanel implements LevelListener, IPanel {
 
 	}
 
-	public int getHeight() {return presentateur.getMapHeight() / ECHELLE;}
+	public int getHeight() {return presentateur.getMapHeight() / AfficheurMiniMap.SCALE;}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		drawBackGround(g);
 		drawLevel(g);
-		drawPlayer(g);
-		drawScreen(g);
 	}
 	
-	@Override
-	public Dimension getPreferredSize() {
-		Dimension d= presentateur.getDimension();
-		int mapWidth= d.width / ECHELLE;
-		int mapHeight= d.height / ECHELLE;
-		return new Dimension(mapWidth, mapHeight);
-	}
-	
-	private void drawScreen(Graphics g) {
-		Color old= g.getColor();
-		int x, y, width, height;
-		g.setColor(Color.YELLOW);
-		x= presentateur.getScreenX() / ECHELLE;
-		y= presentateur.getScreenY() / ECHELLE;
-		width= presentateur.getScreenWidth() / ECHELLE;
-		height= presentateur.getScreenHeight() / ECHELLE;
-		
-		g.drawRect(x, y, width, height);
-		g.setColor(old);
-	}
-
-	private void drawPlayer(Graphics g) {
-		Color old= g.getColor();
-		int x, y;
-		x= presentateur.getPlayerX() / ECHELLE;
-		y= presentateur.getPlayerY() / ECHELLE;
-		g.setColor(Color.RED);
-		g.fillRect(x, y, 5, 5);
-		g.setColor(old);
-	}
-
 	private void drawLevel(Graphics g) {
 		afficheurMiniMap.setGraphics(g);
 		presentateur.accept(afficheurMiniMap);
 		afficheurMiniMap.freeGraphics();
-	}
-
-	private void drawBackGround(Graphics g) {
-		Color old= g.getColor();
-		int mapWidth, mapHeight;
-		mapWidth= presentateur.getMapWidth() / ECHELLE;
-		mapHeight= presentateur.getMapHeight() / ECHELLE;
-		g.setColor(Color.GREEN);
-		g.fillRect(0, 0, mapWidth, mapHeight);
-		g.setColor(old);
 	}
 
 	public void update() {

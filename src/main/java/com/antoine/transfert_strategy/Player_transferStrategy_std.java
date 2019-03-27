@@ -39,4 +39,24 @@ public class Player_transferStrategy_std extends AbstractTransfer implements ITr
 		return new Coordinates(xDirection, yDirection);
 	}
 
+	@Override
+	public Coordinates memorizeMoves() {
+		return null;
+	}
+
+	@Override
+	public void think() {
+
+	}
+
+	@Override
+	public void setAttributes(Rectangle ownPosition, Rectangle palyer1, IMap map) {
+
+	}
+
+	@Override
+	public void startThinking() {
+
+	}
+
 }

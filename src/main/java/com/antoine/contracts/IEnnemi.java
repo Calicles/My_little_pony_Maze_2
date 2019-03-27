@@ -1,4 +1,15 @@
 package com.antoine.contracts;
 
-public interface IEnnemi {
+import com.antoine.geometry.Rectangle;
+
+public interface IEnnemi extends IEntity {
+
+    void think();
+
+    void memorizeMoves();
+
+    void setAttributes(Rectangle toRectangle1, IMap map);
+
+    void startThinking();
+
 }
