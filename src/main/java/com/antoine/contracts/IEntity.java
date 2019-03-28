@@ -28,7 +28,5 @@ public interface IEntity {
 
     int getHeight();
 
-    Rectangle toRectangle();
-
     void translate(Coordinates verector);
 }

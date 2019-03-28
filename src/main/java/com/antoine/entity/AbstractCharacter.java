@@ -65,6 +65,10 @@ public abstract class AbstractCharacter extends AbstractImage {
 		this.position= new Rectangle(position, position.getX() + getWidth(), position.getY() + getHeight());
 	}
 
+	public void translateTo(Coordinates newPosition){
+		position.setCoordinates(newPosition);
+	}
+
 	public void setAnimation(String animationSet){
 		animation= Character_reader.readCharactereAnimation(animationSet);
 		image= animation.get(0)[0];
@@ -82,7 +86,7 @@ public abstract class AbstractCharacter extends AbstractImage {
 
 	public int getY() {return position.getBeginY();}
 
-	public int getEndY() {return position.getBeginY() + getHeight();}
+	public int getEndY() {return position.getEndY();}
 
 	public Rectangle toRectangle(){
 		return position;
