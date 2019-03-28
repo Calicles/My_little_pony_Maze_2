@@ -3,6 +3,7 @@ package com.antoine.contracts;
 import com.antoine.geometry.Rectangle;
 
 import java.awt.*;
+import java.util.List;
 
 public interface ILevel {
     
@@ -49,4 +50,10 @@ public interface ILevel {
     String getEndImageUrl();
 
     Rectangle getScreen();
+
+    void setListeners(List<LevelListener> listeners);
+
+    void start();
+
+    IEntity getBoss();
 }

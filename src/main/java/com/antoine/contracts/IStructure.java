@@ -15,4 +15,10 @@ public interface IStructure {
     String getEndImageUrl();
 
     Rectangle getScreen();
+
+    IEntity getBoss();
+
+    int getMapHeight();
+
+    int getMapWidth();
 }

@@ -105,7 +105,6 @@ public class Assembler {
 				for (int i = 0; i < parameters.length; i++) {
 
 					if (id_class.containsKey(parameters[i])) {
-
 						Object o = getBean(parameters[i]);
 						if (o.getClass().getInterfaces().length != 0) {
 
@@ -130,7 +129,7 @@ public class Assembler {
 		}catch (InstantiationException | InvocationTargetException | NoSuchMethodException |
 		IllegalAccessException | ClassNotFoundException e) {
 			e.printStackTrace();
-			throw new RuntimeException("erreur lors de la lecture du fichier de configuration");
+			throw new RuntimeException("erreur lors de la lecture du fichier de configuration du bean: "+id);
 		}
 
 		return bean;

@@ -8,9 +8,8 @@ import javax.swing.*;
 
 import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
-import com.antoine.manager.LevelManager;
+import com.antoine.manager.niveau.LevelManager;
 import com.antoine.vue.panel.ButtonPanel;
-import com.antoine.vue.panel.JCardPane;
 import com.antoine.vue.panel.SpecialPanel;
 
 public class Frame extends JFrame {
