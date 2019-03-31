@@ -6,6 +6,7 @@ import com.antoine.contracts.LevelListener;
 import com.antoine.entity.Boss;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
+import com.antoine.services.ImageReader;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class Level4 extends Level3 implements ILevel {
     private Coordinates startPlayerPosition, startBossPosition, startScreenPoisiton, startScrollPosition;
 
     private boolean over;
-
     private long before, after;
     private final long SLEEP= 1000 / 24;
+    private String loseImagePath;
 
     public Level4(){
         super();
@@ -57,10 +58,20 @@ public class Level4 extends Level3 implements ILevel {
         this.listeners= listeners;
     }
 
+    public void setLoseImagePath(String loseImagePath){
+        this.loseImagePath= loseImagePath;
+    }
+
     private void init() {
         gameLoop = new Thread(() -> {
 
+            int count= 0;
+
             while (running) {
+
+                if(count != 0){
+                    gameLose();
+                }
 
                 setAll();
                 startAnimation();
@@ -71,6 +82,10 @@ public class Level4 extends Level3 implements ILevel {
                     after = System.currentTimeMillis();
                     sleep();
                     before = System.currentTimeMillis();
+                }
+
+                if(count == 0){
+                    count++;
                 }
             }
         });
@@ -118,6 +133,15 @@ public class Level4 extends Level3 implements ILevel {
             animescreen(x, y, speed);
         }
 
+    }
+
+    private void gameLose(){
+        String tampon= endImageUrl;
+        endImageUrl= loseImagePath;
+        fireUpdate();
+        sleep(2500);
+
+        endImageUrl= tampon;
     }
 
     public void start(){
@@ -209,6 +233,14 @@ public class Level4 extends Level3 implements ILevel {
         for (LevelListener l:listeners){
             l.update();
         }
+    }
+
+    @Override
+    public boolean isRunning(){
+        if(running && over){
+            return false;
+        }
+        return running;
     }
 
 }

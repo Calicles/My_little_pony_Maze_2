@@ -38,19 +38,5 @@ public interface Presentateur {
 
     int getMapHeight();
 
-    int getScreenX();
-
-    int getScreenY();
-
-    int getScreenWidth();
-
-    int getScreenHeight();
-
-    int getPlayerX();
-
-    int getPlayerY();
-
-    int getMapWidth();
-
-    void accept(IAfficheur visiteur);
+    void accept(IAfficheur afficheur);
 }

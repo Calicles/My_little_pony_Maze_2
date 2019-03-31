@@ -25,7 +25,6 @@ public class Character_reader {
 				
 				for(int j= 0; j < imagePerDirection; j++) {
 					line= reader.readLine();
-					System.out.println(line);
 					tab[j]= ImageReader.lireImage(line);
 				}
 				

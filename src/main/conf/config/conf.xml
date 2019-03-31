@@ -168,8 +168,9 @@
 			</parameters>
 		</bean>
 		<bean id="levelTwilight" class="com.antoine.modele.level.Level4">
-			<parameters nbr="4">
+			<parameters nbr="5">
 				<parameter id="levelTwilightEndImage" value="/ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<parameter id="levelTwilightLoseImage" value="/ressources/images/fin/discord3.png" method="setLoseImagePath"/>
 				<injection id="levelTwilight_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">
 						<paramInjection id="levelTwilight_player_animationFilePath" value="/ressources/setPonyAnimation/setTwilight.txt" method="setAnimation"/>

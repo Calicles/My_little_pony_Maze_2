@@ -19,14 +19,13 @@ public class Game implements IJeu {
     private ILevel levelTwilight;
     private ILevel levelRunning;
     private ArrayList<LevelListener> listeners;
-    private  Assembler assembler;
+    private Assembler assembler;
     private SoundPlayer walkSound;
 
 
     public Game()  {
 
-        String configPath= String.valueOf(getClass().getResource("/config/conf.xml"));
-        System.out.println(configPath);
+        String configPath= getClass().getResource("/config/conf.xml").getPath();
 
         listeners= new ArrayList<>();
         assembler= new Assembler(configPath);
@@ -157,10 +156,12 @@ public class Game implements IJeu {
         return levelRunning.getDimension();
     }
 
-    public void AddListener(LevelListener listener) {
+    @Override
+    public void addListener(LevelListener listener) {
         listeners.add(listener);
     }
 
+    @Override
     public void removeListener(LevelListener listener) {
         listeners.remove(listener);
     }
