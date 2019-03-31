@@ -22,7 +22,7 @@ public class SoundPlayer {
      */
     public SoundPlayer(String audioPath) {
 
-        try (AudioInputStream ais = AudioSystem.getAudioInputStream(new File(audioPath))) {
+        try (AudioInputStream ais = AudioSystem.getAudioInputStream(getClass().getResourceAsStream(audioPath))) {
 
             clip = AudioSystem.getClip();
             clip.open(ais);

@@ -11,6 +11,7 @@ import com.antoine.son.bruitage.SoundPlayer;
 
 public class LevelManager implements Presentateur, IStructure {
 
+
 	private ILevel levelApple;
 	private ILevel levelRarity;
 	private ILevel levelRainbow;
@@ -20,13 +21,15 @@ public class LevelManager implements Presentateur, IStructure {
 	private ILevel levelRunning;
 	private ArrayList<LevelListener> listeners;
 	private  Assembler assembler;
-	private SoundPlayer sound;
-
+	private SoundPlayer walkSound;
 
 	public LevelManager()  {
 
+		String configPath= String.valueOf(getClass().getResource("/config/conf.xml"));
+		System.out.println(configPath);
+
 		listeners= new ArrayList<>();
-		assembler= new Assembler("./config/conf.xml");
+		assembler= new Assembler(configPath);
 		levelApple= (ILevel) assembler.newInstance("levelApple");
 		levelRarity= (ILevel) assembler.newInstance("levelRarity");
 		levelRainbow= (ILevel) assembler.newInstance("levelRainbow");
@@ -34,7 +37,7 @@ public class LevelManager implements Presentateur, IStructure {
 		levelApple.selected();
 		levelFlutter= null;
 		levelPinky= null;
-		sound= new SoundPlayer("./ressources/sons/bruitage/trotDur.wav");
+		walkSound= new SoundPlayer("/ressources/sons/bruitage/trotDur.wav");
 	}
 
 
@@ -45,7 +48,6 @@ public class LevelManager implements Presentateur, IStructure {
 
 		levelPinky= null;
 		levelRunning= levelTwilight= (ILevel) assembler.newInstance("levelTwilight");
-		System.out.println("in");
 		levelTwilight.setListeners(listeners);
 		levelTwilight.start();
 	}
@@ -96,7 +98,7 @@ public class LevelManager implements Presentateur, IStructure {
 	public void playerMovesLeft(){
 		if(isLevelRunning()){
 			levelRunning.playerMovesLeft();
-			sound.play();
+			walkSound.play();
 		}
 		this.fireUpdate();
 	}
@@ -104,7 +106,7 @@ public class LevelManager implements Presentateur, IStructure {
 	public void playerMovesRight(){
 		if(isLevelRunning()){
 			levelRunning.playerMovesRight();
-			sound.play();
+			walkSound.play();
 		}
 		this.fireUpdate();
 	}
@@ -112,7 +114,7 @@ public class LevelManager implements Presentateur, IStructure {
 	public void playerMovesUp(){
 		if(isLevelRunning()){
 			levelRunning.playerMovesUp();
-			sound.play();
+			walkSound.play();
 		}
 		this.fireUpdate();
 	}
@@ -120,7 +122,7 @@ public class LevelManager implements Presentateur, IStructure {
 	public void playerMovesDown(){
 		if(isLevelRunning()){
 			levelRunning.playerMovesDown();
-			sound.play();
+			walkSound.play();
 		}
 		this.fireUpdate();
 	}
@@ -147,7 +149,7 @@ public class LevelManager implements Presentateur, IStructure {
 
 	public void playerMovesReleased(){
 		levelRunning.playerMovesReleased();
-		sound.stop();
+		walkSound.stop();
 		this.fireUpdate();
 	}
 

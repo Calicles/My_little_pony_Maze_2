@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -23,8 +24,7 @@ public class Map_reader {
 	public static int[][] readMap(String fileUrl){
 		int[][] map= null;
 		
-		try(BufferedReader reader= 
-				new BufferedReader(new FileReader(new File(fileUrl)))){
+		try(BufferedReader reader= createReader(fileUrl)){
 			
 			String[] line;
 			String[] bounds= reader.readLine().split(" ");
@@ -54,8 +54,7 @@ public class Map_reader {
 	public static HashMap<Integer, BufferedImage> readTileSet(String fileUrl){
 		HashMap<Integer, BufferedImage> tileSet= new HashMap<>();
 		
-		try(BufferedReader reader= 
-				new BufferedReader(new FileReader(new File(fileUrl)))){
+		try(BufferedReader reader= createReader(fileUrl)){
 			
 			BufferedImage image;
 			String[] line;
@@ -67,7 +66,7 @@ public class Map_reader {
 				
 				line= reader.readLine().split(" ");
 					number= Integer.parseInt(line[0]);
-					image= ImageIO.read(new File(line[1]));
+					image= ImageReader.lireImage(line[1]);
 					tileSet.put(number, image);
 					
 			}
@@ -75,6 +74,10 @@ public class Map_reader {
 		}catch(Throwable t) {t.printStackTrace();}
 		
 		return tileSet;
+	}
+
+	private static BufferedReader createReader(String path){
+		return new BufferedReader(new InputStreamReader(Map_reader.class.getResourceAsStream(path)));
 	}
 
 }

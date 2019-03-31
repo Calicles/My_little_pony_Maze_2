@@ -67,4 +67,6 @@ public interface IJeu {
     String getEndImageUrl();
 
     Rectangle getScreen();
+
+    IEntity getBoss();
 }

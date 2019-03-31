@@ -177,7 +177,7 @@ public class Level4 extends Level3 implements ILevel {
     }
 
     private boolean checkCollision() {
-        if(Rectangle.isTouching2(boss.toRectangle(), player.toRectangle())){
+        if(Rectangle.isTouching2(boss.getPosition(), player.getPosition())){
             over= true;
             sleep(50);
             return true;

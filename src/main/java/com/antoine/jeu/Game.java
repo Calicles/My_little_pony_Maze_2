@@ -4,24 +4,32 @@ import com.antoine.contracts.*;
 import com.antoine.services.Assembler;
 import com.antoine.geometry.Rectangle;
 import com.antoine.contracts.IJeu;
+import com.antoine.son.bruitage.SoundPlayer;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-public class Game implements IJeu{
+public class Game implements IJeu {
+
     private ILevel levelApple;
     private ILevel levelRarity;
     private ILevel levelRainbow;
     private ILevel levelFlutter;
     private ILevel levelPinky;
+    private ILevel levelTwilight;
     private ILevel levelRunning;
     private ArrayList<LevelListener> listeners;
-    private Assembler assembler;
+    private  Assembler assembler;
+    private SoundPlayer walkSound;
+
 
     public Game()  {
 
+        String configPath= String.valueOf(getClass().getResource("/config/conf.xml"));
+        System.out.println(configPath);
+
         listeners= new ArrayList<>();
-        assembler= new Assembler("./config/conf.xml");
+        assembler= new Assembler(configPath);
         levelApple= (ILevel) assembler.newInstance("levelApple");
         levelRarity= (ILevel) assembler.newInstance("levelRarity");
         levelRainbow= (ILevel) assembler.newInstance("levelRainbow");
@@ -29,19 +37,19 @@ public class Game implements IJeu{
         levelApple.selected();
         levelFlutter= null;
         levelPinky= null;
+        walkSound= new SoundPlayer("/ressources/sons/bruitage/trotDur.wav");
     }
 
 
-    @Override
     public int getMapWidth() {return levelRunning.getMapWidth();}
-
-    @Override
     public int getMapHeight() {return levelRunning.getMapHeight();}
 
     private void switchLevel4(){
 
         levelPinky= null;
-        levelRunning= (ILevel) assembler.newInstance("levelTwilight");
+        levelRunning= levelTwilight= (ILevel) assembler.newInstance("levelTwilight");
+        levelTwilight.setListeners(listeners);
+        levelTwilight.start();
     }
 
     private void switchLevel3() {
@@ -52,11 +60,10 @@ public class Game implements IJeu{
 
     private void switchLevel2() {
 
-        levelApple = levelRarity = levelRainbow = null;
+        levelApple=null; levelRarity= null; levelRainbow= null;
         levelRunning= levelFlutter= (ILevel) assembler.newInstance("levelFlutter");
     }
 
-    @Override
     public void switchLeveApple() {
         levelRunning= levelApple;
         levelApple.selected();
@@ -64,8 +71,6 @@ public class Game implements IJeu{
         levelRainbow.deselected();
         this.fireUpdate();
     }
-
-    @Override
     public void switchLevelRarity() {
         levelRunning= levelRarity;
         levelRarity.selected();
@@ -73,8 +78,6 @@ public class Game implements IJeu{
         levelRainbow.deselected();
         this.fireUpdate();
     }
-
-    @Override
     public void switchLevelRainbow() {
         levelRunning= levelRainbow;
         levelRainbow.selected();
@@ -82,91 +85,82 @@ public class Game implements IJeu{
         levelRarity.deselected();
         this.fireUpdate();
     }
-
-    @Override
     public boolean isAppleSelectedAndRunning() {
         return !levelApple.isSelected() && levelApple.isRunning();
     }
-
-    @Override
     public boolean isRaritySelectedAndRunning() {
         return !levelRarity.isSelected() && levelRarity.isRunning();
     }
-
-    @Override
     public boolean isRainbowSelectedAndRunning() {
         return !levelRainbow.isSelected() && levelRainbow.isRunning();
     }
 
-    @Override
     public void playerMovesLeft(){
         if(isLevelRunning()){
             levelRunning.playerMovesLeft();
+            walkSound.play();
         }
         this.fireUpdate();
     }
 
-    @Override
     public void playerMovesRight(){
         if(isLevelRunning()){
             levelRunning.playerMovesRight();
+            walkSound.play();
         }
         this.fireUpdate();
     }
 
-    @Override
     public void playerMovesUp(){
         if(isLevelRunning()){
             levelRunning.playerMovesUp();
+            walkSound.play();
         }
         this.fireUpdate();
     }
 
-    @Override
     public void playerMovesDown(){
         if(isLevelRunning()){
             levelRunning.playerMovesDown();
+            walkSound.play();
         }
         this.fireUpdate();
     }
 
     private boolean isLevelRunning(){
 
-        if(levelPinky== null && levelFlutter== null &&
+        if(isLevelPinkyNull() && isLevelFlutterNull() && levelTwilight == null &&
                 !levelApple.isRunning()
                 && !levelRarity.isRunning()
                 && !levelRainbow.isRunning()) {
             switchLevel2();
             return false;
 
-        }else if(levelApple== null && levelFlutter!= null &&
+        }else if(isLevelsNull() && !isLevelFlutterNull() &&
                 !levelFlutter.isRunning()) {
             switchLevel3();
             return false;
-        }else if(levelApple == null && null == levelFlutter && levelPinky != null && !levelPinky.isRunning()){
+        }else if(isLevelsNull() && isLevelFlutterNull() && !isLevelPinkyNull() && !levelPinky.isRunning()){
             switchLevel4();
+            return false;
         }
-
         return true;
     }
 
-    @Override
     public void playerMovesReleased(){
         levelRunning.playerMovesReleased();
+        walkSound.stop();
         this.fireUpdate();
     }
 
-    @Override
     public Dimension getDimension() {
         return levelRunning.getDimension();
     }
 
-    @Override
     public void AddListener(LevelListener listener) {
         listeners.add(listener);
     }
 
-    @Override
     public void removeListener(LevelListener listener) {
         listeners.remove(listener);
     }
@@ -177,49 +171,40 @@ public class Game implements IJeu{
             l.update();
     }
 
-    @Override
     public boolean isLevelsNull() {
         return levelApple == null;
     }
 
-    @Override
     public boolean isLevelFlutterNull() {
         return levelFlutter == null;
     }
 
-    @Override
     public boolean isLevelPinkyNull() {
         return levelPinky == null;
     }
 
-    @Override
     public int getScreenX() {
-        return levelPinky.getScreenX();
+        return levelRunning.getScreenX();
     }
 
-    @Override
     public int getScreenY() {
-        return levelPinky.getScreenY();
+        return levelRunning.getScreenY();
     }
 
-    @Override
     public int getScreenWidth() {
-        return levelPinky.getScreenWidth();
+        return levelRunning.getScreenWidth();
     }
 
-    @Override
     public int getScreenHeight() {
-        return levelPinky.getScreenHeight();
+        return levelRunning.getScreenHeight();
     }
 
-    @Override
     public int getPlayerX() {
-        return levelPinky.getPlayerX();
+        return levelRunning.getPlayerX();
     }
 
-    @Override
     public int getPlayerY() {
-        return levelPinky.getPlayerY();
+        return levelRunning.getPlayerY();
     }
 
     @Override
@@ -250,6 +235,11 @@ public class Game implements IJeu{
     @Override
     public Rectangle getScreen() {
         return levelRunning.getScreen();
+    }
+
+    @Override
+    public IEntity getBoss() {
+        return levelRunning.getBoss();
     }
 
 }

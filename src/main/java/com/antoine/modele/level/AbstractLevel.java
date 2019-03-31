@@ -123,7 +123,7 @@ public abstract class AbstractLevel implements IStructure {
 	}
 
 	private boolean isPlayerOnExit() {
-		return isIEntityInBox(player.toRectangle(), exit);
+		return isIEntityInBox(player.getPosition(), exit);
 	}
 
 	private Rectangle tileToRectangle(Tile tile) {
