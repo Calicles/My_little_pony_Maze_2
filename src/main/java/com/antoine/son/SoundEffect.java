@@ -6,25 +6,17 @@ public class SoundEffect extends SoundMaker {
 
     private byte[] samples;
 
-
-    /**
-     * <p>Initialise les états</p>
-     *
-     * @param musicPath du fichier .wav
-     * @param volume
-     */
     public SoundEffect(String musicPath, float volume) {
         super(musicPath, volume);
         samples = getAudioFileData();
     }
-
-
 
     @Override
     protected Thread implementRun() {
         return new Thread(()->{
             while (true) {
                 samples = adjustVolume(samples, 0, samples.length);
+                //SoundAdjuster.normalizeVolume(samples, 0, samples.length, volume);
                 line.write(samples, 0, samples.length);
                 sleep();
             }

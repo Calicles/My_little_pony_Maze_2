@@ -45,6 +45,7 @@ public class MusicPlayer extends SoundMaker {
 
                     testSleep();
                     bytes = adjustVolume(bytes, 0, totalRead);
+                    //SoundAdjuster.normalizeVolume(bytes, 0, totalRead, volume);
 
                     line.write(bytes, 0, totalRead);
                 }

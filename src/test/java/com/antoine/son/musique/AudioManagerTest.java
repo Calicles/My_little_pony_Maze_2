@@ -6,7 +6,6 @@ public class AudioManagerTest {
 
     @Test
     public void play() {
-        AudioManager player= new AudioManager("/ressources/sons/bruitage/Open Up Your Eyes.wav");
     }
 
     @Test

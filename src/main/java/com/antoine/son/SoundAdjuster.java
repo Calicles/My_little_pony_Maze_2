@@ -10,7 +10,7 @@ public class SoundAdjuster {
         precomputeVolumeNormLUT();
     }
 
-    public static void normalizeVolume(byte[] audioSamples, int start, int len) {
+    public static void normalizeVolume(byte[] audioSamples, int start, int len, float volume) {
         for (int i = start; i < start+len; i+=2) {
             // convert byte pair to int
             short s1 = audioSamples[i+1];
@@ -20,10 +20,13 @@ public class SoundAdjuster {
             s2 = (short) (s2 & 0xff);
 
             short res = (short) (s1 | s2);
-
-            res = VOLUME_NORM_LUT[res+MAX_NEGATIVE_AMPLITUDE];
-            audioSamples[i] = (byte) res;
-            audioSamples[i+1] = (byte) (res >> 8);
+            try {
+                res = (short) (VOLUME_NORM_LUT[res + MAX_NEGATIVE_AMPLITUDE] * volume);
+                audioSamples[i] = (byte) res;
+                audioSamples[i + 1] = (byte) (res >> 8);
+            }catch (ArrayIndexOutOfBoundsException ab){
+                System.out.println(res+ MAX_NEGATIVE_AMPLITUDE);
+            }
         }
     }
 

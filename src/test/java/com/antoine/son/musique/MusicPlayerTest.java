@@ -14,8 +14,6 @@ public class MusicPlayerTest {
 
     @Test
     public void play() {
-        MusicPlayer player= new MusicPlayer(path, 2f);
-        player.play();
     }
 
     @Test

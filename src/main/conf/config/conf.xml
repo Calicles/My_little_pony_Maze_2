@@ -233,5 +233,13 @@
 				</injection>
 			</parameters>
 		</bean>
+		<bean id="jukebox" class="com.antoine.manager.musique.Jukebox">
+			<parameters nbr="4">
+				<parameter id="appleMusic" method="setMusic" value="apple,/ressources/sons/bruitage/Indiana Jones.wav"/>
+				<parameter id="appleSon" method="setSound" value="apple,/ressources/sons/bruitage/trotDur.wav"/>
+				<parameter id="rarityMusic" method="setMusic" value="rarity,/ressources/sons/bruitage/Open Up Your Eyes.wav"/>
+				<parameter id="raritySon" method="setSound" value="rarity,/ressources/sons/bruitage/pasHerbeGelée.wav"/>
+			</parameters>
+		</bean>
 	</beans>
 </configuration>

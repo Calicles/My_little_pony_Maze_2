@@ -10,12 +10,6 @@ public class SoundPlayerTest {
 
     @Test
     public void startSound() {
-        SoundPlayer player= new SoundPlayer("/ressources/sons/bruitage/trotDur.wav",1f);
-        player.play();
-        for(int i = 0; i <= 6 ; i++){
-            SoundPlayer.startSound(path, i  / 10);
-        }
-        SoundPlayer.startSound(path, 2f);
     }
 
     @Test
