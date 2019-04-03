@@ -36,7 +36,7 @@ public class Game implements IJeu {
         levelApple.selected();
         levelFlutter= null;
         levelPinky= null;
-        walkSound= new SoundPlayer("/ressources/sons/bruitage/trotDur.wav");
+        walkSound= new SoundPlayer("/ressources/sons/bruitage/trotDur.wav", 1);
     }
 
 

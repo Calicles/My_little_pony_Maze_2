@@ -19,7 +19,7 @@ import java.util.List;
 public class Level4 extends Level3 implements ILevel {
 
     private IEnnemi boss;
-    private  Thread gameLoop;
+    private Thread gameLoop;
     private List<LevelListener> listeners;
     private Coordinates startPlayerPosition, startBossPosition, startScreenPoisiton, startScrollPosition;
 
@@ -137,6 +137,7 @@ public class Level4 extends Level3 implements ILevel {
 
     private void gameLose(){
         String tampon= endImageUrl;
+
         endImageUrl= loseImagePath;
         fireUpdate();
         sleep(2500);
