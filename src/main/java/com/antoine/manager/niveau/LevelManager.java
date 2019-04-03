@@ -1,242 +1,94 @@
 package com.antoine.manager.niveau;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
 
 import com.antoine.contracts.*;
-import com.antoine.geometry.Rectangle;
-import com.antoine.services.Assembler;
-import com.antoine.son.bruitage.SoundPlayer;
+import com.antoine.jeu.Game;
 
 
-public class LevelManager implements Presentateur, IStructure {
+public class LevelManager implements Presentateur {
 
-	private ILevel levelApple;
-	private ILevel levelRarity;
-	private ILevel levelRainbow;
-	private ILevel levelFlutter;
-	private ILevel levelPinky;
-	private ILevel levelTwilight;
-	private ILevel levelRunning;
-	private ArrayList<LevelListener> listeners;
-	private  Assembler assembler;
-	private SoundPlayer sound;
-
+	IJeu game;
 
 	public LevelManager()  {
-
-		listeners= new ArrayList<>();
-		assembler= new Assembler("./config/conf.xml");
-		levelApple= (ILevel) assembler.newInstance("levelApple");
-		levelRarity= (ILevel) assembler.newInstance("levelRarity");
-		levelRainbow= (ILevel) assembler.newInstance("levelRainbow");
-		levelRunning= levelApple;
-		levelApple.selected();
-		levelFlutter= null;
-		levelPinky= null;
-		sound= new SoundPlayer("./ressources/sons/bruitage/trotDur.wav");
+		game= new Game();
 	}
 
 
-	public int getMapWidth() {return levelRunning.getMapWidth();}
-	public int getMapHeight() {return levelRunning.getMapHeight();}
+	public int getMapWidth() {return game.getMapWidth();}
+	public int getMapHeight() {return game.getMapHeight();}
 
-	private void switchLevel4(){
 
-		levelPinky= null;
-		levelRunning= levelTwilight= (ILevel) assembler.newInstance("levelTwilight");
-		System.out.println("in");
-		levelTwilight.setListeners(listeners);
-		levelTwilight.start();
-	}
-
-	private void switchLevel3() {
-
-		levelFlutter= null;
-		levelRunning= levelPinky= (ILevel) assembler.newInstance("levelPinky");
-	}
-	
-	private void switchLevel2() {
-
-		levelApple=null; levelRarity= null; levelRainbow= null;
-		levelRunning= levelFlutter= (ILevel) assembler.newInstance("levelFlutter");
-	}
-	
 	public void switchLeveApple() {
-		levelRunning= levelApple;
-		levelApple.selected();
-		levelRarity.deselected();
-		levelRainbow.deselected();
-		this.fireUpdate();
+		game.switchLeveApple();
 	}
+
 	public void switchLevelRarity() {
-		levelRunning= levelRarity;
-		levelRarity.selected();
-		levelApple.deselected();
-		levelRainbow.deselected();
-		this.fireUpdate();
+		game.switchLevelRarity();
 	}
+
 	public void switchLevelRainbow() {
-		levelRunning= levelRainbow;
-		levelRainbow.selected();
-		levelApple.deselected();
-		levelRarity.deselected();
-		this.fireUpdate();
+		game.switchLevelRainbow();
 	}
+
 	public boolean isAppleSelectedAndRunning() {
-		return !levelApple.isSelected() && levelApple.isRunning();
+		return game.isAppleSelectedAndRunning();
 	}
 	public boolean isRaritySelectedAndRunning() {
-		return !levelRarity.isSelected() && levelRarity.isRunning();
+		return game.isRaritySelectedAndRunning();
 	}
 	public boolean isRainbowSelectedAndRunning() {
-		return !levelRainbow.isSelected() && levelRainbow.isRunning();
+		return game.isRainbowSelectedAndRunning();
 	}
 
 	public void playerMovesLeft(){
-		if(isLevelRunning()){
-			levelRunning.playerMovesLeft();
-			sound.play();
-		}
-		this.fireUpdate();
+		game.playerMovesLeft();
 	}
 
 	public void playerMovesRight(){
-		if(isLevelRunning()){
-			levelRunning.playerMovesRight();
-			sound.play();
-		}
-		this.fireUpdate();
+		game.playerMovesRight();
 	}
 
 	public void playerMovesUp(){
-		if(isLevelRunning()){
-			levelRunning.playerMovesUp();
-			sound.play();
-		}
-		this.fireUpdate();
+		game.playerMovesUp();
 	}
 
 	public void playerMovesDown(){
-		if(isLevelRunning()){
-			levelRunning.playerMovesDown();
-			sound.play();
-		}
-		this.fireUpdate();
-	}
-
-	private boolean isLevelRunning(){
-
-		if(isLevelPinkyNull() && isLevelFlutterNull() && levelTwilight == null &&
-				!levelApple.isRunning()
-				&& !levelRarity.isRunning()
-				&& !levelRainbow.isRunning()) {
-			switchLevel2();
-			return false;
-
-		}else if(isLevelsNull() && !isLevelFlutterNull() &&
-				!levelFlutter.isRunning()) {
-			switchLevel3();
-			return false;
-		}else if(isLevelsNull() && isLevelFlutterNull() && !isLevelPinkyNull() && !levelPinky.isRunning()){
-			switchLevel4();
-			return false;
-		}
-		return true;
+		game.playerMovesDown();
 	}
 
 	public void playerMovesReleased(){
-		levelRunning.playerMovesReleased();
-		sound.stop();
-		this.fireUpdate();
+		game.playerMovesReleased();
 	}
 
 	public Dimension getDimension() {
-		return levelRunning.getDimension();
+		return game.getDimension();
 	}
 	
 	public void AddListener(LevelListener listener) {
-		listeners.add(listener);
+		game.addListener(listener);
 	}
 	
 	public void removeListener(LevelListener listener) {
-		listeners.remove(listener);
+		game.removeListener(listener);
 	}
 	
 
-	private void fireUpdate() {
-		for(LevelListener l:listeners)
-			l.update();
-	}
-
 	public boolean isLevelsNull() {
-		return levelApple == null;
+		return game.isLevelsNull();
 	}
 
 	public boolean isLevelFlutterNull() {
-		return levelFlutter == null;
+		return game.isLevelFlutterNull();
 	}
 
 	public boolean isLevelPinkyNull() {
-		return levelPinky == null;
+		return game.isLevelPinkyNull();
 	}
 
-	public int getScreenX() {
-		return levelRunning.getScreenX();
-	}
-
-	public int getScreenY() {
-		return levelRunning.getScreenY();
-	}
-
-	public int getScreenWidth() {
-		return levelRunning.getScreenWidth();
-	}
-
-	public int getScreenHeight() {
-		return levelRunning.getScreenHeight();
-	}
-
-	public int getPlayerX() {
-		return levelRunning.getPlayerX();
-	}
-
-	public int getPlayerY() {
-		return levelRunning.getPlayerY();
-	}
 
 	@Override
 	public void accept(IAfficheur visiteur) {
-		visiteur.visit((IStructure) this.levelRunning);
-	}
-
-	@Override
-	public IMap getMap() {
-		return levelRunning.getMap();
-	}
-
-	@Override
-	public IEntity getPlayer() {
-		return levelRunning.getPlayer();
-	}
-
-	@Override
-	public boolean isRunning() {
-		return levelRunning.isRunning();
-	}
-
-	@Override
-	public String getEndImageUrl() {
-		return levelRunning.getEndImageUrl();
-	}
-
-	@Override
-	public Rectangle getScreen() {
-		return levelRunning.getScreen();
-	}
-
-	@Override
-	public IEntity getBoss() {
-		return levelRunning.getBoss();
+		game.accept(visiteur);
 	}
 }

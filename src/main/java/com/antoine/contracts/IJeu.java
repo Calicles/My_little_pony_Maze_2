@@ -34,7 +34,7 @@ public interface IJeu {
 
     Dimension getDimension();
 
-    void AddListener(LevelListener listener);
+    void addListener(LevelListener listener);
 
     void removeListener(LevelListener listener);
 
@@ -67,4 +67,7 @@ public interface IJeu {
     String getEndImageUrl();
 
     Rectangle getScreen();
+
+    IEntity getBoss();
+
 }

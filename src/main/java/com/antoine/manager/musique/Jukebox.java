@@ -31,7 +31,7 @@ public class Jukebox {
 
     private void init(String[] paths){
         for (String path : paths) {
-            musics.put(path, new MusicPlayer(path));
+            musics.put(path, new MusicPlayer(path, 1));
         }
 
     }

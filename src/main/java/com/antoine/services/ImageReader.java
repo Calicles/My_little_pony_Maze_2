@@ -2,7 +2,6 @@ package com.antoine.services;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 
@@ -20,7 +19,7 @@ public class ImageReader {
      */
     public static BufferedImage lireImage(String imageUrl) {
         try {
-            return ImageIO.read(new File(imageUrl));
+            return ImageIO.read(ImageReader.class.getResourceAsStream(imageUrl));
         }catch (IOException ioe){
             throw new RuntimeException("Erreur de lecture de l'image");
         }

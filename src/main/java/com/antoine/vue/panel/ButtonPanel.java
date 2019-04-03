@@ -77,9 +77,11 @@ public class ButtonPanel extends JPanel implements LevelListener, IPanel {
 	}
 
 	private void init() {
-		appleButton= new JButton(new ImageIcon(("./ressources/images/boutons/apple.png")));
-		rarityButton= new JButton(new ImageIcon("./ressources/images/boutons/rarity.png"));
-		rainbowButton= new JButton(new ImageIcon("./ressources/images/boutons/rainbow.png"));
+		String url= String.valueOf(getClass().getResource("/ressources/images/boutons/apple.png"));
+		System.out.println(url);
+		appleButton= new JButton(new ImageIcon(getClass().getResource("/ressources/images/boutons/apple.png")));
+		rarityButton= new JButton(new ImageIcon(getClass().getResource("/ressources/images/boutons/rarity.png")));
+		rainbowButton= new JButton(new ImageIcon(getClass().getResource("/ressources/images/boutons/rainbow.png")));
 		appleButton.setPreferredSize(new Dimension(75, 75));
 		rarityButton.setPreferredSize(new Dimension(75, 75));
 		rainbowButton.setPreferredSize(new Dimension(75, 75));

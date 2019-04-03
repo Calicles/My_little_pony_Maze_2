@@ -7,7 +7,7 @@ import com.antoine.geometry.Rectangle;
 
 /**
  * <b>Classe qui représente un ennemi</b>
- * <p>possède une Intelligence Artificielle
+ * <p>possède une pseudo Intelligence Artificielle
  * pour choix de déplacement</p>
  *
  * @author antoine

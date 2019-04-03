@@ -2,8 +2,7 @@ package com.antoine.services;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class Character_reader {
@@ -12,7 +11,7 @@ public class Character_reader {
 		HashMap<Integer, BufferedImage[]> map= new HashMap<>();
 		
 		try(BufferedReader reader= new BufferedReader(
-				new FileReader(new File(url)))) {
+				new InputStreamReader(Character_reader.class.getResourceAsStream(url)))) {
 					
 			String[] bounds= reader.readLine().split(" ");
 			String line;

@@ -5,7 +5,7 @@ import com.antoine.services.ImageReader;
 import java.awt.image.BufferedImage;
 
 /**
- * Classe gérant une image et ses dimensions.
+ * Classe gérant une image 2D et ses dimensions.
  * @author antoine
  */
 public abstract class AbstractImage {

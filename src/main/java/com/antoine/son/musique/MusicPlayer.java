@@ -2,6 +2,7 @@ package com.antoine.son.musique;
 import java.io.*;
 import javax.sound.sampled.*;
 import java.io.IOException;
+import java.net.URL;
 
 
 /**
@@ -14,6 +15,7 @@ public class MusicPlayer extends Thread{
   
   AudioInputStream ais=null;
   SourceDataLine line;
+  float volume;
   
   String source;
 
@@ -27,12 +29,18 @@ public class MusicPlayer extends Thread{
      * <p>Initialise les états</p>
      * @param musicPath du fichier .wav
      */
-  public MusicPlayer(String musicPath){
+  public MusicPlayer(String musicPath, float volume){
     playing=true;
     levelRunning= true;
+    this.volume= volume;
     source= musicPath;
     this.setDaemon(true);
     init();
+  }
+
+  public void setVolume(float volume){
+    FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+    volumeControl.setValue(volume);
   }
   
   @SuppressWarnings("unused")
@@ -43,7 +51,17 @@ public class MusicPlayer extends Thread{
     try{
       byte bytes[]= new byte[1024];
       int bytesRead=0;
-      while(((bytesRead= ais.read(bytes, 0, bytes.length)) != -1) && levelRunning){
+/*
+      while ((bytesRead = ais.read(bytes, 0, bytes.length)) != 1){
+
+        System.out.println(bytesRead);
+
+      }
+
+      bytes= adjustVolume(bytes, 2.5f);
+
+      while(((bytesRead= line.write(bytes, 0, bytesRead)) != -1) && levelRunning){
+        System.out.println(bytesRead+"    "+2);
         synchronized(this){
           if(!playing){
             try {
@@ -53,8 +71,18 @@ public class MusicPlayer extends Thread{
             }catch (InterruptedException ignored){}
           }
         }
-        line.write(bytes,0, bytesRead);
-      }
+       // line.write(bytes,0, bytesRead);
+     }
+     */
+System.out.println("begin");
+    while ((bytesRead= ais.read(bytes, bytesRead, bytes.length)) != -1){
+    }
+System.out.println("fin");
+    byte[] updated= adjustVolume(bytes, 1f);
+
+    while ((bytesRead = line.write(updated, 0, updated.length)) != -1){
+    }
+
     }catch(IOException i){
       i.printStackTrace();
     }
@@ -91,13 +119,13 @@ public class MusicPlayer extends Thread{
   }
 
   private void init(){
-    File fichier= new File(source);
+    URL url= getClass().getResource(source);
 
     try {
 
-      AudioFileFormat format = AudioSystem.getAudioFileFormat(fichier);
+      AudioFileFormat format = AudioSystem.getAudioFileFormat(url);
 
-      ais = AudioSystem.getAudioInputStream(fichier);
+      ais = AudioSystem.getAudioInputStream(url);
 
       AudioFormat audioFormat = ais.getFormat();
 
@@ -114,5 +142,26 @@ public class MusicPlayer extends Thread{
       throw new RuntimeException("erreur de lecture du fichier de musique");
     }
   }
-  
+
+  private byte[] adjustVolume(byte[] audioSamples, float volume) {
+    System.out.println("in");
+    byte[] array = new byte[audioSamples.length];
+    for (int i = 0; i < array.length; i+=2) {
+      // convert byte pair to int
+      short buf1 = audioSamples[i+1];
+      short buf2 = audioSamples[i];
+
+      buf1 = (short) ((buf1 & 0xff) << 8);
+      buf2 = (short) (buf2 & 0xff);
+
+      short res= (short) (buf1 | buf2);
+      res = (short) (res * volume);
+
+      // convert back
+      array[i] = (byte) res;
+      array[i+1] = (byte) (res >> 8);
+
+    }
+    return array;
+  }
 }

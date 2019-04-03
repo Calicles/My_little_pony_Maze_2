@@ -18,7 +18,7 @@ public abstract class AbstractLevel implements IStructure {
 	private Rectangle exit;
 	protected BufferedImage endImage;
 	
-	private String endImageUrl;
+	protected String endImageUrl;
 	protected boolean running;
 	protected int tile_width, tile_height;
 	
@@ -53,9 +53,11 @@ public abstract class AbstractLevel implements IStructure {
 	}
 
 	public int getMapWidth(){return mapSize.getWidth();}
+
 	public int getMapHeight(){return mapSize.getHeight();}
 
 	public Dimension getDimension() {return mapSize.getDimension();}
+
 	public boolean isRunning() {return running;}
 
 	@Override
@@ -123,7 +125,7 @@ public abstract class AbstractLevel implements IStructure {
 	}
 
 	private boolean isPlayerOnExit() {
-		return isIEntityInBox(player.toRectangle(), exit);
+		return isIEntityInBox(player.getPosition(), exit);
 	}
 
 	private Rectangle tileToRectangle(Tile tile) {
