@@ -4,9 +4,8 @@ import com.antoine.contracts.*;
 import com.antoine.services.Assembler;
 import com.antoine.geometry.Rectangle;
 import com.antoine.contracts.IJeu;
-import com.antoine.son.SoundMaker;
-import com.antoine.son.bruitage.SoundPlayer;
-import com.antoine.son.musique.AudioManager;
+import com.antoine.son.SoundEffect;
+import com.antoine.son.MusicPlayer;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -22,8 +21,8 @@ public class Game implements IJeu {
     private ILevel levelRunning;
     private ArrayList<LevelListener> listeners;
     private Assembler assembler;
-    private SoundPlayer walkSound;
-    private SoundMaker player;
+    private SoundEffect walkSound;
+    private MusicPlayer music;
 
 
     public Game()  {
@@ -39,9 +38,10 @@ public class Game implements IJeu {
         levelApple.selected();
         levelFlutter= null;
         levelPinky= null;
-        walkSound= new SoundPlayer("/ressources/sons/bruitage/trotDur.wav", 1f);
-        player = new SoundMaker("/ressources/sons/bruitage/Indiana Jones.wav", 1f);
-        player.play();
+        walkSound= new SoundEffect("/ressources/sons/bruitage/trotDur.wav", 1f);
+        music = new MusicPlayer("/ressources/sons/bruitage/Indiana Jones.wav", 0.1f);
+        music.play();
+
     }
 
 
@@ -153,7 +153,6 @@ public class Game implements IJeu {
 
     public void playerMovesReleased(){
         levelRunning.playerMovesReleased();
-        walkSound.stop();
         this.fireUpdate();
     }
 

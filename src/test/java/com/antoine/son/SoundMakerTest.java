@@ -8,7 +8,5 @@ public class SoundMakerTest {
 
     @Test
     public void play() {
-        SoundMaker player= new SoundMaker(path, 1);
-        player.play();
     }
 }
