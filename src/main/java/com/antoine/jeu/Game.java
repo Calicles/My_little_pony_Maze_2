@@ -1,10 +1,10 @@
 package com.antoine.jeu;
 
 import com.antoine.contracts.*;
+import com.antoine.manager.musique.Jukebox;
 import com.antoine.services.Assembler;
 import com.antoine.geometry.Rectangle;
 import com.antoine.contracts.IJeu;
-import com.antoine.son.bruitage.SoundPlayer;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -20,8 +20,7 @@ public class Game implements IJeu {
     private ILevel levelRunning;
     private ArrayList<LevelListener> listeners;
     private Assembler assembler;
-    private SoundPlayer walkSound;
-
+    private Jukebox jukebox;
 
     public Game()  {
 
@@ -36,7 +35,8 @@ public class Game implements IJeu {
         levelApple.selected();
         levelFlutter= null;
         levelPinky= null;
-        walkSound= new SoundPlayer("/ressources/sons/bruitage/trotDur.wav", 1);
+        jukebox = (Jukebox) assembler.newInstance("jukebox");
+        jukebox.switchTo("apple");
     }
 
 
@@ -68,6 +68,7 @@ public class Game implements IJeu {
         levelApple.selected();
         levelRarity.deselected();
         levelRainbow.deselected();
+        jukebox.switchTo("apple");
         this.fireUpdate();
     }
     public void switchLevelRarity() {
@@ -75,6 +76,7 @@ public class Game implements IJeu {
         levelRarity.selected();
         levelApple.deselected();
         levelRainbow.deselected();
+        jukebox.switchTo("rarity");
         this.fireUpdate();
     }
     public void switchLevelRainbow() {
@@ -82,6 +84,7 @@ public class Game implements IJeu {
         levelRainbow.selected();
         levelApple.deselected();
         levelRarity.deselected();
+        jukebox.switchTo("apple");
         this.fireUpdate();
     }
     public boolean isAppleSelectedAndRunning() {
@@ -97,7 +100,6 @@ public class Game implements IJeu {
     public void playerMovesLeft(){
         if(isLevelRunning()){
             levelRunning.playerMovesLeft();
-            walkSound.play();
         }
         this.fireUpdate();
     }
@@ -105,7 +107,7 @@ public class Game implements IJeu {
     public void playerMovesRight(){
         if(isLevelRunning()){
             levelRunning.playerMovesRight();
-            walkSound.play();
+            jukebox.makeSound();
         }
         this.fireUpdate();
     }
@@ -113,7 +115,7 @@ public class Game implements IJeu {
     public void playerMovesUp(){
         if(isLevelRunning()){
             levelRunning.playerMovesUp();
-            walkSound.play();
+            jukebox.makeSound();
         }
         this.fireUpdate();
     }
@@ -121,7 +123,7 @@ public class Game implements IJeu {
     public void playerMovesDown(){
         if(isLevelRunning()){
             levelRunning.playerMovesDown();
-            walkSound.play();
+            jukebox.makeSound();
         }
         this.fireUpdate();
     }
@@ -148,7 +150,6 @@ public class Game implements IJeu {
 
     public void playerMovesReleased(){
         levelRunning.playerMovesReleased();
-        walkSound.stop();
         this.fireUpdate();
     }
 
