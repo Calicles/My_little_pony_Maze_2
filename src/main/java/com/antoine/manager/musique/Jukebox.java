@@ -16,7 +16,7 @@ public class Jukebox {
     private float MusicVolume, soundVolume;
 
     public Jukebox(){
-        MusicVolume = 1f;
+        MusicVolume = 0.5f;
         soundVolume = 1f;
         musics = new HashMap<>();
         sounds = new HashMap<>();

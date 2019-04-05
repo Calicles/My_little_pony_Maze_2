@@ -5,10 +5,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.manager.niveau.LevelManager;
+import com.antoine.vue.listeners.SliderChangeMusicListener;
+import com.antoine.vue.listeners.SliderChangeSoundListener;
 import com.antoine.vue.panel.*;
 
 public class Frame extends JFrame {
@@ -17,34 +21,58 @@ public class Frame extends JFrame {
 	
 	public Frame() {
 
+		Border lowered, raised;
+		raised = BorderFactory.createLoweredBevelBorder();
+		lowered = BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder());
+
 		Presentateur presentateur= new LevelManager();
+
 		ButtonPanel buttons= new ButtonPanel(presentateur);
+
 		JPanel panelBas = new JPanel(new BorderLayout());
-		JPanel innerBas = new JPanel(new BorderLayout());
-		JPanel innerBas2 = new JPanel(new BorderLayout());
-		JPanel innerBas3 = new JPanel(new BorderLayout());
+
+		JPanel innerGauche = new JPanel(new BorderLayout());
+
+		JPanel innerDroit = new JPanel(new BorderLayout());
+
 		JLabel music = new JLabel("music");
+		music.setHorizontalAlignment(JLabel.CENTER);
+		music.setVerticalAlignment(JLabel.CENTER);
 		music.setBackground(Color.PINK);
 		JLabel bruitage = new JLabel("bruitage");
+		bruitage.setHorizontalAlignment(JLabel.CENTER);
+		bruitage.setVerticalAlignment(JLabel.CENTER);
 		bruitage.setBackground(Color.PINK);
-		innerBas.add(music, BorderLayout.NORTH);
-		innerBas.add(bruitage, BorderLayout.CENTER);
+		innerGauche.add(music, BorderLayout.SOUTH);
+		JSliderPanel musicSlider = new JSliderPanel(presentateur.getJukebox(), "/ressources/images/slide/lunaSlide.png",
+				0, 10, true);
+		musicSlider.addChangeListener(new SliderChangeMusicListener(presentateur.getJukebox()));
 
-		innerBas.setBackground(Color.PINK);
+		JSliderPanel soundSlider = new JSliderPanel(presentateur.getJukebox(), "/ressources/images/slide/lunaSlide.png",
+				 0, 10, true);
+		soundSlider.addChangeListener(new SliderChangeSoundListener(presentateur.getJukebox()));
+		innerGauche.add(musicSlider, BorderLayout.CENTER);
 
-		innerBas2.add(new JSliderMusic(presentateur), BorderLayout.NORTH);
-		innerBas2.add(new JSliderSound(presentateur), BorderLayout.SOUTH);
 
-		innerBas3.add(innerBas, BorderLayout.WEST);
-		innerBas3.add(innerBas2, BorderLayout.CENTER);
-		innerBas3.setBackground(Color.PINK);
+		innerGauche.setBackground(Color.PINK);
+
+		innerDroit.add(soundSlider, BorderLayout.CENTER);
+		innerDroit.add(bruitage, BorderLayout.SOUTH);
+		innerDroit.setBackground(Color.PINK);
+
 
 		panelBas.add(buttons, BorderLayout.CENTER);
-		panelBas.add(innerBas3, BorderLayout.SOUTH);
+		panelBas.setBorder(lowered);
+
 		panel= new SpecialPanel(presentateur);
+		panel.setBorder(raised);
 		this.setLayout(new BorderLayout());
 		this.add(panel, BorderLayout.CENTER);
 		this.add(panelBas, BorderLayout.SOUTH);
+
+		this.add(innerGauche, BorderLayout.WEST);
+		this.add(innerDroit, BorderLayout.EAST);
+
 		this.addKeyListener(new InternImageListener());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();

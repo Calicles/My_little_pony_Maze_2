@@ -1,53 +1,62 @@
 package com.antoine.vue.panel;
 
-import com.antoine.contracts.Presentateur;
 import com.antoine.manager.musique.Jukebox;
-import com.antoine.services.ImageReader;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
 
-public  abstract class JSliderPanel extends JSlider {
+public  class JSliderPanel extends JSlider {
 
-    public JSliderPanel(Presentateur presentateur, int minValue, int maxValue, boolean tickPaintable){
-        super(minValue, maxValue);
-        Jukebox jukebox = presentateur.getJukebox();
-        setListener(jukebox);
+    Icon knobImage;
+
+    public JSliderPanel(Jukebox jukebox, String iconPath, int minValue, int maxValue, boolean tickPaintable){
+        super(SwingConstants.VERTICAL, minValue, maxValue, (maxValue / 2));
         setBackground(Color.PINK);
         super.setMajorTickSpacing(10);
         super.setMinorTickSpacing(1);
 
-        setUI(new mySliderUI(this));
+        knobImage = new ImageIcon(getClass().getResource(iconPath));
+        setUI(new ThumbIconSliderUI(this));
 
         super.setPaintTicks(tickPaintable);
         super.setPaintLabels(tickPaintable);
+        super.setPaintTrack(true);
         super.setFocusable(false);
     }
 
-    protected abstract void setListener(Jukebox jukebox);
-
     @Override
     public Dimension getPreferredSize(){
+
         return super.getPreferredSize();
     }
 
-    private class mySliderUI extends BasicSliderUI {
 
-        Image knobImage;
 
-        public mySliderUI( JSlider aSlider ) {
+    private class ThumbIconSliderUI extends BasicSliderUI {
+
+
+        public ThumbIconSliderUI( JSlider aSlider ) {
 
             super( aSlider );
 
-                this.knobImage = ImageReader.lireImage("/ressources/images/slide/lunaSlide.png");
-
-
         }
+
+        @Override
         public void paintThumb(Graphics g)  {
+            Rectangle knobRect = thumbRect;
+            g.translate(knobRect.x, knobRect.y);
 
-            g.drawImage( this.knobImage, thumbRect.x, thumbRect.y, 8, 8, null );
+            knobImage.paintIcon(slider, g, 0, 0);
 
+            g.translate(-knobRect.x, -knobRect.y);
+        }
+
+        @Override
+        protected Dimension getThumbSize(){
+
+            return new Dimension(knobImage.getIconWidth(), knobImage.getIconHeight());
         }
 
     }
