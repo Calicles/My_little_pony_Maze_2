@@ -1,6 +1,6 @@
 package com.antoine.vue.frame;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -9,8 +9,7 @@ import javax.swing.*;
 import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.manager.niveau.LevelManager;
-import com.antoine.vue.panel.ButtonPanel;
-import com.antoine.vue.panel.SpecialPanel;
+import com.antoine.vue.panel.*;
 
 public class Frame extends JFrame {
 
@@ -20,10 +19,32 @@ public class Frame extends JFrame {
 
 		Presentateur presentateur= new LevelManager();
 		ButtonPanel buttons= new ButtonPanel(presentateur);
+		JPanel panelBas = new JPanel(new BorderLayout());
+		JPanel innerBas = new JPanel(new BorderLayout());
+		JPanel innerBas2 = new JPanel(new BorderLayout());
+		JPanel innerBas3 = new JPanel(new BorderLayout());
+		JLabel music = new JLabel("music");
+		music.setBackground(Color.PINK);
+		JLabel bruitage = new JLabel("bruitage");
+		bruitage.setBackground(Color.PINK);
+		innerBas.add(music, BorderLayout.NORTH);
+		innerBas.add(bruitage, BorderLayout.CENTER);
+
+		innerBas.setBackground(Color.PINK);
+
+		innerBas2.add(new JSliderMusic(presentateur), BorderLayout.NORTH);
+		innerBas2.add(new JSliderSound(presentateur), BorderLayout.SOUTH);
+
+		innerBas3.add(innerBas, BorderLayout.WEST);
+		innerBas3.add(innerBas2, BorderLayout.CENTER);
+		innerBas3.setBackground(Color.PINK);
+
+		panelBas.add(buttons, BorderLayout.CENTER);
+		panelBas.add(innerBas3, BorderLayout.SOUTH);
 		panel= new SpecialPanel(presentateur);
 		this.setLayout(new BorderLayout());
 		this.add(panel, BorderLayout.CENTER);
-		this.add(buttons, BorderLayout.SOUTH);
+		this.add(panelBas, BorderLayout.SOUTH);
 		this.addKeyListener(new InternImageListener());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();

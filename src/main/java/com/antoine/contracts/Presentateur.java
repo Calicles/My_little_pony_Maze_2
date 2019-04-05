@@ -1,5 +1,7 @@
 package com.antoine.contracts;
 
+import com.antoine.manager.musique.Jukebox;
+
 import java.awt.*;
 
 public interface Presentateur {
@@ -39,4 +41,6 @@ public interface Presentateur {
     int getMapHeight();
 
     void accept(IAfficheur afficheur);
+
+    Jukebox getJukebox();
 }

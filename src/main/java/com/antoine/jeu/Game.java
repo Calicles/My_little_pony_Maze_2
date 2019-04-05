@@ -24,7 +24,7 @@ public class Game implements IJeu {
 
     public Game()  {
 
-        String configPath= getClass().getResource("/config/conf.xml").getPath();
+        String configPath= String.valueOf(getClass().getResource("/config/conf.xml"));
 
         listeners= new ArrayList<>();
         assembler= new Assembler(configPath);
@@ -100,6 +100,7 @@ public class Game implements IJeu {
     public void playerMovesLeft(){
         if(isLevelRunning()){
             levelRunning.playerMovesLeft();
+
         }
         this.fireUpdate();
     }
@@ -242,6 +243,11 @@ public class Game implements IJeu {
     @Override
     public IEntity getBoss() {
         return levelRunning.getBoss();
+    }
+
+    @Override
+    public Jukebox getJukebox() {
+        return jukebox;
     }
 
 }

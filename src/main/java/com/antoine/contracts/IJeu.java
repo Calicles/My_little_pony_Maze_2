@@ -1,6 +1,7 @@
 package com.antoine.contracts;
 
 import com.antoine.geometry.Rectangle;
+import com.antoine.manager.musique.Jukebox;
 
 import java.awt.*;
 
@@ -70,4 +71,5 @@ public interface IJeu {
 
     IEntity getBoss();
 
+    Jukebox getJukebox();
 }

@@ -44,9 +44,7 @@ public class MusicPlayer extends SoundMaker {
                 while ((totalRead = ais.read(bytes, 0, bytes.length)) != -1 && levelRunning) {
 
                     testSleep();
-                    bytes = adjustVolume(bytes, 0, totalRead);
-                    //SoundAdjuster.normalizeVolume(bytes, 0, totalRead, volume);
-
+                    bytes = adjustVolume(bytes);
                     line.write(bytes, 0, totalRead);
                 }
             } catch (IOException ioe) {
@@ -75,5 +73,27 @@ public class MusicPlayer extends SoundMaker {
     public void play(){
         super.play();
         playing = true;
+    }
+
+    protected byte[] adjustVolume(byte[] audioSamples) {
+        byte[] array = new byte[audioSamples.length];
+
+        for (int i = 0; i < audioSamples.length; i+=2) {
+            // convert byte pair to int
+            short buf1 = audioSamples[i+1];
+            short buf2 = audioSamples[i];
+
+            buf1 = (short) ((buf1 & 0xff) << 8);
+            buf2 = (short) (buf2 & 0xff);
+
+            short res= (short) (buf1 | buf2);
+            res = (short) (res * volume);
+
+            // convert back
+            array[i] = (byte) res;
+            array[i+1] = (byte) (res >> 8);
+
+        }
+        return array;
     }
 }
