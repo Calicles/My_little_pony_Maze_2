@@ -13,32 +13,41 @@ public class Jukebox {
     private Map<String, SoundEffect> sounds;
     private String currentPlaying = "";
 
-    private float volume;
+    private float MusicVolume, soundVolume;
 
     public Jukebox(){
-        volume = 0.1f;
+        MusicVolume = 0.5f;
+        soundVolume = 1f;
         musics = new HashMap<>();
         sounds = new HashMap<>();
     }
 
-    public void setVolume(final float volume){
-        this.volume = volume;
+    public void setMusicVolume(final float volume){
+        this.MusicVolume = volume;
         Set<String > musicSet = musics.keySet();
         for (String s: musicSet){
             musics.get(s).setVolume(volume);
+        }
+    }
+
+    public void setSoundVolume(final float volume){
+        this.soundVolume = volume;
+        Set<String> soundSet = sounds.keySet();
+        for (String s: soundSet){
             sounds.get(s).setVolume(volume);
         }
     }
 
     public void setMusic(String idMusicPath){
         String[] buf = idMusicPath.split(",");
-        musics.put(buf[0], new MusicPlayer(buf[1], volume));
+        System.out.println(buf[1]);
+        musics.put(buf[0], new MusicPlayer(buf[1], MusicVolume));
         currentPlaying = buf[0];
     }
 
     public void setSound(String idSoundPath){
         String[] buf = idSoundPath.split(",");
-        sounds.put(buf[0], new SoundEffect(buf[1], volume));
+        sounds.put(buf[0], new SoundEffect(buf[1], MusicVolume));
     }
 
     public void switchTo(String name){
@@ -63,4 +72,11 @@ public class Jukebox {
         sounds.remove(name);
     }
 
+    public float getMusicVolume() {
+        return MusicVolume;
+    }
+
+    public float getSoundVolume(){
+        return soundVolume;
+    }
 }

@@ -19,6 +19,7 @@ public abstract class SoundMaker {
     public SoundMaker(String musicPath, float volume){
         checkVolumeinRange(volume);
         thread = implementRun();
+        thread.setDaemon(true);
         this.volume= volume;
         init(musicPath);
     }
@@ -46,7 +47,7 @@ public abstract class SoundMaker {
     }
 
     private void init(String musicPath){
-        URL url= getClass().getResource(musicPath);
+        URL url = this.getClass().getResource(musicPath);
 
         try {
 
@@ -70,29 +71,6 @@ public abstract class SoundMaker {
         }
     }
 
-    protected byte[] adjustVolume(byte[] audioSamples, int start, int len) {
-        byte[] array = new byte[len];
-        len = start + len;
-        if (len >= audioSamples.length)
-            len = audioSamples.length ;
-        for (int i = start; i < len; i+=2) {
-            // convert byte pair to int
-            short buf1 = audioSamples[i+1];
-            short buf2 = audioSamples[i];
-
-            buf1 = (short) ((buf1 & 0xff) << 8);
-            buf2 = (short) (buf2 & 0xff);
-
-            short res= (short) (buf1 | buf2);
-            res = (short) (res * volume);
-
-            // convert back
-            array[i - start] = (byte) res;
-            array[(i+1) - start] = (byte) (res >> 8);
-
-        }
-        return array;
-    }
 
 }
 

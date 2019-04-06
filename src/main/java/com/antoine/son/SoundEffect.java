@@ -14,10 +14,15 @@ public class SoundEffect extends SoundMaker {
     @Override
     protected Thread implementRun() {
         return new Thread(()->{
+            int bytesRead;
+            byte[] buf;
             while (true) {
-                samples = adjustVolume(samples, 0, samples.length);
-                //SoundAdjuster.normalizeVolume(samples, 0, samples.length, volume);
-                line.write(samples, 0, samples.length);
+                bytesRead = 0;
+                while ((bytesRead <= samples.length)) {
+                    buf = adjustVolume(samples, bytesRead, 128);
+                    bytesRead += buf.length;
+                    line.write(buf, 0, buf.length);
+                }
                 sleep();
             }
         });
@@ -48,4 +53,27 @@ public class SoundEffect extends SoundMaker {
         return data;
     }
 
+    protected byte[] adjustVolume(byte[] audioSamples, int start, int len) {
+        byte[] array = new byte[len];
+        len = start + len;
+        if (len >= audioSamples.length)
+            len = audioSamples.length ;
+        for (int i = start; i < len; i+=2) {
+            // convert byte pair to int
+            short buf1 = audioSamples[i+1];
+            short buf2 = audioSamples[i];
+
+            buf1 = (short) ((buf1 & 0xff) << 8);
+            buf2 = (short) (buf2 & 0xff);
+
+            short res= (short) (buf1 | buf2);
+            res = (short) (res * volume);
+
+            // convert back
+            array[i - start] = (byte) res;
+            array[(i+1) - start] = (byte) (res >> 8);
+
+        }
+        return array;
+    }
 }

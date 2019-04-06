@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import com.antoine.contracts.*;
 import com.antoine.jeu.Game;
+import com.antoine.manager.musique.Jukebox;
 
 
 public class LevelManager implements Presentateur {
@@ -90,5 +91,10 @@ public class LevelManager implements Presentateur {
 	@Override
 	public void accept(IAfficheur visiteur) {
 		game.accept(visiteur);
+	}
+
+	@Override
+	public Jukebox getJukebox() {
+		return game.getJukebox();
 	}
 }

@@ -33,7 +33,7 @@ public class JCardPane extends JPanel {
 
     public void switchPane2(){
         CardLayout card= (CardLayout) this.getLayout();
-        card.show(this, labelPane1);
+        card.show(this, labelPane2);
     }
 
 
