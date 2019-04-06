@@ -1,5 +1,6 @@
 package com.antoine.contracts;
 
+import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Rectangle;
 
 import java.awt.*;
@@ -56,4 +57,6 @@ public interface ILevel {
     void start();
 
     IEntity getBoss();
+
+    void setEvent(LevelChangeEvent event);
 }

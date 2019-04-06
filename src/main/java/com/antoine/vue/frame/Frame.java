@@ -60,28 +60,39 @@ public class Frame extends JFrame {
 
 		ButtonPanel buttons= new ButtonPanel(presentateur);
 
-		JPanel panelBas = new JPanel(new BorderLayout());
+		JMiniMap miniMapPane = new JMiniMap(presentateur);
+		miniMapPane.setBackground(Color.PINK);
+
+		JCardPane panelBas = new JCardPane("boutons", buttons, "miniMap", miniMapPane);
+		presentateur.AddListener(panelBas);
 
 		JPanel innerGauche = new JPanel(new BorderLayout());
 
 		JPanel innerDroit = new JPanel(new BorderLayout());
 
+
 		JLabel music = new JLabel("music");
 		music.setHorizontalAlignment(JLabel.CENTER);
 		music.setVerticalAlignment(JLabel.CENTER);
 		music.setBackground(Color.PINK);
+
 		JLabel bruitage = new JLabel("bruitage");
 		bruitage.setHorizontalAlignment(JLabel.CENTER);
 		bruitage.setVerticalAlignment(JLabel.CENTER);
 		bruitage.setBackground(Color.PINK);
+
 		innerGauche.add(music, BorderLayout.SOUTH);
+
 		JSliderPanel musicSlider = new JSliderPanel(presentateur.getJukebox(), "/ressources/images/slide/lunaSlide.png",
 				0, 10, true);
 		musicSlider.addChangeListener(new SliderChangeMusicListener(presentateur.getJukebox()));
 
+
 		JSliderPanel soundSlider = new JSliderPanel(presentateur.getJukebox(), "/ressources/images/slide/lunaSlide.png",
 				0, 10, true);
 		soundSlider.addChangeListener(new SliderChangeSoundListener(presentateur.getJukebox()));
+
+
 		innerGauche.add(musicSlider, BorderLayout.CENTER);
 
 
@@ -91,8 +102,6 @@ public class Frame extends JFrame {
 		innerDroit.add(bruitage, BorderLayout.SOUTH);
 		innerDroit.setBackground(Color.PINK);
 
-
-		panelBas.add(buttons, BorderLayout.CENTER);
 		panelBas.setBorder(raised);
 
 		panel= new SpecialPanel(presentateur);
