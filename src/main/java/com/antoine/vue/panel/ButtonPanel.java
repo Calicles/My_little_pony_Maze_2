@@ -3,13 +3,11 @@ package com.antoine.vue.panel;
 import java.awt.*;
 import javax.swing.*;
 
-import com.antoine.afficheur.AfficheurMiniMap;
-import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
 import com.antoine.events.LevelChangeEvent;
 
-public class ButtonPanel extends JPanel implements LevelListener, IPanel {
+public class ButtonPanel extends JPanel implements LevelListener {
 
 	private JButton appleButton, rarityButton, rainbowButton;
 

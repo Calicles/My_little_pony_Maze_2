@@ -17,7 +17,7 @@ public class SliderChangeMusicListener implements ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
-        jukebox.setMusicVolume( ((float) source.getValue() / 10));
+        jukebox.setMusicVolume( ((float) source.getValue() / 100));
     }
 
 }
