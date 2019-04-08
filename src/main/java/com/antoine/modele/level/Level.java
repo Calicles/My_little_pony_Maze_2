@@ -69,4 +69,5 @@ public class Level extends AbstractLevel implements ILevel {
 	public void setEvent(LevelChangeEvent event) {
 
 	}
+
 }

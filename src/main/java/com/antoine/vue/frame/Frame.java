@@ -9,6 +9,7 @@ import javax.swing.border.Border;
 
 import com.antoine.contracts.Presentateur;
 import com.antoine.manager.niveau.LevelManager;
+import com.antoine.vue.ProgressBar;
 import com.antoine.vue.listeners.SliderChangeMusicListener;
 import com.antoine.vue.listeners.SliderChangeSoundListener;
 import com.antoine.vue.panel.*;
@@ -23,9 +24,10 @@ public class Frame extends JFrame {
 
 	private void init(){
 
-		Border lowered, raised;
+		Border lowered, raised, bevel;
 		lowered = BorderFactory.createLoweredBevelBorder();
 		raised = BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder());
+		bevel = BorderFactory.createRaisedBevelBorder();
 
 		Presentateur presentateur= new LevelManager();
 
@@ -36,6 +38,13 @@ public class Frame extends JFrame {
 
 		JCardPane panelBas = new JCardPane("boutons", buttons, "miniMap", miniMapPane);
 		presentateur.AddListener(panelBas);
+
+		ProgressBar barre = new ProgressBar(0, 6);
+		barre.setBorder(bevel);
+
+		presentateur.AddListener(barre);
+
+
 
 		JPanel innerGauche = new JPanel(new BorderLayout());
 
@@ -78,6 +87,7 @@ public class Frame extends JFrame {
 		panel= new SpecialPanel(presentateur);
 		panel.setBorder(lowered);
 		this.setLayout(new BorderLayout());
+		this.add(barre, BorderLayout.NORTH);
 		this.add(panel, BorderLayout.CENTER);
 		this.add(panelBas, BorderLayout.SOUTH);
 

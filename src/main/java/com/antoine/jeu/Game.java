@@ -72,10 +72,9 @@ public class Game implements IJeu {
 
     private void switchLevel2() {
 
-        levelApple=null; levelRarity= null; levelRainbow= null;
+        levelApple = levelRarity = levelRainbow = null;
         levelRunning= levelFlutter= (ILevel) assembler.newInstance("levelFlutter");
 
-        setEventRunning(false, false, false);
         event.setBooleanTable(LevelChangeEvent.LEVEL4_RUNNING, true);
     }
 
@@ -86,7 +85,6 @@ public class Game implements IJeu {
         levelRainbow.deselected();
         jukebox.switchTo("apple");
         setEventSelected(true, false, false);
-        setEventRunning(levelApple.isRunning(), levelRarity.isRunning(), levelRainbow.isRunning());
         this.fireUpdate();
     }
     public void switchLevelRarity() {
@@ -96,7 +94,6 @@ public class Game implements IJeu {
         levelRainbow.deselected();
         jukebox.switchTo("rarity");
         setEventSelected(false, true, false);
-        setEventRunning(levelApple.isRunning(), levelRarity.isRunning(), levelRainbow.isRunning());
         this.fireUpdate();
 
     }
@@ -107,7 +104,6 @@ public class Game implements IJeu {
         levelRarity.deselected();
         jukebox.switchTo("apple");
         setEventSelected(false, false, true);
-        setEventRunning(levelApple.isRunning(), levelRarity.isRunning(), levelRainbow.isRunning());
         this.fireUpdate();
     }
 
@@ -124,8 +120,9 @@ public class Game implements IJeu {
     public void playerMovesLeft(){
         if(isLevelRunning()){
             levelRunning.playerMovesLeft();
-
+            jukebox.makeSound();
         }
+        event.setBooleanTable(levelRunning.getId(), levelRunning.isRunning());
         this.fireUpdate();
     }
 
@@ -134,6 +131,7 @@ public class Game implements IJeu {
             levelRunning.playerMovesRight();
             jukebox.makeSound();
         }
+        event.setBooleanTable(levelRunning.getId(), levelRunning.isRunning());
         this.fireUpdate();
     }
 
@@ -142,6 +140,7 @@ public class Game implements IJeu {
             levelRunning.playerMovesUp();
             jukebox.makeSound();
         }
+        event.setBooleanTable(levelRunning.getId(), levelRunning.isRunning());
         this.fireUpdate();
     }
 
@@ -150,6 +149,7 @@ public class Game implements IJeu {
             levelRunning.playerMovesDown();
             jukebox.makeSound();
         }
+        event.setBooleanTable(levelRunning.getId(), levelRunning.isRunning());
         this.fireUpdate();
     }
 

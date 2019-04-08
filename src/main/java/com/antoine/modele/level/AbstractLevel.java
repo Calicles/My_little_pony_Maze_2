@@ -7,7 +7,6 @@ import com.antoine.contracts.IEntity;
 import com.antoine.contracts.IMap;
 import com.antoine.contracts.IStructure;
 import com.antoine.contracts.IAfficheur;
-import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
@@ -22,9 +21,14 @@ public abstract class AbstractLevel implements IStructure {
 	protected String endImageUrl;
 	protected boolean running;
 	protected int tile_width, tile_height;
-	
+	protected int id;
+
+	private static int numberOfInstance = 0;
+
 
 	protected AbstractLevel(){
+		id = numberOfInstance;
+		numberOfInstance++;
 		running= true;
 	}
 
@@ -34,6 +38,10 @@ public abstract class AbstractLevel implements IStructure {
 		tile_height= map.getTile_height();
 		exit= tileToRectangle(map.findExit());
 		setMapSize();
+	}
+
+	public int getId(){
+		return id;
 	}
 
 	@Override

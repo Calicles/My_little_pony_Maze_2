@@ -84,7 +84,7 @@ public class Level4 extends Level3 implements ILevel {
                 startAnimation();
 
                 before = System.currentTimeMillis();
-                while (!over) {
+                while (!over && running) {
                     loop();
                     after = System.currentTimeMillis();
                     sleep();
@@ -95,6 +95,7 @@ public class Level4 extends Level3 implements ILevel {
                     count++;
                 }
             }
+            event.setBooleanTable(id, false);
         });
     }
 
