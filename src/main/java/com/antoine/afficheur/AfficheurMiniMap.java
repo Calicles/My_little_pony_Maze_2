@@ -6,6 +6,7 @@ import com.antoine.contracts.IStructure;
 import com.antoine.contracts.IAfficheur;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
+import com.antoine.modele.level.Level;
 import com.antoine.vue.panel.JMiniMap;
 
 import java.awt.*;
@@ -19,7 +20,8 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
 
     @Override
     public void visit(IStructure structure) {
-        drawMiniMap(structure);
+        if (!(structure instanceof Level))
+            drawMiniMap(structure);
     }
 
     public void drawMiniMap(IStructure structure) {

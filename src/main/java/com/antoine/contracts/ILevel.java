@@ -59,4 +59,7 @@ public interface ILevel {
     IEntity getBoss();
 
     void setEvent(LevelChangeEvent event);
+
+    int getId();
+
 }
