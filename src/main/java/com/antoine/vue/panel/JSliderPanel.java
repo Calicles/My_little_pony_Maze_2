@@ -3,7 +3,6 @@ package com.antoine.vue.panel;
 import com.antoine.manager.musique.Jukebox;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
 
@@ -11,11 +10,12 @@ public  class JSliderPanel extends JSlider {
 
     Icon knobImage;
 
-    public JSliderPanel(Jukebox jukebox, String iconPath, int minValue, int maxValue, boolean tickPaintable){
+    public JSliderPanel(String iconPath, int minValue, int maxValue, int value, boolean tickPaintable){
         super(SwingConstants.VERTICAL, minValue, maxValue, (maxValue / 2));
         setBackground(Color.PINK);
         super.setMajorTickSpacing(10);
         super.setMinorTickSpacing(1);
+        super.setValue(value);
 
         knobImage = new ImageIcon(getClass().getResource(iconPath));
         setUI(new ThumbIconSliderUI(this));

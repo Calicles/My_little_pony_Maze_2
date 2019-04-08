@@ -7,7 +7,6 @@ import java.awt.event.KeyListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.manager.niveau.LevelManager;
 import com.antoine.vue.listeners.SliderChangeMusicListener;
@@ -22,34 +21,6 @@ public class Frame extends JFrame {
 		init();
 	}
 
-	public void setPrincipalPanel(IPanel principalPanel){
-
-	}
-
-	public void setButtonPanel(IPanel buttonPanel){
-
-	}
-
-	public void setMiniMap(IPanel miniMap){
-
-		Presentateur presentateur= new LevelManager();
-		ButtonPanel buttons= new ButtonPanel(presentateur);
-		//JPanel downPane= new JCardPane();
-
-		panel= new SpecialPanel(presentateur);
-		this.setLayout(new BorderLayout());
-		this.add(panel, BorderLayout.CENTER);
-		this.add(buttons, BorderLayout.SOUTH);
-		this.addKeyListener(new InternImageListener());
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.pack();
-		this.setTitle("My Little Pony");
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
-
-	}
-
 	private void init(){
 
 		Border lowered, raised;
@@ -60,28 +31,39 @@ public class Frame extends JFrame {
 
 		ButtonPanel buttons= new ButtonPanel(presentateur);
 
-		JPanel panelBas = new JPanel(new BorderLayout());
+		JMiniMap miniMapPane = new JMiniMap(presentateur);
+		miniMapPane.setBackground(Color.PINK);
+
+		JCardPane panelBas = new JCardPane("boutons", buttons, "miniMap", miniMapPane);
+		presentateur.AddListener(panelBas);
 
 		JPanel innerGauche = new JPanel(new BorderLayout());
 
 		JPanel innerDroit = new JPanel(new BorderLayout());
 
+
 		JLabel music = new JLabel("music");
 		music.setHorizontalAlignment(JLabel.CENTER);
 		music.setVerticalAlignment(JLabel.CENTER);
 		music.setBackground(Color.PINK);
+
 		JLabel bruitage = new JLabel("bruitage");
 		bruitage.setHorizontalAlignment(JLabel.CENTER);
 		bruitage.setVerticalAlignment(JLabel.CENTER);
 		bruitage.setBackground(Color.PINK);
+
 		innerGauche.add(music, BorderLayout.SOUTH);
-		JSliderPanel musicSlider = new JSliderPanel(presentateur.getJukebox(), "/ressources/images/slide/lunaSlide.png",
-				0, 10, true);
+
+		JSliderPanel musicSlider = new JSliderPanel("/ressources/images/slide/celestiaSlide.png",
+				0, 50, (int) (presentateur.getJukebox().getMusicVolume() *100), true);
 		musicSlider.addChangeListener(new SliderChangeMusicListener(presentateur.getJukebox()));
 
-		JSliderPanel soundSlider = new JSliderPanel(presentateur.getJukebox(), "/ressources/images/slide/lunaSlide.png",
-				0, 10, true);
+
+		JSliderPanel soundSlider = new JSliderPanel("/ressources/images/slide/lunaSlide.png",
+				0, 50, (int) (presentateur.getJukebox().getSoundVolume() *100), true);
 		soundSlider.addChangeListener(new SliderChangeSoundListener(presentateur.getJukebox()));
+
+
 		innerGauche.add(musicSlider, BorderLayout.CENTER);
 
 
@@ -91,8 +73,6 @@ public class Frame extends JFrame {
 		innerDroit.add(bruitage, BorderLayout.SOUTH);
 		innerDroit.setBackground(Color.PINK);
 
-
-		panelBas.add(buttons, BorderLayout.CENTER);
 		panelBas.setBorder(raised);
 
 		panel= new SpecialPanel(presentateur);

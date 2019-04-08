@@ -3,35 +3,21 @@ package com.antoine.vue.panel;
 import java.awt.*;
 import javax.swing.*;
 
-import com.antoine.afficheur.AfficheurMiniMap;
-import com.antoine.contracts.IPanel;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
+import com.antoine.events.LevelChangeEvent;
 
-public class ButtonPanel extends JPanel implements LevelListener, IPanel {
+public class ButtonPanel extends JPanel implements LevelListener {
 
-	private Presentateur presentateur;
 	private JButton appleButton, rarityButton, rainbowButton;
-	private JMiniMap map;
-	
-	private boolean mapAdded;
-	
+
+
 	public ButtonPanel(Presentateur presentateur) {
-		this.presentateur= presentateur;
-		map= new JMiniMap(presentateur);
-		mapAdded= false;
-		init();
+		init(presentateur);
 	}
 
 	public ButtonPanel(){
 
-	}
-
-	public void setPresentateur(Presentateur presentateur){
-		this.presentateur= presentateur;
-		init();
-		map= new JMiniMap(presentateur);
-		mapAdded= false;
 	}
 
 	public void setAppleButton(String appleButtonImagePath){
@@ -46,39 +32,19 @@ public class ButtonPanel extends JPanel implements LevelListener, IPanel {
 		rainbowButton= new JButton(new ImageIcon(rainbowButtonImagePath));
 	}
 
-	@Override 
-	public Dimension getPreferredSize() {
-		int width=(int) presentateur.getDimension().getWidth();
-		int height=(int) presentateur.getDimension().getHeight() * 2 / AfficheurMiniMap.SCALE;
-		if(!mapAdded) {
-		int d= map.getHeight();
-		return new Dimension(width, height);
-		}else
-			return new Dimension(width, height/2+5);
+	@Override
+	public Dimension getPreferredSize(){
+		return new Dimension(75 * 3, 100);
 	}
 	@Override
-	public void update() {
-		if (!presentateur.isLevelsNull()) {
-			appleButton.setEnabled(presentateur.isAppleSelectedAndRunning());
-			rarityButton.setEnabled(presentateur.isRaritySelectedAndRunning());
-			rainbowButton.setEnabled(presentateur.isRainbowSelectedAndRunning());
-		} else if (this.isLevelsNull() && !mapAdded) {
-			this.hideButton();
-			this.map.setVisible(true);
-			this.mapAdded = true;
-		}
+	public void update(LevelChangeEvent lve) {
+		appleButton.setEnabled( !lve.valueOf(LevelChangeEvent.LEVEL1_SELECTED) && lve.valueOf(LevelChangeEvent.LEVEL1_RUNNING));
+		rarityButton.setEnabled( !lve.valueOf(LevelChangeEvent.LEVEL2_SELECTED) && lve.valueOf(LevelChangeEvent.LEVEL2_RUNNING));
+		rainbowButton.setEnabled( !lve.valueOf(LevelChangeEvent.LEVEL3_SELECTED) && lve.valueOf(LevelChangeEvent.LEVEL3_RUNNING));
 		this.repaint();
 	}
 
-	private void hideButton() {
-		this.remove(appleButton);
-		this.remove(rarityButton);
-		this.remove(rainbowButton);
-	}
-
-	private void init() {
-		String url= String.valueOf(getClass().getResource("/ressources/images/boutons/apple.png"));
-		System.out.println(url);
+	private void init(Presentateur presentateur) {
 		appleButton= new JButton(new ImageIcon(getClass().getResource("/ressources/images/boutons/apple.png")));
 		rarityButton= new JButton(new ImageIcon(getClass().getResource("/ressources/images/boutons/rarity.png")));
 		rainbowButton= new JButton(new ImageIcon(getClass().getResource("/ressources/images/boutons/rainbow.png")));
@@ -92,20 +58,12 @@ public class ButtonPanel extends JPanel implements LevelListener, IPanel {
 		this.add(appleButton);
 		this.add(rarityButton);
 		this.add(rainbowButton);
-		this.add(map);
-		this.map.setVisible(false);
 		appleButton.addActionListener(e->presentateur.switchLeveApple());
 		rarityButton.addActionListener(e->presentateur.switchLevelRarity());
 		rainbowButton.addActionListener(e->presentateur.switchLevelRainbow());
 		presentateur.AddListener(this);
 		this.setBackground(Color.PINK);
-		update();
+
 	}
 	
-	private boolean isLevelsNull() {
-		return presentateur.isLevelsNull() && presentateur.isLevelFlutterNull()
-				&& !presentateur.isLevelPinkyNull();
-	}
-
-
 }

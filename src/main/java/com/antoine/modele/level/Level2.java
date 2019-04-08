@@ -3,6 +3,7 @@ package com.antoine.modele.level;
 import com.antoine.contracts.IEntity;
 import com.antoine.contracts.ILevel;
 import com.antoine.contracts.LevelListener;
+import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 
@@ -27,6 +28,11 @@ public class Level2 extends AbstractLevel implements ILevel {
 	@Override
 	public IEntity getBoss() {
 		return null;
+	}
+
+	@Override
+	public void setEvent(LevelChangeEvent event) {
+
 	}
 
 	@Override

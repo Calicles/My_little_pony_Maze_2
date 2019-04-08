@@ -7,6 +7,7 @@ import com.antoine.contracts.IEntity;
 import com.antoine.contracts.IMap;
 import com.antoine.contracts.IStructure;
 import com.antoine.contracts.IAfficheur;
+import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 

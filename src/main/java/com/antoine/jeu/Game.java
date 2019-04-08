@@ -1,6 +1,7 @@
 package com.antoine.jeu;
 
 import com.antoine.contracts.*;
+import com.antoine.events.LevelChangeEvent;
 import com.antoine.manager.musique.Jukebox;
 import com.antoine.services.Assembler;
 import com.antoine.geometry.Rectangle;
@@ -21,6 +22,7 @@ public class Game implements IJeu {
     private ArrayList<LevelListener> listeners;
     private Assembler assembler;
     private Jukebox jukebox;
+    private LevelChangeEvent event;
 
     public Game()  {
 
@@ -37,6 +39,9 @@ public class Game implements IJeu {
         levelPinky= null;
         jukebox = (Jukebox) assembler.newInstance("jukebox");
         jukebox.switchTo("apple");
+        event = new LevelChangeEvent();
+        setEventSelected(true, false, false);
+        setEventRunning(true, true, true);
     }
 
 
@@ -47,7 +52,12 @@ public class Game implements IJeu {
 
         levelPinky= null;
         levelRunning= levelTwilight= (ILevel) assembler.newInstance("levelTwilight");
+
+        event.setBooleanTable(LevelChangeEvent.LEVEL5_RUNNING, false);
+        event.setBooleanTable(LevelChangeEvent.LEVEL6_RUNNING, true);
+
         levelTwilight.setListeners(listeners);
+        levelTwilight.setEvent(event);
         levelTwilight.start();
     }
 
@@ -55,12 +65,18 @@ public class Game implements IJeu {
 
         levelFlutter= null;
         levelRunning= levelPinky= (ILevel) assembler.newInstance("levelPinky");
+
+        event.setBooleanTable(LevelChangeEvent.LEVEL4_RUNNING, false);
+        event.setBooleanTable(LevelChangeEvent.LEVEL5_RUNNING, true);
     }
 
     private void switchLevel2() {
 
         levelApple=null; levelRarity= null; levelRainbow= null;
         levelRunning= levelFlutter= (ILevel) assembler.newInstance("levelFlutter");
+
+        setEventRunning(false, false, false);
+        event.setBooleanTable(LevelChangeEvent.LEVEL4_RUNNING, true);
     }
 
     public void switchLeveApple() {
@@ -69,6 +85,8 @@ public class Game implements IJeu {
         levelRarity.deselected();
         levelRainbow.deselected();
         jukebox.switchTo("apple");
+        setEventSelected(true, false, false);
+        setEventRunning(levelApple.isRunning(), levelRarity.isRunning(), levelRainbow.isRunning());
         this.fireUpdate();
     }
     public void switchLevelRarity() {
@@ -77,7 +95,10 @@ public class Game implements IJeu {
         levelApple.deselected();
         levelRainbow.deselected();
         jukebox.switchTo("rarity");
+        setEventSelected(false, true, false);
+        setEventRunning(levelApple.isRunning(), levelRarity.isRunning(), levelRainbow.isRunning());
         this.fireUpdate();
+
     }
     public void switchLevelRainbow() {
         levelRunning= levelRainbow;
@@ -85,8 +106,11 @@ public class Game implements IJeu {
         levelApple.deselected();
         levelRarity.deselected();
         jukebox.switchTo("apple");
+        setEventSelected(false, false, true);
+        setEventRunning(levelApple.isRunning(), levelRarity.isRunning(), levelRainbow.isRunning());
         this.fireUpdate();
     }
+
     public boolean isAppleSelectedAndRunning() {
         return !levelApple.isSelected() && levelApple.isRunning();
     }
@@ -161,6 +185,7 @@ public class Game implements IJeu {
     @Override
     public void addListener(LevelListener listener) {
         listeners.add(listener);
+        fireUpdate();
     }
 
     @Override
@@ -171,7 +196,7 @@ public class Game implements IJeu {
 
     private void fireUpdate() {
         for(LevelListener l:listeners)
-            l.update();
+            l.update(event);
     }
 
     public boolean isLevelsNull() {
@@ -250,5 +275,16 @@ public class Game implements IJeu {
         return jukebox;
     }
 
+    private void setEventSelected(boolean level1Selected, boolean level2Selected, boolean level3Selected){
+        event.setBooleanTable(LevelChangeEvent.LEVEL1_SELECTED, level1Selected);
+        event.setBooleanTable(LevelChangeEvent.LEVEL2_SELECTED, level2Selected);
+        event.setBooleanTable(LevelChangeEvent.LEVEL3_SELECTED, level3Selected);
+    }
+
+    private void setEventRunning(boolean level1Running, boolean level2Running, boolean level3Running){
+        event.setBooleanTable(LevelChangeEvent.LEVEL1_RUNNING, level1Running);
+        event.setBooleanTable(LevelChangeEvent.LEVEL2_RUNNING, level2Running);
+        event.setBooleanTable(LevelChangeEvent.LEVEL3_RUNNING, level3Running);
+    }
 }
 

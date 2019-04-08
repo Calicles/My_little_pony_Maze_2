@@ -4,6 +4,7 @@ import com.antoine.contracts.IEnnemi;
 import com.antoine.contracts.ILevel;
 import com.antoine.contracts.LevelListener;
 import com.antoine.entity.Boss;
+import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.services.ImageReader;
@@ -21,6 +22,7 @@ public class Level4 extends Level3 implements ILevel {
     private IEnnemi boss;
     private Thread gameLoop;
     private List<LevelListener> listeners;
+    private LevelChangeEvent event;
     private Coordinates startPlayerPosition, startBossPosition, startScreenPoisiton, startScrollPosition;
 
     private boolean over;
@@ -56,6 +58,11 @@ public class Level4 extends Level3 implements ILevel {
     @Override
     public void setListeners(List<LevelListener> listeners){
         this.listeners= listeners;
+    }
+
+    @Override
+    public void setEvent(LevelChangeEvent lve){
+        event = lve;
     }
 
     public void setLoseImagePath(String loseImagePath){
@@ -232,7 +239,7 @@ public class Level4 extends Level3 implements ILevel {
 
     private void fireUpdate(){
         for (LevelListener l:listeners){
-            l.update();
+            l.update(event);
         }
     }
 

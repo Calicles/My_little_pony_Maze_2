@@ -1,17 +1,15 @@
 package com.antoine.vue.panel;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import javax.swing.JPanel;
 
 import com.antoine.afficheur.AfficheurMiniMap;
-import com.antoine.contracts.IPanel;
 import com.antoine.contracts.IAfficheur;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
+import com.antoine.events.LevelChangeEvent;
 
-public class JMiniMap extends JPanel implements LevelListener, IPanel {
+public class JMiniMap extends JPanel implements LevelListener {
 	
 	private Presentateur presentateur;
 	private IAfficheur afficheurMiniMap;
@@ -28,6 +26,7 @@ public class JMiniMap extends JPanel implements LevelListener, IPanel {
 
 	public int getHeight() {return presentateur.getMapHeight() / AfficheurMiniMap.SCALE;}
 
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -35,12 +34,22 @@ public class JMiniMap extends JPanel implements LevelListener, IPanel {
 	}
 	
 	private void drawLevel(Graphics g) {
+		int x, y;
+
+		x = (this.getWidth() / 2);
+		y = this.getY();
+
+		g.translate(x, y);
+
 		afficheurMiniMap.setGraphics(g);
 		presentateur.accept(afficheurMiniMap);
 		afficheurMiniMap.freeGraphics();
+
+		g.translate(-x, -y);
 	}
 
-	public void update() {
+	@Override
+	public void update(LevelChangeEvent lve) {
 		this.repaint();
 	}
 	

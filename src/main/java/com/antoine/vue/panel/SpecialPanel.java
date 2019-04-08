@@ -6,12 +6,12 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 import com.antoine.afficheur.AfficheurLevel;
-import com.antoine.contracts.IPanel;
 import com.antoine.contracts.IAfficheur;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
+import com.antoine.events.LevelChangeEvent;
 
-public class SpecialPanel extends JPanel implements LevelListener, IPanel {
+public class SpecialPanel extends JPanel implements LevelListener {
 	
 	private Presentateur presentateur;
 	private IAfficheur afficheur;
@@ -39,8 +39,9 @@ public class SpecialPanel extends JPanel implements LevelListener, IPanel {
 		presentateur.accept(afficheur);
 		afficheur.freeGraphics();
 	}
-	
-	public void update() {
+
+	@Override
+	public void update(LevelChangeEvent lve) {
 		this.repaint();
 	}
 	
