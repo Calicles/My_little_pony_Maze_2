@@ -8,6 +8,7 @@ import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.services.ImageReader;
+import com.antoine.structure_donnee.LevelState;
 
 import java.util.List;
 
@@ -95,7 +96,7 @@ public class Level4 extends Level3 implements ILevel {
                     count++;
                 }
             }
-            event.setBooleanTable(id, false);
+            event.setBooleanTable(LevelState.get(id), false);
         });
     }
 

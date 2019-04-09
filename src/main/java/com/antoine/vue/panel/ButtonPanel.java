@@ -6,6 +6,7 @@ import javax.swing.*;
 import com.antoine.contracts.Presentateur;
 import com.antoine.contracts.LevelListener;
 import com.antoine.events.LevelChangeEvent;
+import com.antoine.structure_donnee.LevelState;
 
 public class ButtonPanel extends JPanel implements LevelListener {
 
@@ -38,9 +39,9 @@ public class ButtonPanel extends JPanel implements LevelListener {
 	}
 	@Override
 	public void update(LevelChangeEvent lve) {
-		appleButton.setEnabled( !lve.valueOf(LevelChangeEvent.LEVEL1_SELECTED) && lve.valueOf(LevelChangeEvent.LEVEL1_RUNNING));
-		rarityButton.setEnabled( !lve.valueOf(LevelChangeEvent.LEVEL2_SELECTED) && lve.valueOf(LevelChangeEvent.LEVEL2_RUNNING));
-		rainbowButton.setEnabled( !lve.valueOf(LevelChangeEvent.LEVEL3_SELECTED) && lve.valueOf(LevelChangeEvent.LEVEL3_RUNNING));
+		appleButton.setEnabled( !lve.valueOf(LevelState.APPLE_SELECTED) && lve.valueOf(LevelState.APPLE_RUNNING));
+		rarityButton.setEnabled( !lve.valueOf(LevelState.RARITY_SELECTED) && lve.valueOf(LevelState.RARITY_RUNNING));
+		rainbowButton.setEnabled( !lve.valueOf(LevelState.RAINBOW_SELECTED) && lve.valueOf(LevelState.RAINBOW_RUNNING));
 		this.repaint();
 	}
 

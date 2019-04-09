@@ -13,17 +13,17 @@ public class Jukebox {
     private Map<String, SoundEffect> sounds;
     private String currentPlaying = "";
 
-    private float MusicVolume, soundVolume;
+    private float musicVolume, soundVolume;
 
     public Jukebox(){
-        MusicVolume = 0.2f;
+        musicVolume = 0.2f;
         soundVolume = 0.5f;
         musics = new HashMap<>();
         sounds = new HashMap<>();
     }
 
     public void setMusicVolume(final float volume){
-        this.MusicVolume = volume;
+        this.musicVolume = volume;
         Set<String > musicSet = musics.keySet();
         for (String s: musicSet){
             musics.get(s).setVolume(volume);
@@ -40,14 +40,13 @@ public class Jukebox {
 
     public void setMusic(String idMusicPath){
         String[] buf = idMusicPath.split(",");
-        System.out.println(buf[1]);
-        musics.put(buf[0], new MusicPlayer(buf[1], MusicVolume));
+        musics.put(buf[0], new MusicPlayer(buf[1], musicVolume));
         currentPlaying = buf[0];
     }
 
     public void setSound(String idSoundPath){
         String[] buf = idSoundPath.split(",");
-        sounds.put(buf[0], new SoundEffect(buf[1], MusicVolume));
+        sounds.put(buf[0], new SoundEffect(buf[1], musicVolume));
     }
 
     public void switchTo(String name){
@@ -73,7 +72,7 @@ public class Jukebox {
     }
 
     public float getMusicVolume() {
-        return MusicVolume;
+        return musicVolume;
     }
 
     public float getSoundVolume(){
