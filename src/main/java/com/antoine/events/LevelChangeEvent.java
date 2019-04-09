@@ -1,6 +1,8 @@
 package com.antoine.events;
 
 
+import com.antoine.structure_donnee.LevelState;
+
 import java.util.Arrays;
 
 public class LevelChangeEvent {
@@ -9,32 +11,22 @@ public class LevelChangeEvent {
 
     private int numberOfLevelFinshed;
 
-    public static final int LEVEL1_RUNNING = 0;
-    public static final int LEVEL2_RUNNING = 1;
-    public static final int LEVEL3_RUNNING = 2;
-    public static final int LEVEL4_RUNNING = 3;
-    public static final int LEVEL5_RUNNING = 4;
-    public static final int LEVEL6_RUNNING = 5;
-    public static final int LEVEL1_SELECTED = 6;
-    public static final int LEVEL2_SELECTED = 7;
-    public static final int LEVEL3_SELECTED = 8;
-
     public LevelChangeEvent(){
         numberOfLevelFinshed = 0;
     }
 
-    public void setBooleanTable(int b, boolean value){
+    public void setBooleanTable(LevelState state, boolean value){
         if (value)
-            booleanTable |= (1<<b);
+            booleanTable |= (1 << state.ordinal());
         else {
-            if (b < 6 && valueOf(b))
+            if (state.ordinal() < 6 && valueOf(state))
               numberOfLevelFinshed++;
-            booleanTable &= ~(1 << b);
+            booleanTable &= ~(1 << state.ordinal());
         }
     }
 
-    public boolean valueOf(int b){
-        return (0x1 & (booleanTable >> b)) == 1 ? true : false;
+    public boolean valueOf(LevelState state){
+        return (0x1 & (booleanTable >> state.ordinal())) == 1 ? true : false;
     }
 
     public int getNumber_level_over(){

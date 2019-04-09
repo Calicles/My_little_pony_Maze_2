@@ -6,6 +6,7 @@ import com.antoine.manager.musique.Jukebox;
 import com.antoine.services.Assembler;
 import com.antoine.geometry.Rectangle;
 import com.antoine.contracts.IJeu;
+import com.antoine.structure_donnee.LevelState;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -53,8 +54,8 @@ public class Game implements IJeu {
         levelPinky= null;
         levelRunning= levelTwilight= (ILevel) assembler.newInstance("levelTwilight");
 
-        event.setBooleanTable(LevelChangeEvent.LEVEL5_RUNNING, false);
-        event.setBooleanTable(LevelChangeEvent.LEVEL6_RUNNING, true);
+        event.setBooleanTable(LevelState.PINKY_RUNNING, false);
+        event.setBooleanTable(LevelState.TWILIGHT_RUNNING, true);
 
         levelTwilight.setListeners(listeners);
         levelTwilight.setEvent(event);
@@ -66,8 +67,8 @@ public class Game implements IJeu {
         levelFlutter= null;
         levelRunning= levelPinky= (ILevel) assembler.newInstance("levelPinky");
 
-        event.setBooleanTable(LevelChangeEvent.LEVEL4_RUNNING, false);
-        event.setBooleanTable(LevelChangeEvent.LEVEL5_RUNNING, true);
+        event.setBooleanTable(LevelState.FLUTTER_RUNNING, false);
+        event.setBooleanTable(LevelState.PINKY_RUNNING, true);
     }
 
     private void switchLevel2() {
@@ -75,7 +76,7 @@ public class Game implements IJeu {
         levelApple = levelRarity = levelRainbow = null;
         levelRunning= levelFlutter= (ILevel) assembler.newInstance("levelFlutter");
 
-        event.setBooleanTable(LevelChangeEvent.LEVEL4_RUNNING, true);
+        event.setBooleanTable(LevelState.FLUTTER_RUNNING, true);
     }
 
     public void switchLeveApple() {
@@ -122,7 +123,7 @@ public class Game implements IJeu {
             levelRunning.playerMovesLeft();
             jukebox.makeSound();
         }
-        event.setBooleanTable(levelRunning.getId(), levelRunning.isRunning());
+        event.setBooleanTable(LevelState.get(levelRunning.getId()), levelRunning.isRunning());
         this.fireUpdate();
     }
 
@@ -131,7 +132,7 @@ public class Game implements IJeu {
             levelRunning.playerMovesRight();
             jukebox.makeSound();
         }
-        event.setBooleanTable(levelRunning.getId(), levelRunning.isRunning());
+        event.setBooleanTable(LevelState.get(levelRunning.getId()), levelRunning.isRunning());
         this.fireUpdate();
     }
 
@@ -140,7 +141,7 @@ public class Game implements IJeu {
             levelRunning.playerMovesUp();
             jukebox.makeSound();
         }
-        event.setBooleanTable(levelRunning.getId(), levelRunning.isRunning());
+        event.setBooleanTable(LevelState.get(levelRunning.getId()), levelRunning.isRunning());
         this.fireUpdate();
     }
 
@@ -149,7 +150,7 @@ public class Game implements IJeu {
             levelRunning.playerMovesDown();
             jukebox.makeSound();
         }
-        event.setBooleanTable(levelRunning.getId(), levelRunning.isRunning());
+        event.setBooleanTable(LevelState.get(levelRunning.getId()), levelRunning.isRunning());
         this.fireUpdate();
     }
 
@@ -276,15 +277,15 @@ public class Game implements IJeu {
     }
 
     private void setEventSelected(boolean level1Selected, boolean level2Selected, boolean level3Selected){
-        event.setBooleanTable(LevelChangeEvent.LEVEL1_SELECTED, level1Selected);
-        event.setBooleanTable(LevelChangeEvent.LEVEL2_SELECTED, level2Selected);
-        event.setBooleanTable(LevelChangeEvent.LEVEL3_SELECTED, level3Selected);
+        event.setBooleanTable(LevelState.APPLE_SELECTED, level1Selected);
+        event.setBooleanTable(LevelState.RARITY_SELECTED, level2Selected);
+        event.setBooleanTable(LevelState.RAINBOW_SELECTED, level3Selected);
     }
 
     private void setEventRunning(boolean level1Running, boolean level2Running, boolean level3Running){
-        event.setBooleanTable(LevelChangeEvent.LEVEL1_RUNNING, level1Running);
-        event.setBooleanTable(LevelChangeEvent.LEVEL2_RUNNING, level2Running);
-        event.setBooleanTable(LevelChangeEvent.LEVEL3_RUNNING, level3Running);
+        event.setBooleanTable(LevelState.APPLE_RUNNING, level1Running);
+        event.setBooleanTable(LevelState.RARITY_RUNNING, level2Running);
+        event.setBooleanTable(LevelState.RAINBOW_RUNNING, level3Running);
     }
 }
 

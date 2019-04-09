@@ -40,7 +40,6 @@ public class Jukebox {
 
     public void setMusic(String idMusicPath){
         String[] buf = idMusicPath.split(",");
-        System.out.println(buf[1]);
         musics.put(buf[0], new MusicPlayer(buf[1], MusicVolume));
         currentPlaying = buf[0];
     }

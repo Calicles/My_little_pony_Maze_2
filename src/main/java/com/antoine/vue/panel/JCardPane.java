@@ -2,6 +2,7 @@ package com.antoine.vue.panel;
 
 import com.antoine.contracts.LevelListener;
 import com.antoine.events.LevelChangeEvent;
+import com.antoine.structure_donnee.LevelState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,8 +36,8 @@ public class JCardPane extends JPanel implements LevelListener {
     }
 
     private boolean isFirstsLevelsRunning(LevelChangeEvent lve) {
-        return (lve.valueOf(LevelChangeEvent.LEVEL1_RUNNING) || lve.valueOf(LevelChangeEvent.LEVEL2_RUNNING) ||
-                lve.valueOf(LevelChangeEvent.LEVEL3_RUNNING));
+        return (lve.valueOf(LevelState.APPLE_RUNNING) || lve.valueOf(LevelState.RARITY_RUNNING) ||
+                lve.valueOf(LevelState.RAINBOW_RUNNING));
     }
 
     @Override
