@@ -75,6 +75,8 @@ public class Level4 extends Level3 implements ILevel {
 
             int count= 0;
 
+            sleep(2000);
+
             while (running) {
 
                 if(count != 0){

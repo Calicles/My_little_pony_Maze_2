@@ -41,7 +41,7 @@
 		</bean>
 		<bean id="levelRarity" class="com.antoine.modele.level.Level">
 			<parameters nbr="3">
-				<parameter id="levelRarityEndImage" value="/ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<parameter id="levelRarityEndImage" value="/ressources/images/fin/all4.jpg" method="setEndImageUrl" />
 				<injection id="levelRarity_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">
 						<paramInjection id="levelRarity_player_animationFilePath" value="/ressources/setPonyAnimation/setRarity.txt" method="setAnimation"/>
@@ -73,7 +73,7 @@
 		</bean>
 		<bean id="levelRainbow" class="com.antoine.modele.level.Level">
 			<parameters nbr="3">
-				<parameter id="levelRainbowEndImage" value="/ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<parameter id="levelRainbowEndImage" value="/ressources/images/fin/my-little-pony2.jpg" method="setEndImageUrl" />
 				<injection id="levelRainbow_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">
 						<paramInjection id="levelRainbow_player_animationFilePath" value="/ressources/setPonyAnimation/setRainbow.txt" method="setAnimation"/>
