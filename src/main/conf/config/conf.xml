@@ -236,9 +236,9 @@
 		<bean id="jukebox" class="com.antoine.manager.musique.Jukebox">
 			<parameters nbr="4">
 				<parameter id="appleMusic" method="setMusic" value="apple,/ressources/sons/bruitage/Indiana_Jones.wav"/>
-				<parameter id="appleSon" method="setSound" value="apple,/ressources/sons/bruitage/trotDur.wav"/>
+				<parameter id="appleSon" method="setSound" value="apple,/ressources/sons/bruitage/stepSnow.wav"/>
 				<parameter id="rarityMusic" method="setMusic" value="rarity,/ressources/sons/bruitage/Open_Up_Your_Eyes.wav"/>
-				<parameter id="raritySon" method="setSound" value="rarity,/ressources/sons/bruitage/pasHerbeGelée.wav"/>
+				<parameter id="raritySon" method="setSound" value="rarity,/ressources/sons/bruitage/stepSnow.wav"/>
 			</parameters>
 		</bean>
 	</beans>
