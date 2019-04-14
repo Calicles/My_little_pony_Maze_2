@@ -203,7 +203,7 @@
 						<paramInjection id="levelTwilight_boss_animationFilePath" value="/ressources/setPonyAnimation/setDiscord.txt" method="setAnimation"/>
 						<injection id="levelTwilight_boss_position" class="com.antoine.geometry.Coordinates" method="setPosition">
 							<parameters nbr="2">
-								<paramInjection id="levelTwilight_boss_positionX" value="35" method="setX"/>
+								<paramInjection id="levelTwilight_boss_positionX" value="70" method="setX"/>
 								<paramInjection id="levelTwilight_boss_positionY" value="-150" method="setY"/>
 							</parameters>
 						</injection>
