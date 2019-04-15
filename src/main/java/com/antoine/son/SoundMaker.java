@@ -59,7 +59,32 @@ public abstract class SoundMaker {
 
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
 
-            line = (SourceDataLine) AudioSystem.getLine(info);
+            if (AudioSystem.isLineSupported(info)) {
+
+                line = (SourceDataLine) AudioSystem.getLine(info);
+
+            }else{
+
+                AudioFormat targetAudioFormat;
+
+                targetAudioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+                        audioFormat.getSampleRate(),
+                        audioFormat.getSampleSizeInBits(),
+                        audioFormat.getChannels(),
+                        audioFormat.getFrameSize(),
+                        audioFormat.getFrameRate(),
+                        false);
+
+                ais = AudioSystem.getAudioInputStream(targetAudioFormat, ais);
+
+                info = new DataLine.Info(SourceDataLine.class, targetAudioFormat);
+
+                line = (SourceDataLine) AudioSystem.getLine(info);
+
+
+
+                audioFormat = targetAudioFormat;
+            }
 
             line.open(audioFormat);
 

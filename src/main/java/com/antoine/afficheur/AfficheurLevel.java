@@ -61,7 +61,7 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
     private void drawMap(IMap mapStruct) {
         HashMap<Integer, BufferedImage> tileSet= mapStruct.getTileSet();
         Tile[][] map= mapStruct.getMap();
-        Tile tile= null;
+        Tile tile;
         for(int i=0;i<map.length;i++)
         {
             for(int j=0;j<map[0].length;j++)
@@ -92,7 +92,7 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
     private void drawScreen(IStructure structure) {
         IMap mapStruct= structure.getMap();
         Rectangle screen= structure.getScreen();
-        Tile tile= null;
+        Tile tile;
         Tile[][] map= mapStruct.getMap();
         HashMap<Integer, BufferedImage> set= mapStruct.getTileSet();
         int row= screen.getBeginY();
@@ -131,7 +131,7 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
     private void drawScreenLevel3(IStructure structure) {
         IMap mapStruct= structure.getMap();
         Rectangle screen= structure.getScreen();
-        Tile tile= null;
+        Tile tile;
         Tile[][] map= mapStruct.getMap();
         HashMap<Integer, BufferedImage> set= mapStruct.getTileSet();
         int tile_width= mapStruct.getTile_width();
@@ -170,5 +170,11 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
 
     private int playerScreenPositionX(IEntity player, Rectangle screen) {
         return player.getX() - screen.getBeginX();
+    }
+
+    private void sleep(long sleep){
+        try{
+            Thread.sleep(sleep);
+        } catch (InterruptedException ignored) {}
     }
 }

@@ -50,7 +50,7 @@ public abstract class AbstractTransfer {
 
 		int playerX= position.getBeginX();
 		
-		if(playerX < map.getTile_width()){
+		if(playerX <= map.getTile_width()){
 			
 			if(playerX < vector.getX()) {
 				xDirection= 0 - playerX;
@@ -69,7 +69,7 @@ public abstract class AbstractTransfer {
 		Tile tile;
 		int playerEndX= position.getEndX();
 
-		if(playerEndX > (map.getWidth() - map.getTile_width())){
+		if(playerEndX >= (map.getWidth() - map.getTile_width())){
 			if(playerEndX >= (map.getWidth() - vector.getX())) {
 				xDirection= map.getWidth() - playerEndX;
 			}
