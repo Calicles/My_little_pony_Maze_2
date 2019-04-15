@@ -26,7 +26,6 @@ public class Game implements IJeu {
     private LevelChangeEvent event;
 
     public Game()  {
-
         String configPath= String.valueOf(getClass().getResource("/config/conf.xml"));
 
         listeners= new ArrayList<>();

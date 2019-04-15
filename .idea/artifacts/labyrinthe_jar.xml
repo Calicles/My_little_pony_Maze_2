@@ -2,10 +2,15 @@
   <artifact type="jar" name="labyrinthe:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/labyrinthe_jar</output-path>
     <root id="archive" name="labyrinthe.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
       <element id="module-output" name="labyrinthe" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations/13.0/annotations-13.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/conf" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/ressources1" />
     </root>
   </artifact>
 </component>

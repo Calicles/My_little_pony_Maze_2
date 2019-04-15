@@ -75,6 +75,8 @@ public class Level4 extends Level3 implements ILevel {
 
             int count= 0;
 
+            sleep(2000);
+
             while (running) {
 
                 if(count != 0){
@@ -129,16 +131,24 @@ public class Level4 extends Level3 implements ILevel {
         int xDirection= 0, yDirection= 0;
 
         if (x != boxes.getScreenBeginX()) {
+
             xDirection = ((x < boxes.getScreenBeginX()) ? -1 : 1);
+
         } else if (y != boxes.getScreenBeginY()) {
+
             yDirection = ((y < boxes.getScreenBeginY()) ? -1 : 1);
         }
 
         vector = new Coordinates(xDirection, yDirection);
+
         boxes.getScreen().translate(vector);
+
         fireUpdate();
+
         sleep(speed);
-        if(!boxes.getScreen().equalsCoordinates(new Coordinates(x, y))) {
+
+        if (!boxes.getScreen().equalsCoordinates(new Coordinates(x, y))) {
+
             animescreen(x, y, speed);
         }
 
@@ -148,7 +158,9 @@ public class Level4 extends Level3 implements ILevel {
         String tampon= endImageUrl;
 
         endImageUrl= loseImagePath;
+
         fireUpdate();
+
         sleep(2500);
 
         endImageUrl= tampon;
@@ -165,9 +177,7 @@ public class Level4 extends Level3 implements ILevel {
     }
 
     private void sleep() {
-        try {
-            Thread.sleep(fixSleep());
-        }catch(InterruptedException ignored) {}
+        sleep(fixSleep());
     }
 
     private long fixSleep() {
@@ -181,7 +191,7 @@ public class Level4 extends Level3 implements ILevel {
 
     private synchronized void loop() {
 
-        if(!checkCollision()) {
+        if (!checkCollision()) {
 
             Coordinates vector = player.memorizeMoves(map);
 
@@ -198,20 +208,28 @@ public class Level4 extends Level3 implements ILevel {
     }
 
     private void scroll(Coordinates vector) {
-        if(!vector.isZero()){
+        if (!vector.isZero()){
+
             if (vector.getX() < 0){
+
                 scrollLeft(vector);
-            }else if(vector.getX() > 0){
+
+            }else if (vector.getX() > 0){
+
                 scrollRight(vector);
+
             }else if (vector.getY() < 0){
+
                 scrollUp(vector);
+
             }else
+
                 scrollDown(vector);
         }
     }
 
     private boolean checkCollision() {
-        if(Rectangle.isTouching2(boss.getPosition(), player.getPosition())){
+        if(Rectangle.isTouching(boss.getPosition(), player.getPosition())){
             over= true;
             sleep(50);
             return true;
