@@ -10,7 +10,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	
 	private Thread greyCell;
 	private Rectangle ownPosition, player1;
-	private Coordinates lastVector;
+	private Coordinates lastVector, lastHuntingVector;
 	private IMap map;
 	private boolean thinking, blocked;
 	
@@ -20,6 +20,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	
 	public IA_transfertStrategy_std() {
 		super();
+		lastHuntingVector = new Coordinates(0, 0);
 	}
 
 	@Override
@@ -124,39 +125,41 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		Coordinates bossMidle= Rectangle.findMiddleCoor(ownPosition);
 		Coordinates playerMidle= Rectangle.findMiddleCoor(player1);
 
+			//Player in height bounds
+			if ((playerMidle.getY() > ownPosition.getBeginY() && playerMidle.getY() < ownPosition.getEndY())) {
 
-		//Player in height bounds
-		if ((playerMidle.getY() > ownPosition.getBeginY() && playerMidle.getY() < ownPosition.getEndY()) &&
-				//player not in width bounds
-					!(playerMidle.getX() > ownPosition.getBeginX() && playerMidle.getX() < ownPosition.getEndX())) {
 
-			//player on right side
-			if (bossMidle.getX() < playerMidle.getX()) {
+				//player on right side
+				if (bossMidle.getX() < playerMidle.getX()) {
 
+					if (checkRightTiles(ownPosition, map) == null)
 					xDirection = vector.getX();
 
-			} else {
+				} else {
 
-				xDirection = -vector.getX();
-			}
+					if (checkLeftTiles(ownPosition, map) == null)
+					xDirection = -vector.getX();
+				}
+				yDirection = 0;
 
-			yDirection = 0;
 
-		//player in width bounds
-		} else {
-
-			//player on down side
-			if (bossMidle.getY() < playerMidle.getY()) {
-
-				yDirection = vector.getY();
 
 			} else {
 
-				yDirection = -vector.getY();
-			}
+				if (bossMidle.getY() < playerMidle.getY()) {
 
-			xDirection = 0;
-		}
+					if (checkOnUpTiles(ownPosition, map) == null)
+					yDirection = vector.getY();
+
+				} else {
+
+					if (checkOnDownTiles(ownPosition, map) == null)
+					yDirection = -vector.getY();
+				}
+				xDirection = 0;
+
+
+			}
 
 		adaptVectors(ownPosition, map);
 
@@ -176,6 +179,20 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 			}
 		}
 
+	}
+
+	private boolean checkLastHuntingVectorByY() {
+		if (lastHuntingVector.getY() < 0){
+			return checkOnUpTiles(ownPosition, map) != null;
+		}else
+			return checkOnDownTiles(ownPosition, map) != null;
+	}
+
+	private boolean checkLastHuntingVectorByX() {
+		if (lastHuntingVector.getX() < 0){
+			return checkLeftTiles(ownPosition, map) != null;
+		}else
+			return checkRightTiles(ownPosition, map) != null;
 	}
 
 	private boolean isPlayerNext(){
