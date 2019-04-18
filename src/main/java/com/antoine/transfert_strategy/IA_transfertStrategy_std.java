@@ -3,7 +3,6 @@ package com.antoine.transfert_strategy;
 import com.antoine.contracts.IMap;
 import com.antoine.contracts.ITransfert_strategy;
 import com.antoine.geometry.Coordinates;
-import com.antoine.geometry.Pythagore;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
@@ -11,9 +10,9 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	
 	private Thread greyCell;
 	private Rectangle ownPosition, player1;
-	private Coordinates lastVector;
+	private Coordinates lastVector, lastHuntingVector;
 	private IMap map;
-	private boolean thinking;
+	private boolean thinking, blocked;
 	
 	public IA_transfertStrategy_std(Rectangle ownPosition, Rectangle player1, IMap map) {
 		super();
@@ -21,6 +20,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	
 	public IA_transfertStrategy_std() {
 		super();
+		lastHuntingVector = new Coordinates(0, 0);
 	}
 
 	@Override
@@ -71,10 +71,14 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	}
 
 	private void move(){
-		if(isPlayerNext() && (xDirection != 0 || yDirection != 0)){
+
+		if (isPlayerNext()){
+
 			manHuntPlayer();
-		}else
+
+		}else {
 			findWay();
+		}
 		this.adaptVectors(ownPosition, map);
 	}
 	
@@ -121,25 +125,74 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		Coordinates bossMidle= Rectangle.findMiddleCoor(ownPosition);
 		Coordinates playerMidle= Rectangle.findMiddleCoor(player1);
 
-		if((playerMidle.getY() > ownPosition.getBeginY() && playerMidle.getY() < ownPosition.getEndY()) &&
-				!(playerMidle.getX() > ownPosition.getBeginX() && playerMidle.getX() < ownPosition.getEndX())){
+			//Player in height bounds
+			if ((playerMidle.getY() > ownPosition.getBeginY() && playerMidle.getY() < ownPosition.getEndY())) {
 
-			if(bossMidle.getX() < playerMidle.getX()){
-				xDirection= vector.getX();
-			}else {
-				xDirection= - vector.getX();
-			}
-			yDirection= 0;
-		}else{
 
-			if(bossMidle.getY() < playerMidle.getY()){
-				yDirection= vector.getY();
-			}else {
-				yDirection= - vector.getY();
+				//player on right side
+				if (bossMidle.getX() < playerMidle.getX()) {
+
+					if (checkRightTiles(ownPosition, map) == null)
+					xDirection = vector.getX();
+
+				} else {
+
+					if (checkLeftTiles(ownPosition, map) == null)
+					xDirection = -vector.getX();
+				}
+				yDirection = 0;
+
+
+
+			} else {
+
+				if (bossMidle.getY() < playerMidle.getY()) {
+
+					if (checkOnUpTiles(ownPosition, map) == null)
+					yDirection = vector.getY();
+
+				} else {
+
+					if (checkOnDownTiles(ownPosition, map) == null)
+					yDirection = -vector.getY();
+				}
+				xDirection = 0;
+
+
 			}
-			xDirection= 0;
+
+		adaptVectors(ownPosition, map);
+
+		//blocked
+		if (directionIsNull()) {
+
+			//take last direction
+			xDirection = lastVector.getX();
+			yDirection = lastVector.getY();
+
+			adaptVectors(ownPosition, map);
+
+			//again blocked
+			if (directionIsNull()) {
+
+				findWay();
+			}
 		}
 
+	}
+
+	private boolean checkLastHuntingVectorByY() {
+		if (lastHuntingVector.getY() < 0){
+			return checkOnUpTiles(ownPosition, map) != null;
+		}else
+			return checkOnDownTiles(ownPosition, map) != null;
+	}
+
+	private boolean checkLastHuntingVectorByX() {
+		if (lastHuntingVector.getX() < 0){
+			return checkLeftTiles(ownPosition, map) != null;
+		}else
+			return checkRightTiles(ownPosition, map) != null;
 	}
 
 	private boolean isPlayerNext(){
@@ -184,6 +237,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	@Override
 	public Coordinates memorizeMoves(Rectangle position, IMap map) {
+
 		return null;
 	}
 
@@ -197,6 +251,10 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		}else									
 			// don't moves
 			return new Coordinates(0, 0);
+	}
+
+	private boolean directionIsNull(){
+		return xDirection == 0 && yDirection == 0;
 	}
 
 }
