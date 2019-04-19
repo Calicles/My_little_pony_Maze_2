@@ -35,6 +35,8 @@ public abstract class AbstractTileMap {
 		buffer = Map_reader.readMap(fileMapUrl);
 		this.tile_width= tileSet.get(0).getWidth();
 		this.tile_height= tileSet.get(0).getHeight();
+		Tile.setWidth(tile_width);
+		Tile.setHeight(tile_height);
 		initMap(buffer);
 	}
 	
@@ -52,7 +54,7 @@ public abstract class AbstractTileMap {
 		return tab;
 	}
 
-	private void initMap(@org.jetbrains.annotations.NotNull int[][] map)
+	private void initMap(int[][] map)
 	{
 		this.map= new Tile[map.length][map[0].length];
 		int tile_num;

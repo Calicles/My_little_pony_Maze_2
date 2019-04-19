@@ -3,9 +3,9 @@ package com.antoine.contracts;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 
 public interface IMap {
 
@@ -27,4 +27,6 @@ public interface IMap {
     HashMap<Integer, BufferedImage> getTileSet();
 
     Tile isSolidTileOnRoad(Rectangle rectangle);
+
+    List<Tile> getSubMap(int x, int width, int y, int height);
 }

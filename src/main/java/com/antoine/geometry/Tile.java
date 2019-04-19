@@ -18,6 +18,8 @@ public class Tile {
 	 */
 	private static final int EXIT= -1;
 
+	private static int width, height;
+
 	private int tile_num;
 	private int x;
 	private int y;
@@ -30,10 +32,26 @@ public class Tile {
 		this.y= y;
 	}
 
+	public static int getWidth() {
+		return width;
+	}
+
+	public static int getHeight() {
+		return height;
+	}
+
 
 	public int getTile_num() {return tile_num;}
 	public int getX() {return x;}
 	public int getY() {return y;}
+
+	public static void setWidth(int width){
+		Tile.width = width;
+	}
+
+	public static void setHeight(int height){
+		Tile.height = height;
+	}
 
 
 	/**
@@ -50,4 +68,17 @@ public class Tile {
 	public boolean isExit() {return tile_num == EXIT;}
 
 	public static int getSolidNum(){return SOLID;}
+
+    public boolean contains(Coordinates start) {
+		Rectangle rec = new Rectangle(x, x + width, y, y + height);
+		return Rectangle.isInBox(rec, new Rectangle(start, 0, 0));
+    }
+
+    public Rectangle toRectangle(){
+		return new Rectangle(x, width, y, height);
+	}
+
+	public Coordinates toCoordinates(){
+		return new Coordinates(x, y);
+	}
 }

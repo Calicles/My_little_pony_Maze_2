@@ -10,9 +10,9 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	
 	private Thread greyCell;
 	private Rectangle ownPosition, player1;
-	private Coordinates lastVector, lastHuntingVector;
+	private Coordinates lastVector;
 	private IMap map;
-	private boolean thinking, blocked;
+	private boolean thinking;
 	
 	public IA_transfertStrategy_std(Rectangle ownPosition, Rectangle player1, IMap map) {
 		super();
@@ -20,7 +20,6 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	
 	public IA_transfertStrategy_std() {
 		super();
-		lastHuntingVector = new Coordinates(0, 0);
 	}
 
 	@Override
@@ -120,7 +119,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	}
 
-	private void manHuntPlayer() {
+	protected void manHuntPlayer() {
 
 		Coordinates bossMidle= Rectangle.findMiddleCoor(ownPosition);
 		Coordinates playerMidle= Rectangle.findMiddleCoor(player1);
@@ -179,20 +178,6 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 			}
 		}
 
-	}
-
-	private boolean checkLastHuntingVectorByY() {
-		if (lastHuntingVector.getY() < 0){
-			return checkOnUpTiles(ownPosition, map) != null;
-		}else
-			return checkOnDownTiles(ownPosition, map) != null;
-	}
-
-	private boolean checkLastHuntingVectorByX() {
-		if (lastHuntingVector.getX() < 0){
-			return checkLeftTiles(ownPosition, map) != null;
-		}else
-			return checkRightTiles(ownPosition, map) != null;
 	}
 
 	private boolean isPlayerNext(){
