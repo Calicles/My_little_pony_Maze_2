@@ -1,24 +1,38 @@
 package com.antoine.structure_donnee.pathfinding;
 
 import com.antoine.geometry.Coordinates;
-import com.antoine.geometry.Pythagore;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 import com.antoine.structure_donnee.Node;
 
 import java.util.Comparator;
-import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
 /**
  * <b>Classe qui implémente l'algorithme de Dijkstra</b>
- * <p>Trouve le plus court chemin pour se rendre sur une Tile</p>
+ * <p>Trouve le plus court chemin pour se rendre sur une Tile.</p>
+ * fonctionne en deux vagues:
+ * 1 enregistre le chemin de tuile à tuile.
+ * 2 affine le path de point en point.
+ *
  * @author Antoine
  */
 public class Dijkstra_impl extends AbstractPathfinding_algo {
 
+
+    //=======   Constructeurs ==========
+
+    public Dijkstra_impl() {
+        super();
+    }
+
+    public Dijkstra_impl(Rectangle entity) {
+        super(entity);
+    }
+
+    //=================================
 
     /**
      * <p>Boucle l'algorithme pour passer en revu tous les chemins.</p>
@@ -26,7 +40,7 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
     @Override
     protected void startSearch() {
 
-        //Tant qu'on a pas trouvé la fin ou qu'il y a une issue
+        //Tant qu'on a pas trouvé la fin ou qu'il y a encore des noeuds à chercher
         while (currentNode != goal && currentNode != null) {
 
             selectNextNode();
@@ -36,6 +50,52 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
         }
 
         createPath();
+
+        createFinalPath();
+    }
+
+    /**
+     * <p>Affine le path pour produire un chemin de point en point.</p>
+     */
+    private void createFinalPath() {
+
+        Tile current;
+        Tile precedTile = path.peek().getItem();
+
+        //Enregistre milieu de coordonnées de la première tuile
+       finalPath.push(
+               Rectangle.findMiddleCoor(
+                       path.pop()
+                               .getItem()
+                               .toRectangle())
+       );
+
+       //tant qu'il reste des tuiles
+       while (!path.isEmpty()) {
+           current = path.pop().getItem();
+
+           //Si la tuile courante est situé au dessus de la précdente
+           // on ajuste la hauteur du point de la largeur de l'entité, pour éviter une collision avec un mur
+            if (isUpper(current, precedTile)){
+                Coordinates point = current.toCoordinates();
+                point.setCoordinates(point.getX(), point.getY() - entity.getHeight());
+
+                finalPath.push(point);
+            }else
+                finalPath.push(
+                        Rectangle.findMiddleCoor(
+                                current.toRectangle())
+                );
+
+            precedTile = current;
+       }
+
+
+    }
+
+    private boolean isUpper(Tile current, Tile precedTile) {
+
+        return current.getY() < precedTile.getY();
     }
 
     /**
@@ -111,31 +171,19 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
         path.clear();
 
         Node<Tile> n = goal;
-        while (n.getParent() != null) {
+
+        while (n != null) {
             path.push(n);
 
-            n= n.getParent();
+            n = n.getParent();
         }
     }
 
     @Override
-    public Coordinates getVector(Rectangle position, Rectangle goal) {
-        Tile current = path.peek().getItem();
-        Coordinates middlePosition, middleTile, middleGoal;
-
-        middlePosition = Rectangle.findMiddleCoor(position);
-        middleTile = Rectangle.findMiddleCoor(current.toRectangle());
-        middleGoal = Rectangle.findMiddleCoor(goal);
-
-        if (Pythagore.calculDistance(middlePosition, middleGoal) < Pythagore.calculDistance(middleTile, middleGoal)) {
-            path.pop();
-            current = path.peek().getItem();
-        }
-
-        return goTo(current, position);
+    public Coordinates getNextStep() {
+        if (finalPath.isEmpty())
+            return null;
+        return finalPath.pop();
     }
 
-    private Coordinates goTo(Tile current, Rectangle position) {
-        return null;
-    }
 }

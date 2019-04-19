@@ -8,11 +8,11 @@ import com.antoine.geometry.Tile;
 
 public class IA_transfertStrategy_std extends AbstractTransfer implements ITransfert_strategy {
 	
-	private Thread greyCell;
-	private Rectangle ownPosition, player1;
-	private Coordinates lastVector;
-	private IMap map;
-	private boolean thinking;
+	protected Thread greyCell;
+	protected Rectangle ownPosition, player1;
+	protected Coordinates lastVector;
+	protected IMap map;
+	protected boolean thinking;
 	
 	public IA_transfertStrategy_std(Rectangle ownPosition, Rectangle player1, IMap map) {
 		super();
