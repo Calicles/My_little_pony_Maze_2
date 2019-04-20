@@ -112,7 +112,7 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
      * <p>Affine le path pour produire un chemin de point en point.</p>
      * place les coordonnées du milieu de la prochaine tuile
      */
-    private void createFinalPath() {
+    private void createFinalPath() {// TODO Placer les coordonnées en fonction de la surface du joueur!!
 
         finalPath.clear();
 
@@ -207,5 +207,4 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
             return null;
         return finalPath.pop();
     }
-
 }

@@ -202,16 +202,22 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	@Override
 	public void movesLeft() {
 
+		xDirection = -vector.getX();
+		yDirection = 0;
 	}
 
 	@Override
 	public void movesRight() {
 
+		xDirection = vector.getX();
+		yDirection = 0;
 	}
 
 	@Override
 	public void movesUp() {
 
+		yDirection = -vector.getY();
+		xDirection = 0;
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
     /**
      * <p>La direction courante à suivre pour arriver au but</p>
      */
-    private Coordinates currentGoal;
+    private Coordinates currentStep;
 
 
     public IA_transfertStrategy_withHeuristic() {
@@ -72,22 +72,21 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
 
             pathfinder.init(new Coordinates(player1.getBeginX(), player1.getBeginY()), map);
 
-            currentGoal = pathfinder.getNextStep();
+            currentStep = pathfinder.getNextStep();
         }
 
         //L'entité à atteint l'étape, on renvoi une nouvelle étape vers le joueur
-        if (Rectangle.isInBox(ownPosition, currentGoal)) {
-            precStep = currentGoal;
-            currentGoal = pathfinder.getNextStep();
+        if (currentStep != null && Rectangle.isInBox(ownPosition, currentStep)) {
+            precStep = currentStep;
+            currentStep = pathfinder.getNextStep();
         }
 
         //Si le joueur est plus près de l'étape, on le chasse directement
-        if (isPlayerNear() || currentGoal == null) {
+        if (isPlayerNear() || currentStep == null) {
             goToPlayer();
         }else {
             go();
         }
-
 
     }
 
@@ -96,15 +95,21 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
      * @return true si coordonnées du joueur plus près, false sinon
      */
     private boolean isPlayerNear() {
-        int distToGoal = Pythagore.calculDistance(
-                Rectangle.findMiddleCoor(ownPosition),
-                       currentGoal
-        );
-        int distToPlayer = Pythagore.calculDistance(
-                Rectangle.findMiddleCoor(ownPosition),
-                currentPlayerPosition
-        );
+        int distToGoal;
+        int distToPlayer;
+        if (currentStep != null) {
+            distToGoal = Pythagore.calculDistance(
+                    Rectangle.findMiddleCoor(ownPosition),
+                    currentStep
+            );
+           distToPlayer = Pythagore.calculDistance(
+                    Rectangle.findMiddleCoor(ownPosition),
+                    currentPlayerPosition
+            );
 
+        }else {
+            return true;
+        }
         return distToPlayer <= distToGoal;
     }
 
@@ -118,69 +123,55 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
     /**
      * <p>Calcul du vecteur en fonction de la prochaine position à atteindre.</p>
      */
-    private void go() {
-
-
-        int deltaX, deltaY;
+    private void go() { //TODO Retirer les "si null" une fois Dijkstra amélioré
 
         //Si le précédent déplacement n'est pas bloqué
         if (!directionIsNull()) {
 
             //Si trop haut
-            if (ownPosition.getBeginY() < currentGoal.getY()) {
-                deltaY = currentGoal.getY() - ownPosition.getBeginY();
+            if (ownPosition.getBeginY() < currentStep.getY()) {
 
-                //Ajuste le vecteur pour atteindre précisément le point
-                if (deltaY < vector.getY()) {
-                    yDirection = deltaY;
-
-                    //Bouge normalement
-                } else
-                    yDirection = vector.getY();
-
-                xDirection = 0;
+                movesDown();
 
                 //Si trop bas
-            } else if (ownPosition.getBeginY() > currentGoal.getY()) {
-                deltaY = ownPosition.getBeginY() - currentGoal.getY();
+            } else if (ownPosition.getBeginY() > currentStep.getY()) {
 
-                if (deltaY < vector.getY()) {
-                    yDirection = -deltaY;
-
-                } else
-                    yDirection = -vector.getY();
-
-                xDirection = 0;
+                movesUp();
 
                 //Si trop à gauche
-            } else if (ownPosition.getBeginX() < currentGoal.getX()) {
+            } else if (ownPosition.getBeginX() < currentStep.getX()) {
 
-                deltaX = currentGoal.getX() - ownPosition.getBeginX();
-
-                if (deltaX < vector.getX()) {
-                    xDirection = deltaX;
-
-                } else
-                    xDirection = vector.getX();
-
-                yDirection = 0;
+                movesRight();
 
                 //Trop à droite
             } else {
-                deltaX = ownPosition.getBeginX() - currentGoal.getX();
 
-                if (deltaX < vector.getX()) {
-                    xDirection = deltaX;
-                } else
-                    xDirection = -vector.getX();
+                movesLeft();
 
-                yDirection = 0;
             }
 
             //Si Précédent mouvement bloqué, on agit en fonction de la dernière étape pour recalculer un vecteur
         }else {
 
-            System.out.println("bloqué!!!!!!!!!!!!!!!!");
+            if (lastVector.getY() != 0) {
+
+                if (currentStep.getX() <= Rectangle.findMiddleCoor(ownPosition).getX()) {
+
+                    movesLeft();
+
+                }else if (currentStep.getX() >= Rectangle.findMiddleCoor(ownPosition).getX()) {
+
+                    movesRight();
+
+                }
+
+
+            }else if (lastVector.getX() != 0) {
+                if (lastVector.getX() < 0){
+                    movesLeft();
+                }else
+                    movesRight();
+            }
 
         }
     }

@@ -95,11 +95,19 @@ public abstract class AbstractPathfinding_algo implements IPathfinding {
         Node<Tile> node;
 
         //========Création du rectangle pour découper la carte=======
-        x= Math.min(start.getX(), goal.getX()) - (5 * Tile.getWidth()); //On agrandit la surface de 5 tuiles de chaque côté pour ouvrir des chemins
-        y= Math.min(start.getY(), goal.getY()) - (5 * Tile.getHeight());
+        x= Math.min(start.getX(), goal.getX());
+        y= Math.min(start.getY(), goal.getY());
 
-        width = Math.max(start.getX(), goal.getX()) + (5 * Tile.getWidth());
-        height = Math.max(start.getY(), goal.getY()) + (5 * Tile.getHeight());
+        width = Math.max(start.getX(), goal.getX());
+        height = Math.max(start.getY(), goal.getY());
+
+        //Si rectangle trop petit, on l'agrandit pour trouver des chemins possibles
+        if (width < (Tile.getWidth() * 20)) {
+            width += (Tile.getWidth() * 20);
+        }
+        if (height < (Tile.getHeight() * 20)) {
+            height += (Tile.getHeight() * 20);
+        }
         //===========================================================
 
 
