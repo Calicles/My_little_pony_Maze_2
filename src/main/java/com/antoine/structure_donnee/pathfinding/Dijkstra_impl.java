@@ -5,7 +5,9 @@ import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 import com.antoine.structure_donnee.Node;
 
-import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -21,11 +23,23 @@ import java.util.stream.Collectors;
  */
 public class Dijkstra_impl extends AbstractPathfinding_algo {
 
+    /**
+     * <p>Fonction utilisé pour trouver les Tiles adjacentes.</p>
+     */
+    private Predicate<Node<Tile>> byWeight;
+
+    /**
+     * <p>Fonction utilisé pour renvoyer la meilleur Tile suivante.</p>
+     */
+    private BinaryOperator<Node<Tile>> getMin;
+
 
     //=======   Constructeurs ==========
 
     public Dijkstra_impl() {
         super();
+
+        initMethods();
     }
 
     public Dijkstra_impl(Rectangle entity) {
@@ -35,67 +49,83 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
     //=================================
 
     /**
+     * <p>Initialise les Méthodes des attributs : byWeight et getMin.</p>
+     */
+    private void initMethods() {
+
+        byWeight = t->{
+
+            //Distance de ce noeud au noeud courant avec ajout de la distance déja parcouru
+            int dist = getDistFromCurrentNode(t);
+            if (t.getParent() != null)
+                dist += t.getParent().getWeight();
+
+            //Si inusité
+            if (!t.isUsed()){
+
+                //Est adjacente
+                if (getDistFromCurrentNode(t) <= Tile.getWidth()) {
+
+                    //Poids intéressant
+                    if (t.getWeight() == -1 || (t.getWeight() > 0 && t.getWeight() <= dist)) {
+                        t.setWeight(dist + t.getDistFromGoal());
+                        t.setParentNode(currentNode);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+
+        getMin = (a,b)->{
+                    if (a.getDistFromGoal() == 0)
+                        return a;
+                    else if (b.getDistFromGoal() == 0)
+                        return b;
+                    else
+                        return (a.getWeight() < b.getWeight()) ? a : b;
+                };
+    }
+
+    /**
      * <p>Boucle l'algorithme pour passer en revu tous les chemins.</p>
+     * Rempli le graphe des tuiles adjacentes à la tuile courante.
+     * Selectionne la meilleur comme tuile courante.
+     *
+     * Crée une liste chaînée en reseignant le parent de chaque noeud
      */
     @Override
     protected void startSearch() {
 
+
         //Tant qu'on a pas trouvé la fin ou qu'il y a encore des noeuds à chercher
         while (currentNode != goal && currentNode != null) {
 
-            selectNextNode();
-
             fillAdjGraph();
 
+            selectNextNode();
         }
-
-        createPath();
-
-        createFinalPath();
     }
 
     /**
      * <p>Affine le path pour produire un chemin de point en point.</p>
+     * place les coordonnées du milieu de la prochaine tuile
      */
     private void createFinalPath() {
 
-        Tile current;
-        Tile precedTile = path.peek().getItem();
+        finalPath.clear();
 
-        //Enregistre milieu de coordonnées de la première tuile
-       finalPath.push(
-               Rectangle.findMiddleCoor(
-                       path.pop()
-                               .getItem()
-                               .toRectangle())
-       );
+        Tile current;
 
        //tant qu'il reste des tuiles
        while (!path.isEmpty()) {
            current = path.pop().getItem();
 
-           //Si la tuile courante est situé au dessus de la précdente
-           // on ajuste la hauteur du point de la largeur de l'entité, pour éviter une collision avec un mur
-            if (isUpper(current, precedTile)){
-                Coordinates point = current.toCoordinates();
-                point.setCoordinates(point.getX(), point.getY() - entity.getHeight());
-
-                finalPath.push(point);
-            }else
-                finalPath.push(
-                        Rectangle.findMiddleCoor(
-                                current.toRectangle())
-                );
-
-            precedTile = current;
+           finalPath.push(Rectangle.findMiddleCoor(current.toRectangle()));
        }
 
 
-    }
-
-    private boolean isUpper(Tile current, Tile precedTile) {
-
-        return current.getY() < precedTile.getY();
     }
 
     /**
@@ -105,22 +135,22 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
     @Override
     protected void selectNextNode() {
 
-        currentNode = adjNodes.stream()
+        Optional<Node<Tile>> res = adjNodes.stream()
 
                 //Retourne le plus petit Poids
-                .min(Comparator.comparingInt(Node::getWeight))
-
-                //Retourne le Noeud
-                .get();
+                .reduce(getMin);
 
         //On le marque comme utilisé
-        if (currentNode != null)
+        if (res.isPresent()) {
+            currentNode = res.get();
             currentNode.used();
+        }else
+            currentNode = currentNode.getParent();
     }
 
 
     /**
-     * <p>Rempli le graphe des cases adjacentes</p>
+     * <p>Rempli le graphe des cases adjacentes à la case courante</p>
      */
     @Override
     protected void fillAdjGraph() {
@@ -128,42 +158,25 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
         //Distance pour être adjacente
         int adjacente = currentNode.getItem().getWidth();
 
-        //Retiens les Noeuds dont le poids est intéressant
-        Predicate<Node<Tile>> predicate = t->{
-
-            //Distance de ce noeud au noeud courant avec ajout de la distance déja parcouru
-            int dist = getDistFromCurrentNode(t) + t.getParent().getWeight();
-
-            //Si la distance est inférieure au précédent calcul on change son parent pour chemin plus court
-            //Et on la garde comme adjacente
-            if (t.getWeight() <= dist || t.getWeight() == -1){
-                t.setWeight(dist);
-                t.setParentNode(currentNode);
-                return  true;
-            }
-            return false;
-        };
 
         //Efface le graphe de casses adjacentes au précédent Noeuds
         adjNodes.clear();
 
-        //Rempli le graphe des cases adjacentes au noeud courant
-        adjNodes.addAll(
+        List<Node<Tile>> buf = S.stream()
 
-            S.stream()
+                //Filtre si le noeud est déja utilisé et si adjacent au noeud courant
+                .filter(t -> byWeight.test(t))
 
-                    //Filtre si le noeud est déja utilisé et si adjacent au noeud courant
-                    .filter(t-> !t.isUsed() && getDistFromCurrentNode(t) <= adjacente)
+                .collect(Collectors.toList());
 
-                    .filter(predicate)
-
-                    .collect(Collectors.toList())
-        );
+        if (buf != null)
+            adjNodes.addAll(buf);
 
     }
 
     /**
      * <p>Rempli la pile "path" en remontant le file de l'arrivée jusqu'au départ</p>
+     * Appelle createFinalPath() pour affiner de point en point
      */
     @Override
     protected void createPath() {
@@ -172,13 +185,22 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
 
         Node<Tile> n = goal;
 
-        while (n != null) {
-            path.push(n);
+        //Tant qu'on a pas atteint la première tuile en remontant le fil depuis le but.
+        //La première tuile n'est pas prise en compte, pour avoir dirèctement l'étape suivante
+        while (n.getParent() != null) {
+            path.addLast(n);
 
             n = n.getParent();
         }
+
+        createFinalPath();
     }
 
+    /**
+     * <p>Retire de la pile la coordonées suivante.</p>
+     *
+     * @return la coordonnée retirée
+     */
     @Override
     public Coordinates getNextStep() {
         if (finalPath.isEmpty())

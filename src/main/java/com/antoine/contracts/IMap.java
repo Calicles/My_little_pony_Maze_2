@@ -28,5 +28,5 @@ public interface IMap {
 
     Tile isSolidTileOnRoad(Rectangle rectangle);
 
-    List<Tile> getSubMap(int x, int width, int y, int height);
+    List<Tile> getSubMap(Rectangle surface);
 }

@@ -207,7 +207,7 @@
 								<paramInjection id="levelTwilight_boss_positionY" value="-150" method="setY"/>
 							</parameters>
 						</injection>
-						<injection id="levelTwilight_boss_deplacement" class="com.antoine.transfert_strategy.IA_transfertStrategy_std" method="setDeplacement">
+						<injection id="levelTwilight_boss_deplacement" class="com.antoine.transfert_strategy.IA_transfertStrategy_withHeuristic" method="setDeplacement">
 							<parameters nbr="1">
 								<injection id="levelTwilight_boss_deplacement_vector" class="com.antoine.geometry.Coordinates" method="setVector">
 									<parameters nbr="2">

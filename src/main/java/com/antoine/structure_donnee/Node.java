@@ -3,7 +3,7 @@ package com.antoine.structure_donnee;
 public class Node<T> {
 
     private T item;
-    private int weight;
+    private int weight, distFromGoal;
     private boolean used;
 
     private Node<T> parentNode;
@@ -11,6 +11,7 @@ public class Node<T> {
     public Node(T item){
         this.item = item;
         weight = -1;
+        distFromGoal = -1;
         used = false;
     }
 
@@ -39,5 +40,13 @@ public class Node<T> {
     }
     public Node<T> getParent() {
         return parentNode;
+    }
+
+    public void setDistFromGoal(int distance) {
+        this.distFromGoal = distance;
+    }
+
+    public int getDistFromGoal(){
+        return distFromGoal;
     }
 }

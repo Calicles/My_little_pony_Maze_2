@@ -9,6 +9,7 @@ import com.antoine.geometry.Tile;
 import com.antoine.structure_donnee.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -23,42 +24,48 @@ public abstract class AbstractPathfinding_algo implements IPathfinding {
      * <p>Liste contenant l'ensemble de recherche</p>
      */
     protected ArrayList<Node<Tile>> S;
+
     /**
      * <p>graphe des tuiles adjacentes à la tuile courante dans la recherche</p>
      */
     protected ArrayList<Node<Tile>> adjNodes;
+
     /**
      * <p>pile construite à la fin de l'algorithme, contient le path à l'echelle des tuiles</p>
      */
-    protected Stack<Node<Tile>> path;
+    protected LinkedList<Node<Tile>> path;
+
     /**
      * <p>pile du chemin affiné, point à point</p>
      */
     protected Stack<Coordinates> finalPath;
+
     /**
      * <p>Les noeuds utilisés dans la recherche</p>.
      * CurrentNode : le noeud entrain d'être examiné.
      * goal : l'arrivé, pour tester la fin de l'algorithme.
      */
     protected Node<Tile> goal, currentNode;
+
     /**
-     * <p>les données de l'entité concernée par la recherche du meilleur chemin</p>
+     * <p>les positions de l'entité qui recherche le meilleur chemin</p>
      */
     protected Rectangle entity;
 
 
     //==================  Constructeurs  =============
+
     public AbstractPathfinding_algo() {
         S = new ArrayList<>();
         adjNodes = new ArrayList<>();
-        path = new Stack<>();
+        path = new LinkedList<>();
         finalPath = new Stack<>();
     }
 
     public AbstractPathfinding_algo(Rectangle entity){
         S = new ArrayList<>();
         adjNodes = new ArrayList<>();
-        path = new Stack<>();
+        path = new LinkedList<>();
         finalPath = new Stack<>();
 
         this.entity = entity;
@@ -68,6 +75,7 @@ public abstract class AbstractPathfinding_algo implements IPathfinding {
     public void setEntity(Rectangle entity) {
         this.entity = entity;
     }
+
     /**
      * <p>Initialise les données pour débuter l'algorithme</p>
      * @param goal les coordonnées du but à atteindre
@@ -87,17 +95,16 @@ public abstract class AbstractPathfinding_algo implements IPathfinding {
         Node<Tile> node;
 
         //========Création du rectangle pour découper la carte=======
-        x= Math.min(start.getX(), goal.getX());
-        y= Math.min(start.getY(), goal.getY());
+        x= Math.min(start.getX(), goal.getX()) - (5 * Tile.getWidth()); //On agrandit la surface de 5 tuiles de chaque côté pour ouvrir des chemins
+        y= Math.min(start.getY(), goal.getY()) - (5 * Tile.getHeight());
 
-        width = Math.max(start.getX(), goal.getX()) - x;
-        height = Math.max(start.getY(), goal.getY()) - y;
+        width = Math.max(start.getX(), goal.getX()) + (5 * Tile.getWidth());
+        height = Math.max(start.getY(), goal.getY()) + (5 * Tile.getHeight());
         //===========================================================
 
 
-        //Récupère le morceau de la carte qui contient le départ et l'arrivée
-        //pour éviter de traiter de trop grandes informations
-        List<Tile> subList = map.getSubMap(x, width, y, height);
+        //Récupère le morceau de la carte selon le rectangle
+        List<Tile> subList = map.getSubMap(new Rectangle(x, width, y, height));
 
         for (Tile t:subList){
             node = new Node<>(t);
@@ -110,12 +117,23 @@ public abstract class AbstractPathfinding_algo implements IPathfinding {
             if (t.contains(start)) {
                 node.setWeight(0);
                 adjNodes.add(node);
+                currentNode = node;
+                currentNode.used();
 
             //Si contient les coordonées du but, la tuile est en arrivée
-            }else if (t.contains(goal))
+            }else if (t.contains(goal)) {
                 this.goal = node;
+                this.goal.setDistFromGoal(0);
+            }
 
         }
+
+        //Rempli la valeur distFromGoal de chaque noeud selon sa distance du but
+        for (Node<Tile> t: S)
+            t.setDistFromGoal(
+                    Pythagore.calculDistance(
+                            t.getItem().toCoordinates(), this.goal.getItem().toCoordinates())
+            );
 
         startSearch();
         createPath();
@@ -151,6 +169,7 @@ public abstract class AbstractPathfinding_algo implements IPathfinding {
         if(!S.isEmpty()){
             S.clear();
             path.clear();
+            adjNodes.clear();
         }
     }
 }

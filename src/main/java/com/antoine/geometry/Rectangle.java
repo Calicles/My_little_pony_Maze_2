@@ -87,6 +87,11 @@ public class Rectangle {
 				box.getEndY() >= position.getEndY();
 	}
 
+	public static boolean isInBox(Rectangle box, Coordinates point){
+		return (point.getX() >= box.getBeginX() && point.getX() <= box.getEndX()) &&
+				(point.getY() >= box.getBeginY() && point.getY() <= box.getEndY());
+	}
+
     public void setCoordinates(int x, int y) {
 		this.X= x;
 		this.Y= y;

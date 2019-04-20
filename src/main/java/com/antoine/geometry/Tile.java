@@ -69,13 +69,13 @@ public class Tile {
 
 	public static int getSolidNum(){return SOLID;}
 
-    public boolean contains(Coordinates start) {
-		Rectangle rec = new Rectangle(x, x + width, y, y + height);
-		return Rectangle.isInBox(rec, new Rectangle(start, 0, 0));
+    public boolean contains(Coordinates point) {
+
+		return Rectangle.isInBox(this.toRectangle(), point);
     }
 
     public Rectangle toRectangle(){
-		return new Rectangle(x, width, y, height);
+		return new Rectangle(x, x + width, y,  y + height);
 	}
 
 	public Coordinates toCoordinates(){

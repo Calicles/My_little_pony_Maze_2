@@ -71,7 +71,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	private void move(){
 
-		if (isPlayerNext()){
+		if (isPlayerNext(300)){
 
 			manHuntPlayer();
 
@@ -180,8 +180,8 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	}
 
-	private boolean isPlayerNext(){
-		return Rectangle.isNext(ownPosition, player1, 300);
+	protected boolean isPlayerNext(int radius){
+		return Rectangle.isNext(ownPosition, player1, radius);
 	}
 
 	private void pause() {
@@ -238,7 +238,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 			return new Coordinates(0, 0);
 	}
 
-	private boolean directionIsNull(){
+	protected boolean directionIsNull(){
 		return xDirection == 0 && yDirection == 0;
 	}
 

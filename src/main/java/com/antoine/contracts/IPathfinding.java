@@ -8,4 +8,6 @@ public interface IPathfinding {
     void init(Coordinates goal, IMap map);
 
     Coordinates getNextStep();
+
+    void setEntity(Rectangle ownPosition);
 }
