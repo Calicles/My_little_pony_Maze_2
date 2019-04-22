@@ -1,13 +1,14 @@
 package com.antoine.structure_donnee.pathfinding;
 
+import com.antoine.contracts.IMap;
+import com.antoine.contracts.IPathfinding;
 import com.antoine.geometry.Coordinates;
+import com.antoine.geometry.Pythagore;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 import com.antoine.structure_donnee.Node;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.BinaryOperator;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -21,17 +22,19 @@ import java.util.stream.Collectors;
  *
  * @author Antoine
  */
-public class Dijkstra_impl extends AbstractPathfinding_algo {
+public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfinding {
+
+    /**
+     * <p>Le path en coordonnée</p>
+     */
+    private Stack<Coordinates> path;
 
     /**
      * <p>Fonction utilisé pour trouver les Tiles adjacentes.</p>
      */
-    private Predicate<Node<Tile>> byWeight;
+    private Predicate<Node<Tile>> isAdjacent;
 
-    /**
-     * <p>Fonction utilisé pour renvoyer la meilleur Tile suivante.</p>
-     */
-    private BinaryOperator<Node<Tile>> getMin;
+    private int distofAdjecent;
 
 
     //=======   Constructeurs ==========
@@ -40,52 +43,92 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
         super();
 
         initMethods();
-    }
 
-    public Dijkstra_impl(Rectangle entity) {
-        super(entity);
+        distofAdjecent = Pythagore.square(Tile.getWidth());
+
+        path = new Stack<>();
     }
 
     //=================================
+
+    public void setEntity(Rectangle entity) {
+        this.entity = entity;
+    }
 
     /**
      * <p>Initialise les Méthodes des attributs : byWeight et getMin.</p>
      */
     private void initMethods() {
 
-        byWeight = t->{
+        isAdjacent = t-> getDistFromCurrentNode(t) <= distofAdjecent;
+    }
 
-            //Distance de ce noeud au noeud courant avec ajout de la distance déja parcouru
-            int dist = getDistFromCurrentNode(t);
-            if (t.getParent() != null)
-                dist += t.getParent().getWeight();
+    /**
+     * <p>Initialise les données pour débuter l'algorithme</p>
+     * @param start les coordonnées de départ
+     * @param goal les coordonnées du but à atteindre
+     * @param map la carte
+     * @return une pile contenant le path, null si pas de chemin
+     */
+    @Override
+    public Stack<Coordinates> createPath(Coordinates start, Coordinates goal, IMap map) {
+        //Reset les données, si précédent appel
+        clear();
+        path.clear();
 
-            //Si inusité
-            if (!t.isUsed()){
+        //Pout découper la partie de la carte intéressante
+        int x, y, width, height;
 
-                //Est adjacente
-                if (getDistFromCurrentNode(t) <= Tile.getWidth()) {
+        Node<Tile> node;
 
-                    //Poids intéressant
-                    if (t.getWeight() == -1 || (t.getWeight() > 0 && t.getWeight() <= dist)) {
-                        t.setWeight(dist + t.getDistFromGoal());
-                        t.setParentNode(currentNode);
-                        return true;
-                    }
-                }
+        //========Création du rectangle pour découper la carte=======
+        x = Math.min(start.getX(), goal.getX());
+        y = Math.min(start.getY(), goal.getY());
+
+        width = Math.max(start.getX(), goal.getX());
+        height = Math.max(start.getY(), goal.getY());
+
+        //Si rectangle trop petit, on l'agrandit pour trouver des chemins possibles
+        if (width < (Tile.getWidth() * 10)) {
+            width += (Tile.getWidth() * 10);
+        }
+        if (height < (Tile.getHeight() * 10)) {
+            height += (Tile.getHeight() * 10);
+        }
+        //===========================================================
+
+
+        //Récupère le morceau de la carte selon le rectangle
+        List<Tile> subList = map.getSubMap(new Rectangle(x, width, y, height));
+
+        for (Tile t : subList) {
+            node = new Node<>(t);
+
+            //N'ajoute pas la tuile si elle est solide
+            if (!node.getItem().isSolid())
+                S.add(node);
+
+            //Si la tuile contient les coordonnées de l'entité, elle est placé en départ
+            if (t.contains(start)) {
+                node.setWeight(0);
+                adjNodes.add(node);
+                currentNode = node;
+                currentNode.used();
+
+                //Si contient les coordonées du but, la tuile est en arrivée
+            } else if (t.contains(goal)) {
+                this.goal = node;
+                this.goal.setDistFromGoal(0);
             }
-            return false;
-        };
 
+        }
+        openList.addAll(S);
 
-        getMin = (a,b)->{
-                    if (a.getDistFromGoal() == 0)
-                        return a;
-                    else if (b.getDistFromGoal() == 0)
-                        return b;
-                    else
-                        return (a.getWeight() < b.getWeight()) ? a : b;
-                };
+        openList.remove(currentNode);
+
+        closedList.add(currentNode);
+
+        return startSearch();
     }
 
     /**
@@ -95,37 +138,46 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
      *
      * Crée une liste chaînée en reseignant le parent de chaque noeud
      */
-    @Override
-    protected void startSearch() {
+    protected Stack<Coordinates> startSearch() {
 
-
-        //Tant qu'on a pas trouvé la fin ou qu'il y a encore des noeuds à chercher
-        while (currentNode != goal && currentNode != null) {
+        while (!openList.isEmpty()) {
 
             fillAdjGraph();
 
             selectNextNode();
+
         }
+        return createFinalPath();
     }
 
     /**
      * <p>Affine le path pour produire un chemin de point en point.</p>
      * place les coordonnées du milieu de la prochaine tuile
      */
-    private void createFinalPath() {// TODO Placer les coordonnées en fonction de la surface du joueur!!
+    private Stack<Coordinates> createFinalPath() {
 
-        finalPath.clear();
+        Node<Tile> node = goal;
 
-        Tile current;
+        while (node != null) {
 
-       //tant qu'il reste des tuiles
-       while (!path.isEmpty()) {
-           current = path.pop().getItem();
+            path.push(Rectangle.findMiddleCoor(node.getItem().toRectangle()));
 
-           finalPath.push(Rectangle.findMiddleCoor(current.toRectangle()));
-       }
+            node = node.getParent();
+        }
 
+        return path;
+    }
 
+    /**
+     * <p>Ajuste la route point à point en prenant en compte la surface de l'entité pour éviter les obstacles.</p>
+     * L'obstacle est détecté en cas de changement de trajectoire
+     * @param current la tuile courante
+     * @param precedent la tuile précédente
+     * @return les coordonnées ajustées à la largeur et longueur de l'entité ou inchangé si pas d'obstacle
+     */
+    private Coordinates adjustPathToEntitySurface(Tile current, Tile precedent) {
+
+        return null;
     }
 
     /**
@@ -136,64 +188,46 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
     protected void selectNextNode() {
 
         Optional<Node<Tile>> res = adjNodes.stream()
+                .min(Comparator.comparingInt(Node::getWeight));
 
-                //Retourne le plus petit Poids
-                .reduce(getMin);
-
-        //On le marque comme utilisé
         if (res.isPresent()) {
             currentNode = res.get();
-            currentNode.used();
+            openList.remove(currentNode);
+            closedList.add(currentNode);
         }else
-            currentNode = currentNode.getParent();
+            currentNode = null;
     }
 
 
     /**
      * <p>Rempli le graphe des cases adjacentes à la case courante</p>
+     * Construit la liste chaînée qui sera remontée pour construire le path final
      */
     @Override
     protected void fillAdjGraph() {
 
-        //Distance pour être adjacente
-        int adjacente = currentNode.getItem().getWidth();
+        adjNodes = (ArrayList<Node<Tile>>) openList.stream()
 
-
-        //Efface le graphe de casses adjacentes au précédent Noeuds
-        adjNodes.clear();
-
-        List<Node<Tile>> buf = S.stream()
-
-                //Filtre si le noeud est déja utilisé et si adjacent au noeud courant
-                .filter(t -> byWeight.test(t))
+                .filter(t-> isAdjacent.test(t))
 
                 .collect(Collectors.toList());
 
-        if (buf != null)
-            adjNodes.addAll(buf);
+        //Parcours du graphe des tuile adjacentes
+        for (Node<Tile> n : adjNodes) {
 
-    }
+            int distance = getDistFromCurrentNode(n) + currentNode.getWeight();
 
-    /**
-     * <p>Rempli la pile "path" en remontant le file de l'arrivée jusqu'au départ</p>
-     * Appelle createFinalPath() pour affiner de point en point
-     */
-    @Override
-    protected void createPath() {
+            //Si la distance est plus avantageuse que la précédente on change le poids (en distance) du noeud
+            if (n.getWeight() > distance || n.getWeight() == -1) {
 
-        path.clear();
+                n.setWeight(distance);
 
-        Node<Tile> n = goal;
-
-        //Tant qu'on a pas atteint la première tuile en remontant le fil depuis le but.
-        //La première tuile n'est pas prise en compte, pour avoir dirèctement l'étape suivante
-        while (n.getParent() != null) {
-            path.addLast(n);
-
-            n = n.getParent();
+                //On évite placé la première case dans la liste chaîné pour que la prochaine étape du path soit toujours
+                //entre le départ et l'arrivée
+                if (currentNode.getWeight() != 0)
+                    n.setParentNode(currentNode);
+                }
         }
-
-        createFinalPath();
     }
 
     /**
@@ -201,10 +235,14 @@ public class Dijkstra_impl extends AbstractPathfinding_algo {
      *
      * @return la coordonnée retirée
      */
-    @Override
     public Coordinates getNextStep() {
-        if (finalPath.isEmpty())
-            return null;
-        return finalPath.pop();
+        return null;
     }
+
+
+    //TODO Remove after test
+    public Stack<Coordinates> getPath() {
+        return (Stack<Coordinates>) path.clone();
+    }
+
 }

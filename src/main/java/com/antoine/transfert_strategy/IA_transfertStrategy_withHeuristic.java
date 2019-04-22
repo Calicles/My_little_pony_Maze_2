@@ -4,9 +4,10 @@ import com.antoine.contracts.IMap;
 import com.antoine.contracts.IPathfinding;
 import com.antoine.contracts.ITransfert_strategy;
 import com.antoine.geometry.Coordinates;
-import com.antoine.geometry.Pythagore;
 import com.antoine.geometry.Rectangle;
 import com.antoine.structure_donnee.pathfinding.Dijkstra_impl;
+
+import java.util.Stack;
 
 
 /**
@@ -24,7 +25,12 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
     /**
      * <p>Coordonnées utilisées pour mettre à jour la nécessité de recalculée l'itinéraire</p>
      */
-    private Coordinates precPlayerPosition, currentPlayerPosition, precStep;
+    private Coordinates currentPlayerPosition;
+
+    /**
+     * <p>Pile de coordonnée représentant un pathfinding</p>
+     */
+    private Stack<Coordinates> path;
 
     /**
      * <p>La direction courante à suivre pour arriver au but</p>
@@ -41,16 +47,19 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
     @Override
     public void setOwnPosition(Rectangle ownPosition){
         super.setOwnPosition(ownPosition);
-        pathfinder.setEntity(this.ownPosition);
     }
 
     @Override
     public void setAttributes(Rectangle ownPosition, Rectangle player, IMap map) {
         super.setAttributes(ownPosition, player, map);
-        pathfinder.setEntity(this.ownPosition);
         currentPlayerPosition = new Coordinates(player.getBeginX(), player.getBeginY());
-        precPlayerPosition = new Coordinates(player.getBeginX(), player.getBeginY());
-        precStep = new Coordinates(0, 0);
+    }
+
+
+    //TODO Remove after Test
+    @Override
+    public Stack<Coordinates> getPath() {
+        return pathfinder.getPath();
     }
 
 
@@ -58,59 +67,22 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
      * <p>Prends comme direction les coordonnées du joueur en utilisant l'algorithme de IPathfinding</p>
      */
     @Override
-    protected void manHuntPlayer(){
+    protected void manHuntPlayer() {
 
-        //Fixe la dernière position du joueur connu (évite la concurrence de Thread)
+
         currentPlayerPosition.setCoordinates(player1.getBeginX(), player1.getBeginY());
 
-        precStep.setCoordinates(ownPosition.getBeginX(), ownPosition.getBeginY());
+        path = pathfinder.createPath(
+                Rectangle.findMiddleCoor(ownPosition),
+                Rectangle.findMiddleCoor(player1),
+                map
+        );
 
-        //Si le Joueur s'est déplacé, on recalcule un nouvel itinéraire via la stratégie implémenté par IPahtfinding
-        if (!precPlayerPosition.equals(currentPlayerPosition)){
+        currentStep = path.pop();
 
-            precPlayerPosition.setCoordinates(player1.getBeginX(), player1.getBeginY());
-
-            pathfinder.init(new Coordinates(player1.getBeginX(), player1.getBeginY()), map);
-
-            currentStep = pathfinder.getNextStep();
-        }
-
-        //L'entité à atteint l'étape, on renvoi une nouvelle étape vers le joueur
-        if (currentStep != null && Rectangle.isInBox(ownPosition, currentStep)) {
-            precStep = currentStep;
-            currentStep = pathfinder.getNextStep();
-        }
-
-        //Si le joueur est plus près de l'étape, on le chasse directement
-        if (isPlayerNear() || currentStep == null) {
-            goToPlayer();
-        }else {
+        if (currentStep != null)
             go();
-        }
 
-    }
-
-    /**
-     * <p>Calcule si le joueur est plus près que la prochaine étape à atteindre.</p>
-     * @return true si coordonnées du joueur plus près, false sinon
-     */
-    private boolean isPlayerNear() {
-        int distToGoal;
-        int distToPlayer;
-        if (currentStep != null) {
-            distToGoal = Pythagore.calculDistance(
-                    Rectangle.findMiddleCoor(ownPosition),
-                    currentStep
-            );
-           distToPlayer = Pythagore.calculDistance(
-                    Rectangle.findMiddleCoor(ownPosition),
-                    currentPlayerPosition
-            );
-
-        }else {
-            return true;
-        }
-        return distToPlayer <= distToGoal;
     }
 
     /**
@@ -125,55 +97,17 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
      */
     private void go() { //TODO Retirer les "si null" une fois Dijkstra amélioré
 
-        //Si le précédent déplacement n'est pas bloqué
-        if (!directionIsNull()) {
+        Coordinates middle = Rectangle.findMiddleCoor(ownPosition);
 
-            //Si trop haut
-            if (ownPosition.getBeginY() < currentStep.getY()) {
+        ownPosition.setCoordinates(currentStep.getX() - ownPosition.getWidth() / 2, currentStep.getY() - ownPosition.getHeight() / 2);
 
-                movesDown();
-
-                //Si trop bas
-            } else if (ownPosition.getBeginY() > currentStep.getY()) {
-
-                movesUp();
-
-                //Si trop à gauche
-            } else if (ownPosition.getBeginX() < currentStep.getX()) {
-
-                movesRight();
-
-                //Trop à droite
-            } else {
-
-                movesLeft();
-
-            }
-
-            //Si Précédent mouvement bloqué, on agit en fonction de la dernière étape pour recalculer un vecteur
-        }else {
-
-            if (lastVector.getY() != 0) {
-
-                if (currentStep.getX() <= Rectangle.findMiddleCoor(ownPosition).getX()) {
-
-                    movesLeft();
-
-                }else if (currentStep.getX() >= Rectangle.findMiddleCoor(ownPosition).getX()) {
-
-                    movesRight();
-
-                }
-
-
-            }else if (lastVector.getX() != 0) {
-                if (lastVector.getX() < 0){
-                    movesLeft();
-                }else
-                    movesRight();
-            }
-
-        }
     }
 
+    private boolean inHeight() {
+        return (currentStep.getY() >= ownPosition.getBeginY() && currentStep.getY() <= ownPosition.getEndY());
+    }
+
+    private boolean inWidth() {
+        return (currentStep.getX() >= ownPosition.getBeginX() && currentStep.getX() <= ownPosition.getEndX());
+    }
 }

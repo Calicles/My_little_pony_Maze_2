@@ -6,6 +6,8 @@ import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
+import java.util.Stack;
+
 public class IA_transfertStrategy_std extends AbstractTransfer implements ITransfert_strategy {
 	
 	protected Thread greyCell;
@@ -49,6 +51,12 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		greyCell.start();
 	}
 
+	//TODO Remove after test
+	@Override
+	public Stack<Coordinates> getPath() {
+		return null;
+	}
+
 	@Override
 	public void think() {
 
@@ -72,6 +80,8 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	private void move(){
 
 		if (isPlayerNext(300)){
+
+			released();
 
 			manHuntPlayer();
 

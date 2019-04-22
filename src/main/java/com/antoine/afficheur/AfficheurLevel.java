@@ -34,7 +34,7 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
 
     }
 
-    private void drawLevel4(IStructure structure) {
+    protected void drawLevel4(IStructure structure) {
         IEntity boss= structure.getBoss();
         Rectangle screen= structure.getScreen();
         drawLevel3(structure);

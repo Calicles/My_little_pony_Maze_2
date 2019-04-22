@@ -1,7 +1,6 @@
 package com.antoine.structure_donnee.pathfinding;
 
 import com.antoine.contracts.IMap;
-import com.antoine.contracts.IPathfinding;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Pythagore;
 import com.antoine.geometry.Rectangle;
@@ -9,8 +8,6 @@ import com.antoine.geometry.Tile;
 import com.antoine.structure_donnee.Node;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Stack;
 
 /**
@@ -18,7 +15,12 @@ import java.util.Stack;
  *
  * @author Antoine
  */
-public abstract class AbstractPathfinding_algo implements IPathfinding {
+public abstract class AbstractPathfinding_algo {
+
+    /**
+     * <p>les positions de l'entité qui recherche le meilleur chemin</p>
+     */
+    protected Rectangle entity;
 
     /**
      * <p>Liste contenant l'ensemble de recherche</p>
@@ -26,19 +28,20 @@ public abstract class AbstractPathfinding_algo implements IPathfinding {
     protected ArrayList<Node<Tile>> S;
 
     /**
+     * <p>List for checking</p>
+     */
+    protected ArrayList<Node<Tile>> openList;
+
+    /**
+     * <p>Closed list, checked</p>
+     */
+
+    protected ArrayList<Node<Tile>> closedList;
+
+    /**
      * <p>graphe des tuiles adjacentes à la tuile courante dans la recherche</p>
      */
     protected ArrayList<Node<Tile>> adjNodes;
-
-    /**
-     * <p>pile construite à la fin de l'algorithme, contient le path à l'echelle des tuiles</p>
-     */
-    protected LinkedList<Node<Tile>> path;
-
-    /**
-     * <p>pile du chemin affiné, point à point</p>
-     */
-    protected Stack<Coordinates> finalPath;
 
     /**
      * <p>Les noeuds utilisés dans la recherche</p>.
@@ -47,116 +50,29 @@ public abstract class AbstractPathfinding_algo implements IPathfinding {
      */
     protected Node<Tile> goal, currentNode;
 
-    /**
-     * <p>les positions de l'entité qui recherche le meilleur chemin</p>
-     */
-    protected Rectangle entity;
-
 
     //==================  Constructeurs  =============
 
     public AbstractPathfinding_algo() {
         S = new ArrayList<>();
+
         adjNodes = new ArrayList<>();
-        path = new LinkedList<>();
-        finalPath = new Stack<>();
+
+        openList = new ArrayList<>();
+
+        closedList = new ArrayList<>();
+
     }
 
-    public AbstractPathfinding_algo(Rectangle entity){
-        S = new ArrayList<>();
-        adjNodes = new ArrayList<>();
-        path = new LinkedList<>();
-        finalPath = new Stack<>();
-
-        this.entity = entity;
-    }
     //================================================
 
-    public void setEntity(Rectangle entity) {
-        this.entity = entity;
-    }
 
-    /**
-     * <p>Initialise les données pour débuter l'algorithme</p>
-     * @param goal les coordonnées du but à atteindre
-     * @param map la carte
-     */
-    @Override
-    public void init(Coordinates goal, IMap map) {
-        //Reset les données, si précédent appel
-        clear();
-
-        //Centre la recherche sur les coordonnées de l'entité
-        Coordinates start = new Coordinates(entity.getBeginX(), entity.getBeginY());
-
-        //Pout découper la partie de la carte intéressante
-        int x, y, width, height;
-
-        Node<Tile> node;
-
-        //========Création du rectangle pour découper la carte=======
-        x= Math.min(start.getX(), goal.getX());
-        y= Math.min(start.getY(), goal.getY());
-
-        width = Math.max(start.getX(), goal.getX());
-        height = Math.max(start.getY(), goal.getY());
-
-        //Si rectangle trop petit, on l'agrandit pour trouver des chemins possibles
-        if (width < (Tile.getWidth() * 20)) {
-            width += (Tile.getWidth() * 20);
-        }
-        if (height < (Tile.getHeight() * 20)) {
-            height += (Tile.getHeight() * 20);
-        }
-        //===========================================================
-
-
-        //Récupère le morceau de la carte selon le rectangle
-        List<Tile> subList = map.getSubMap(new Rectangle(x, width, y, height));
-
-        for (Tile t:subList){
-            node = new Node<>(t);
-
-            //N'ajoute pas la tuile si elle est solide
-            if (!node.getItem().isSolid())
-                S.add( node );
-
-            //Si la tuile contient les coordonnées de l'entité, elle est placé en départ
-            if (t.contains(start)) {
-                node.setWeight(0);
-                adjNodes.add(node);
-                currentNode = node;
-                currentNode.used();
-
-            //Si contient les coordonées du but, la tuile est en arrivée
-            }else if (t.contains(goal)) {
-                this.goal = node;
-                this.goal.setDistFromGoal(0);
-            }
-
-        }
-
-        //Rempli la valeur distFromGoal de chaque noeud selon sa distance du but
-        for (Node<Tile> t: S)
-            t.setDistFromGoal(
-                    Pythagore.calculDistance(
-                            t.getItem().toCoordinates(), this.goal.getItem().toCoordinates())
-            );
-
-        startSearch();
-        createPath();
-    }
 
     protected abstract void selectNextNode();
 
     protected abstract void fillAdjGraph();
 
-    protected abstract void startSearch();
-
-    protected abstract void createPath();
-
-    @Override
-    public abstract Coordinates getNextStep();
+    protected abstract Stack<Coordinates> createPath(Coordinates start, Coordinates goal, IMap map);
 
     /**
      * <p>Calcule de distance par rapport à la tuile du noeud courant.</p>
@@ -167,17 +83,17 @@ public abstract class AbstractPathfinding_algo implements IPathfinding {
         Tile t =  node.getItem();
         Tile current = currentNode.getItem();
 
-        return Pythagore.calculDistance(t.toCoordinates(), current.toCoordinates());
+        return Pythagore.calculDistanceInSquarre(t.toCoordinates(), current.toCoordinates());
     }
 
     /**
      * <p>Reset les données pour nouveaux calculs.</p>
      */
     protected void clear(){
-        if(!S.isEmpty()){
-            S.clear();
-            path.clear();
-            adjNodes.clear();
-        }
+        S.clear();
+        adjNodes.clear();
+        openList.clear();
+        closedList.clear();
     }
+
 }

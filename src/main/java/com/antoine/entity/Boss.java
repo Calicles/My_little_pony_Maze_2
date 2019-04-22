@@ -4,6 +4,9 @@ import com.antoine.contracts.IEnnemi;
 import com.antoine.contracts.IMap;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
+import com.antoine.structure_donnee.Node;
+
+import java.util.Stack;
 
 /**
  * <b>Classe qui représente un ennemi</b>
@@ -75,5 +78,14 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 	@Override
 	public void startThinking() {
 		deplacement.startThinking();
+	}
+
+
+
+	//TODO Remove after Test
+
+	@Override
+	public Stack<Coordinates> getPath() {
+		return deplacement.getPath();
 	}
 }

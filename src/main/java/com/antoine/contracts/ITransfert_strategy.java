@@ -2,6 +2,9 @@ package com.antoine.contracts;
 
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
+import com.antoine.structure_donnee.Node;
+
+import java.util.Stack;
 
 public interface ITransfert_strategy {
 
@@ -24,4 +27,7 @@ public interface ITransfert_strategy {
     void setAttributes(Rectangle ownPosition, Rectangle palyer1, IMap map);
 
     void startThinking();
+
+    //TODO Remove after Test
+    Stack<Coordinates> getPath();
 }
