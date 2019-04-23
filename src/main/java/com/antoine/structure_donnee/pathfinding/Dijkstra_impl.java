@@ -55,6 +55,11 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
         this.entity = entity;
     }
 
+    @Override
+    protected void createOpenList() {
+        openList = new TreeSet<>(Comparator.comparingInt(Node::getWeight));
+    }
+
     /**
      * <p>Initialise les Méthodes des attributs : byWeight et getMin.</p>
      */
@@ -113,12 +118,10 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
                 node.setWeight(0);
                 adjNodes.add(node);
                 currentNode = node;
-                currentNode.used();
 
                 //Si contient les coordonées du but, la tuile est en arrivée
             } else if (t.contains(goal)) {
                 this.goal = node;
-                this.goal.setDistFromGoal(0);
             }
 
         }

@@ -1,18 +1,45 @@
 package com.antoine.structure_donnee;
 
+
+/**
+ * <b>Représente un noeud dans un graphe acyclique</b>
+ * <p>Enveloppe un item pour être représenter dans ce graphe</p>
+ * <p>Peut-être utilisé avec heuristique</p>
+ *
+ * @param <T> le type traité par l'heuristique
+ *
+ * @author Antoine
+ */
 public class Node<T> {
 
+    /**
+     * <p>La classe qui est enveloppé pour être représenté dans le graphe</p>
+     */
     private T item;
-    private int weight, distFromGoal;
-    private boolean used;
 
+    /**
+     * <p>L'heuristique utilisé en cas d'algorithme en ayant besoin</p>
+     */
+    private Heuristic<Integer> heuristic;
+
+    /**
+     * <p>Le poids du noeud dans le graphe</p>
+     */
+    private int weight;
+
+    /**
+     * <p>Le parent de ce noeud dans le graphe</p>
+     */
     private Node<T> parentNode;
 
+    /**
+     * <p>Constructeur</p>
+     *
+     * @param item l'occurence à envelopper
+     */
     public Node(T item){
         this.item = item;
         weight = -1;
-        distFromGoal = -1;
-        used = false;
     }
 
     public T getItem(){
@@ -23,30 +50,24 @@ public class Node<T> {
         this.weight = weight;
     }
 
-    public void used(){
-        used = true;
-    }
-
     public int getWeight() {
         return weight;
     }
 
-    public boolean isUsed() {
-        return used;
-    }
-
-    public void setParentNode(Node<T> parentNode) {
+    public void setParentNode(Node<T> parentNode)
+    {
         this.parentNode = parentNode;
     }
-    public Node<T> getParent() {
+    public Node<T> getParent()
+    {
         return parentNode;
     }
 
-    public void setDistFromGoal(int distance) {
-        this.distFromGoal = distance;
+    public void setHeuristic(int value) {
+        heuristic.setValue(value);
     }
 
-    public int getDistFromGoal(){
-        return distFromGoal;
+    public int getHeuristic() {
+        return heuristic.getValue();
     }
 }

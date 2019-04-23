@@ -9,6 +9,7 @@ import com.antoine.structure_donnee.Node;
 
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.TreeSet;
 
 /**
  * <b>Cadre de l'algorithme de recherche du meilleur chemin</b>
@@ -30,7 +31,7 @@ public abstract class AbstractPathfinding_algo {
     /**
      * <p>List for checking</p>
      */
-    protected ArrayList<Node<Tile>> openList;
+    protected TreeSet<Node<Tile>> openList;
 
     /**
      * <p>Closed list, checked</p>
@@ -58,7 +59,7 @@ public abstract class AbstractPathfinding_algo {
 
         adjNodes = new ArrayList<>();
 
-        openList = new ArrayList<>();
+        createOpenList();
 
         closedList = new ArrayList<>();
 
@@ -67,6 +68,7 @@ public abstract class AbstractPathfinding_algo {
     //================================================
 
 
+    protected abstract void createOpenList();
 
     protected abstract void selectNextNode();
 
