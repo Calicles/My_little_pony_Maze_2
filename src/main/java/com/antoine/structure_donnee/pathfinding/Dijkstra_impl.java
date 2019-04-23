@@ -52,13 +52,10 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
      */
     protected Node<Tile> goal, currentNode;
 
-    /**
-     * <p>Le path en coordonnée</p>
-     */
-    private Stack<Coordinates> path;
 
     /**
      * <p>Fonction utilisé pour trouver les Tiles adjacentes.</p>
+     * @see AbstractPathfinding_algo#getDist(Node, Node)
      */
     private Predicate<Node<Tile>> isAdjacent;
 
@@ -72,9 +69,9 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
 
         initMethods();
 
+        //utilisation du carré de la distance pour éviter la lenteur des flottants.
         distofAdjecent = Pythagore.square(Tile.getWidth());
 
-        path = new Stack<>();
     }
 
     //=================================
@@ -108,31 +105,10 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
      */
     @Override
     public Stack<Coordinates> createPath(Coordinates start, Coordinates goal, IMap map) {
-        //Reset les données, si précédent appel
-        clear();
-        path.clear();
 
-        //Pout découper la partie de la carte intéressante
-        int x, y, width, height;
+        super.createRectangle(start, goal, map);
 
         Node<Tile> node;
-
-        //========Création du rectangle pour découper la carte=======
-        x = Math.min(start.getX(), goal.getX());
-        y = Math.min(start.getY(), goal.getY());
-
-        width = Math.max(start.getX(), goal.getX());
-        height = Math.max(start.getY(), goal.getY());
-
-        //Si rectangle trop petit, on l'agrandit pour trouver des chemins possibles
-        if (width < (Tile.getWidth() * 10)) {
-            width += (Tile.getWidth() * 10);
-        }
-        if (height < (Tile.getHeight() * 10)) {
-            height += (Tile.getHeight() * 10);
-        }
-        //===========================================================
-
 
         //Récupère le morceau de la carte selon le rectangle
         List<Tile> subList = map.getSubMap(new Rectangle(x, width, y, height));
@@ -215,7 +191,6 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
      * <p>Selectionne le prochain noeud de plus petit poids dans le graphe des cases adjacentes
      * et le place en tant que noeud courant.</p>
      */
-    @Override
     protected void selectNextNode() {
 
 
@@ -235,7 +210,6 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
      * <p>Rempli le graphe des cases adjacentes à la case courante</p>
      * Construit la liste chaînée qui sera remontée pour construire le path final
      */
-    @Override
     protected void fillAdjGraph() {
 
         List<Node<Tile>>  buffer = openList.stream()

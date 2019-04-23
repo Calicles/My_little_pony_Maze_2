@@ -16,9 +16,19 @@ import java.util.Stack;
 public abstract class AbstractPathfinding_algo {
 
 
+    /**
+     * <p>Le path en coordonnée</p>
+     */
+    protected Stack<Coordinates> path;
+
+    protected int x, y, width, height;
+
+
     //==================  Constructeurs  =============
 
     public AbstractPathfinding_algo() {
+        path = new Stack<>();
+
         createDataStruct();
     }
 
@@ -27,18 +37,37 @@ public abstract class AbstractPathfinding_algo {
 
     protected abstract void createDataStruct();
 
-    protected abstract void selectNextNode();
-
-    protected abstract void fillAdjGraph();
-
     protected abstract Stack<Coordinates> createPath(Coordinates start, Coordinates goal, IMap map);
+
+    protected void createRectangle(Coordinates start, Coordinates goal, IMap map) {
+
+        //Reset les données, si précédent appel
+        clear();
+
+
+        //========Création du rectangle pour découper la carte=======
+        x = Math.min(start.getX(), goal.getX());
+        y = Math.min(start.getY(), goal.getY());
+
+        width = Math.max(start.getX(), goal.getX());
+        height = Math.max(start.getY(), goal.getY());
+
+        //Si rectangle trop petit, on l'agrandit pour trouver des chemins possibles
+        if (width < (Tile.getWidth() * 10)) {
+            width += (Tile.getWidth() * 10);
+        }
+        if (height < (Tile.getHeight() * 10)) {
+            height += (Tile.getHeight() * 10);
+        }
+        //===========================================================
+    }
 
     /**
      * <p>Calcule de distance par rapport à la tuile du noeud courant.</p>
      * @param node le noeud dont la distance de la tuile doit être calculé
      * @return la distance euclidienne
      */
-    protected int getDist(Node<Tile, Object> node, Node<Tile, Object> node2){
+    protected int getDist(Node<Tile> node, Node<Tile> node2){
         Tile t =  node.getItem();
         Tile t2 = node2.getItem();
 
