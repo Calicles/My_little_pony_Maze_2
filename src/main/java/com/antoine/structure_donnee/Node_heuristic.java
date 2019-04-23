@@ -1,21 +1,26 @@
 package com.antoine.structure_donnee;
 
-
 /**
- * <b>Représente un noeud dans un graphe acyclique.</b>
- * <p>Enveloppe un item pour être représenter dans ce graphe.
- * Peut-être utilisé avec heuristique</p>
+ * <b>Représente un noeud dans un graphe acyclique avec heuristique.</b>
+ * <p>Enveloppe un item pour être représenter dans ce graphe.</p>
  *
  * @param <T> le type de la classe enveloppée
+ * @param <V> le type de traité par l'heuristique (String, int, float...)
  *
  * @author Antoine
  */
-public class Node<T>  {
+public class Node_heuristic<T, V> {
+
 
     /**
      * <p>La classe qui est enveloppé pour être représenté dans le graphe</p>
      */
     private T item;
+
+    /**
+     * <p>L'heuristique utilisé en cas d'algorithme en ayant besoin</p>
+     */
+    private Heuristic<V> heuristic;
 
     /**
      * <p>Le poids du noeud dans le graphe</p>
@@ -25,16 +30,18 @@ public class Node<T>  {
     /**
      * <p>Le parent de ce noeud dans le graphe</p>
      */
-    private Node<T> parentNode;
+    private Node_heuristic<T, V> parentNode;
+
 
     /**
      * <p>Constructeur</p>
      *
      * @param item l'occurence à envelopper
      */
-    public Node(T item){
+    public Node_heuristic(T item){
         this.item = item;
         weight = -1;
+        heuristic = new Heuristic<>();
     }
 
     public T getItem(){
@@ -49,12 +56,20 @@ public class Node<T>  {
         return weight;
     }
 
-    public void setParentNode(Node<T> parentNode)
+    public void setParentNode(Node_heuristic<T, V> parentNode)
     {
         this.parentNode = parentNode;
     }
-    public Node<T> getParent()
+    public Node_heuristic<T, V> getParent()
     {
         return parentNode;
+    }
+
+    public void setHeuristic(V value) {
+        heuristic.setValue(value);
+    }
+
+    public V getHeuristic() {
+        return heuristic.getValue();
     }
 }

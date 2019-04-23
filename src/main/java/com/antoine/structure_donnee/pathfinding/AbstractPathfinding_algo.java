@@ -3,13 +3,10 @@ package com.antoine.structure_donnee.pathfinding;
 import com.antoine.contracts.IMap;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Pythagore;
-import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 import com.antoine.structure_donnee.Node;
 
-import java.util.ArrayList;
 import java.util.Stack;
-import java.util.TreeSet;
 
 /**
  * <b>Cadre de l'algorithme de recherche du meilleur chemin</b>
@@ -18,57 +15,17 @@ import java.util.TreeSet;
  */
 public abstract class AbstractPathfinding_algo {
 
-    /**
-     * <p>les positions de l'entité qui recherche le meilleur chemin</p>
-     */
-    protected Rectangle entity;
-
-    /**
-     * <p>Liste contenant l'ensemble de recherche</p>
-     */
-    protected ArrayList<Node<Tile>> S;
-
-    /**
-     * <p>List for checking</p>
-     */
-    protected TreeSet<Node<Tile>> openList;
-
-    /**
-     * <p>Closed list, checked</p>
-     */
-
-    protected ArrayList<Node<Tile>> closedList;
-
-    /**
-     * <p>graphe des tuiles adjacentes à la tuile courante dans la recherche</p>
-     */
-    protected ArrayList<Node<Tile>> adjNodes;
-
-    /**
-     * <p>Les noeuds utilisés dans la recherche</p>.
-     * CurrentNode : le noeud entrain d'être examiné.
-     * goal : l'arrivé, pour tester la fin de l'algorithme.
-     */
-    protected Node<Tile> goal, currentNode;
-
 
     //==================  Constructeurs  =============
 
     public AbstractPathfinding_algo() {
-        S = new ArrayList<>();
-
-        adjNodes = new ArrayList<>();
-
-        createOpenList();
-
-        closedList = new ArrayList<>();
-
+        createDataStruct();
     }
 
     //================================================
 
 
-    protected abstract void createOpenList();
+    protected abstract void createDataStruct();
 
     protected abstract void selectNextNode();
 
@@ -81,21 +38,16 @@ public abstract class AbstractPathfinding_algo {
      * @param node le noeud dont la distance de la tuile doit être calculé
      * @return la distance euclidienne
      */
-    protected int getDistFromCurrentNode(Node<Tile> node){
+    protected int getDist(Node<Tile, Object> node, Node<Tile, Object> node2){
         Tile t =  node.getItem();
-        Tile current = currentNode.getItem();
+        Tile t2 = node2.getItem();
 
-        return Pythagore.calculDistanceInSquarre(t.toCoordinates(), current.toCoordinates());
+        return Pythagore.calculDistanceInSquarre(t.toCoordinates(), t2.toCoordinates());
     }
 
     /**
      * <p>Reset les données pour nouveaux calculs.</p>
      */
-    protected void clear(){
-        S.clear();
-        adjNodes.clear();
-        openList.clear();
-        closedList.clear();
-    }
+    protected abstract void clear();
 
 }

@@ -25,6 +25,34 @@ import java.util.stream.Collectors;
 public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfinding {
 
     /**
+     * <p>Liste contenant l'ensemble de recherche</p>
+     */
+    protected ArrayList<Node<Tile>> S;
+
+    /**
+     * <p>List for checking</p>
+     */
+    protected TreeSet<Node<Tile>> openList;
+
+    /**
+     * <p>Closed list, checked</p>
+     */
+
+    protected ArrayList<Node<Tile>> closedList;
+
+    /**
+     * <p>graphe des tuiles adjacentes à la tuile courante dans la recherche</p>
+     */
+    protected ArrayList<Node<Tile>> adjNodes;
+
+    /**
+     * <p>Les noeuds utilisés dans la recherche</p>.
+     * CurrentNode : le noeud entrain d'être examiné.
+     * goal : l'arrivé, pour tester la fin de l'algorithme.
+     */
+    protected Node<Tile> goal, currentNode;
+
+    /**
      * <p>Le path en coordonnée</p>
      */
     private Stack<Coordinates> path;
@@ -51,12 +79,15 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
 
     //=================================
 
-    public void setEntity(Rectangle entity) {
-        this.entity = entity;
-    }
-
     @Override
-    protected void createOpenList() {
+    protected void createDataStruct() {
+
+        S = new ArrayList<>();
+
+        adjNodes = new ArrayList<>();
+
+        closedList = new ArrayList<>();
+
         openList = new TreeSet<>(Comparator.comparingInt(Node::getWeight));
     }
 
@@ -65,7 +96,7 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
      */
     private void initMethods() {
 
-        isAdjacent = t-> getDistFromCurrentNode(t) <= distofAdjecent;
+        isAdjacent = t-> getDist(t, currentNode) <= distofAdjecent;
     }
 
     /**
@@ -134,6 +165,15 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
         return startSearch();
     }
 
+    @Override
+    protected void clear() {
+        S.clear();
+        adjNodes.clear();
+        path.clear();
+        openList.clear();
+        closedList.clear();
+    }
+
     /**
      * <p>Boucle l'algorithme pour passer en revu tous les chemins.</p>
      * Rempli le graphe des tuiles adjacentes à la tuile courante.
@@ -172,23 +212,12 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
     }
 
     /**
-     * <p>Ajuste la route point à point en prenant en compte la surface de l'entité pour éviter les obstacles.</p>
-     * L'obstacle est détecté en cas de changement de trajectoire
-     * @param current la tuile courante
-     * @param precedent la tuile précédente
-     * @return les coordonnées ajustées à la largeur et longueur de l'entité ou inchangé si pas d'obstacle
-     */
-    private Coordinates adjustPathToEntitySurface(Tile current, Tile precedent) {
-
-        return null;
-    }
-
-    /**
      * <p>Selectionne le prochain noeud de plus petit poids dans le graphe des cases adjacentes
      * et le place en tant que noeud courant.</p>
      */
     @Override
     protected void selectNextNode() {
+
 
         Optional<Node<Tile>> res = adjNodes.stream()
                 .min(Comparator.comparingInt(Node::getWeight));
@@ -209,16 +238,20 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
     @Override
     protected void fillAdjGraph() {
 
-        adjNodes = (ArrayList<Node<Tile>>) openList.stream()
+        List<Node<Tile>>  buffer = openList.stream()
 
                 .filter(t-> isAdjacent.test(t))
 
                 .collect(Collectors.toList());
 
+        adjNodes.clear();
+
+        adjNodes.addAll(buffer);
+
         //Parcours du graphe des tuile adjacentes
         for (Node<Tile> n : adjNodes) {
 
-            int distance = getDistFromCurrentNode(n) + currentNode.getWeight();
+            int distance = getDist(n, currentNode) + currentNode.getWeight();
 
             //Si la distance est plus avantageuse que la précédente on change le poids (en distance) du noeud
             if (n.getWeight() > distance || n.getWeight() == -1) {
