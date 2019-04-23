@@ -5,7 +5,7 @@ import com.antoine.contracts.IPathfinding;
 import com.antoine.contracts.ITransfert_strategy;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
-import com.antoine.structure_donnee.pathfinding.Dijkstra_impl;
+import com.antoine.structure_donnee.pathfinding.A_star_impl;
 
 import java.util.Stack;
 
@@ -40,7 +40,7 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
 
     public IA_transfertStrategy_withHeuristic() {
         super();
-        pathfinder = new Dijkstra_impl();
+        pathfinder = new A_star_impl();
     }
 
 
@@ -78,10 +78,15 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
                 map
         );
 
-        currentStep = path.pop();
+        if (!path.isEmpty()) {
+
+            currentStep = path.pop();
+        }else
+            currentStep = null;
 
         if (currentStep != null)
             go();
+
 
     }
 
@@ -97,7 +102,6 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
      */
     private void go() { //TODO Retirer les "si null" une fois Dijkstra amélioré
 
-        Coordinates middle = Rectangle.findMiddleCoor(ownPosition);
 
         ownPosition.setCoordinates(currentStep.getX() - ownPosition.getWidth() / 2, currentStep.getY() - ownPosition.getHeight() / 2);
 

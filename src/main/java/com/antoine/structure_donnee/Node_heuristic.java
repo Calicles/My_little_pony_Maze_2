@@ -38,10 +38,10 @@ public class Node_heuristic<T, V> {
      *
      * @param item l'occurence à envelopper
      */
-    public Node_heuristic(T item){
+    public Node_heuristic(T item, V value){
         this.item = item;
         weight = -1;
-        heuristic = new Heuristic<>();
+        heuristic = new Heuristic<>(value);
     }
 
     public T getItem(){

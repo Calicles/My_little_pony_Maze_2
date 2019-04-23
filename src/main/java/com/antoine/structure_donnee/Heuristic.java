@@ -8,6 +8,11 @@ public class Heuristic<T> {
 
     }
 
+    public Heuristic(T value) {
+        this.value = value;
+    }
+
+
     public void setValue(T value) {
         this.value = value;
     }

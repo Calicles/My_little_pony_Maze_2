@@ -37,7 +37,7 @@ public abstract class AbstractPathfinding_algo {
 
     protected abstract void createDataStruct();
 
-    protected abstract Stack<Coordinates> createPath(Coordinates start, Coordinates goal, IMap map);
+    public abstract Stack<Coordinates> createPath(Coordinates start, Coordinates goal, IMap map);
 
     protected void createRectangle(Coordinates start, Coordinates goal, IMap map) {
 
