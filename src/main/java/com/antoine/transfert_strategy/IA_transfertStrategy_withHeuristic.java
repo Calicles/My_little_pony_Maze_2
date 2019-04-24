@@ -5,7 +5,8 @@ import com.antoine.contracts.IPathfinding;
 import com.antoine.contracts.ITransfert_strategy;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
-import com.antoine.structure_donnee.pathfinding.A_star_impl;
+import com.antoine.structure_donnee.HeuristicBestDistance;
+import com.antoine.structure_donnee.pathfinding.A_star_2;
 
 import java.util.Stack;
 
@@ -40,7 +41,8 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
 
     public IA_transfertStrategy_withHeuristic() {
         super();
-        pathfinder = new A_star_impl();
+        pathfinder = new A_star_2<Integer>();
+        pathfinder.setHeuristic(new HeuristicBestDistance());
     }
 
 
@@ -73,7 +75,7 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
         currentPlayerPosition.setCoordinates(player1.getBeginX(), player1.getBeginY());
 
         path = pathfinder.createPath(
-                Rectangle.findMiddleCoor(ownPosition),
+                ownPosition,
                 Rectangle.findMiddleCoor(player1),
                 map
         );
@@ -84,10 +86,10 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
         }else
             currentStep = null;
 
-        if (currentStep != null)
-            go();
+        if (currentStep != null) {
+            //go();
 
-
+        }
     }
 
     /**

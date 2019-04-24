@@ -3,6 +3,7 @@ package com.antoine.structure_donnee.pathfinding;
 import com.antoine.contracts.IMap;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Pythagore;
+import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 import com.antoine.structure_donnee.Node;
 
@@ -21,7 +22,9 @@ public abstract class AbstractPathfinding_algo {
      */
     protected Stack<Coordinates> path;
 
-    protected int x, y, width, height;
+    protected Coordinates start;
+
+    protected Rectangle surface;
 
 
     //==================  Constructeurs  =============
@@ -37,20 +40,23 @@ public abstract class AbstractPathfinding_algo {
 
     protected abstract void createDataStruct();
 
-    public abstract Stack<Coordinates> createPath(Coordinates start, Coordinates goal, IMap map);
+    public abstract Stack<Coordinates> createPath(Rectangle mover, Coordinates goal, IMap map);
 
-    protected void createRectangle(Coordinates start, Coordinates goal, IMap map) {
+    protected void createRectangle(Rectangle mover, Coordinates goal, IMap map) {
 
         //Reset les données, si précédent appel
         clear();
 
 
-        //========Création du rectangle pour découper la carte=======
-        x = Math.min(start.getX(), goal.getX());
-        y = Math.min(start.getY(), goal.getY());
+        start = getMoverStartCorner(mover, goal);
 
-        width = Math.max(start.getX(), goal.getX());
-        height = Math.max(start.getY(), goal.getY());
+
+        //========Création du rectangle pour découper la carte=======
+        int x = Math.min(start.getX(), goal.getX());
+        int y = Math.min(start.getY(), goal.getY());
+
+        int width = Math.max(start.getX(), goal.getX());
+         int height = Math.max(start.getY(), goal.getY());
 
         //Si rectangle trop petit, on l'agrandit pour trouver des chemins possibles
         if (width < (Tile.getWidth() * 10)) {
@@ -59,6 +65,9 @@ public abstract class AbstractPathfinding_algo {
         if (height < (Tile.getHeight() * 10)) {
             height += (Tile.getHeight() * 10);
         }
+
+
+        surface = new Rectangle(x, x + width, y, y + height);
         //===========================================================
     }
 
@@ -78,5 +87,55 @@ public abstract class AbstractPathfinding_algo {
      * <p>Reset les données pour nouveaux calculs.</p>
      */
     protected abstract void clear();
+
+    /**
+     * <p>Calcul la meilleure coordonnée de départ.</p>
+     * @param mover l'entité qui se déplace
+     * @param goal les coordonnées du but à atteindre
+     * @return la meilleur coordonnée pour prendre la direction la plus rapide pour un personnage de grande surface
+     */
+    protected Coordinates getMoverStartCorner(Rectangle mover, Coordinates goal) {
+
+        Coordinates middleMover = Rectangle.findMiddleCoor(mover);
+
+        if (goal.getY() > mover.getEndY()) {
+
+            if (goal.getX() > middleMover.getX()) {
+
+                return new Coordinates(mover.getEndX(), mover.getEndY());
+
+            } else if (goal.getX() < middleMover.getX()) {
+
+                return new Coordinates(mover.getEndX(), mover.getEndY());
+
+            } else {
+
+                return new Coordinates(middleMover.getX(), mover.getEndY());
+            }
+        } else if (goal.getY() < mover.getEndY()) {
+
+            if (goal.getX() > middleMover.getX()) {
+
+                return new Coordinates(mover.getEndX(), mover.getBeginY());
+
+            } else if (goal.getX() < middleMover.getX()) {
+
+                return new Coordinates(mover.getEndX(), mover.getBeginY());
+
+            } else {
+
+                return new Coordinates(middleMover.getX(), mover.getBeginY());
+            }
+        } else {
+
+            if (goal.getX() < mover.getBeginX()) {
+
+                return new Coordinates(mover.getBeginX(), middleMover.getY());
+
+            }else
+
+                return new Coordinates(mover.getEndX(), middleMover.getY());
+        }
+    }
 
 }

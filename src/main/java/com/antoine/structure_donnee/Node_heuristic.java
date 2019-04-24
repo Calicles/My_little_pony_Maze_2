@@ -11,7 +11,6 @@ package com.antoine.structure_donnee;
  */
 public class Node_heuristic<T, V> {
 
-
     /**
      * <p>La classe qui est enveloppé pour être représenté dans le graphe</p>
      */
@@ -20,7 +19,7 @@ public class Node_heuristic<T, V> {
     /**
      * <p>L'heuristique utilisé en cas d'algorithme en ayant besoin</p>
      */
-    private Heuristic<V> heuristic;
+    private V heuristic;
 
     /**
      * <p>Le poids du noeud dans le graphe</p>
@@ -38,10 +37,9 @@ public class Node_heuristic<T, V> {
      *
      * @param item l'occurence à envelopper
      */
-    public Node_heuristic(T item, V value){
+    public Node_heuristic(T item){
         this.item = item;
         weight = -1;
-        heuristic = new Heuristic<>(value);
     }
 
     public T getItem(){
@@ -66,10 +64,10 @@ public class Node_heuristic<T, V> {
     }
 
     public void setHeuristic(V value) {
-        heuristic.setValue(value);
+        this.heuristic = value;
     }
 
     public V getHeuristic() {
-        return heuristic.getValue();
+        return heuristic;
     }
 }

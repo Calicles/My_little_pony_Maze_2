@@ -1,5 +1,6 @@
 package com.antoine.structure_donnee.pathfinding;
 
+import com.antoine.contracts.IHeuristic;
 import com.antoine.contracts.IMap;
 import com.antoine.contracts.IPathfinding;
 import com.antoine.geometry.Coordinates;
@@ -7,6 +8,7 @@ import com.antoine.geometry.Pythagore;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 import com.antoine.structure_donnee.Node;
+import com.antoine.structure_donnee.Node_heuristic;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -98,20 +100,21 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
 
     /**
      * <p>Initialise les données pour débuter l'algorithme</p>
-     * @param start les coordonnées de départ
+     * @see IPathfinding#createPath(Rectangle, Coordinates, IMap)
+     * @param mover surface de l'entité qui se déplace
      * @param goal les coordonnées du but à atteindre
      * @param map la carte
      * @return une pile contenant le path, null si pas de chemin
      */
     @Override
-    public Stack<Coordinates> createPath(Coordinates start, Coordinates goal, IMap map) {
+    public Stack<Coordinates> createPath(Rectangle mover, Coordinates goal, IMap map) {
 
-        super.createRectangle(start, goal, map);
+        super.createRectangle(mover, goal, map);
 
         Node<Tile> node;
 
         //Récupère le morceau de la carte selon le rectangle
-        List<Tile> subList = map.getSubMap(new Rectangle(x, width, y, height));
+        List<Tile> subList = map.getSubMap(surface);
 
         for (Tile t : subList) {
             node = new Node<>(t);
@@ -253,6 +256,21 @@ public class Dijkstra_impl extends AbstractPathfinding_algo implements IPathfind
     //TODO Remove after test
     public Stack<Coordinates> getPath() {
         return (Stack<Coordinates>) path.clone();
+    }
+
+    @Override
+    public Node_heuristic getAdjacentNode() {
+        return null;
+    }
+
+    @Override
+    public Node_heuristic getGoalNode() {
+        return null;
+    }
+
+    @Override
+    public void setHeuristic(IHeuristic heuristic) {
+
     }
 
 }

@@ -72,4 +72,13 @@ public class Coordinates {
 		return ((x == coordinates.getX()) && (y == coordinates.getY()));
 	}
 
+	/**
+	 * @see Object#clone()
+	 * @return une nouvelle occurence de même coordonnée
+	 */
+	@Override
+	public Coordinates clone() {
+		return new Coordinates(x, y);
+	}
+
 }

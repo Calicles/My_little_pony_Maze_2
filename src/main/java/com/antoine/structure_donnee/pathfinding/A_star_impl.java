@@ -1,5 +1,6 @@
 package com.antoine.structure_donnee.pathfinding;
 
+import com.antoine.contracts.IHeuristic;
 import com.antoine.contracts.IMap;
 import com.antoine.contracts.IPathfinding;
 import com.antoine.geometry.Coordinates;
@@ -50,17 +51,17 @@ public class A_star_impl extends AbstractPathfinding_algo implements IPathfindin
 
 
     @Override
-    public Stack<Coordinates> createPath(Coordinates start, Coordinates goal, IMap map) {
+    public Stack<Coordinates> createPath(Rectangle mover, Coordinates goal, IMap map) {
 
-        super.createRectangle(start, goal, map);
+        super.createRectangle(mover, goal, map);
 
         Node_heuristic<Tile, Integer> node;
 
         //Récupère le morceau de la carte selon le rectangle
-        List<Tile> subList = map.getSubMap(new Rectangle(x, width, y, height));
+        List<Tile> subList = map.getSubMap(surface);
 
         for (Tile t : subList) {
-            node = new Node_heuristic<>(t, -1);
+            node = new Node_heuristic<>(t);
 
             //N'ajoute pas la tuile si elle est solide
             if (!node.getItem().isSolid())
@@ -87,6 +88,21 @@ public class A_star_impl extends AbstractPathfinding_algo implements IPathfindin
     @Override
     public Stack<Coordinates> getPath() {
         return (Stack<Coordinates>) path.clone();
+    }
+
+    @Override
+    public Node_heuristic<Tile, Integer> getAdjacentNode() {
+        return null;
+    }
+
+    @Override
+    public Node_heuristic<Tile, Integer> getGoalNode() {
+        return null;
+    }
+
+    @Override
+    public void setHeuristic(IHeuristic heuristic) {
+
     }
 
     private void startSearch() {
@@ -158,8 +174,8 @@ public class A_star_impl extends AbstractPathfinding_algo implements IPathfindin
     @Override
     protected void createDataStruct() {
 
-
-        openList = new TreeSet<>(Comparator.comparingInt(Node_heuristic<Tile, Integer>::getHeuristic));
+        //TODO replace
+        //openList = new TreeSet<>(Comparator.comparingInt(Node_heuristic<Tile, Integer>::getHeuristic));
         closedList = new ArrayList<>();
     }
 
