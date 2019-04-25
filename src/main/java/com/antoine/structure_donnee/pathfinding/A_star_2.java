@@ -6,7 +6,6 @@ import com.antoine.contracts.IPathfinding;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
-import com.antoine.structure_donnee.Node;
 import com.antoine.structure_donnee.Node_heuristic;
 
 import java.util.*;
@@ -94,8 +93,7 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
     @Override
     public Stack<Coordinates> createPath(Rectangle mover, Coordinates goal, IMap map)
     {
-        super.createRectangle(mover, goal, map);
-
+        this.createRectangle(mover, goal, map);
 
         setData(mover, goal, map);
 
@@ -165,8 +163,8 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
         }
         //++++++++++++++++++++++++++++++++++++++++  END   +++++++++++++++++++++++++++++++++++
 
-
-        return path;
+        //If there, no result
+        return null;
     }
 
     /**
@@ -176,34 +174,33 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
      */
     private void adapt_path_forMover(Rectangle mover, IMap map)
     {
-        LinkedList<Node_heuristic<Tile, T>> buffer = finalizePath();
+        Stack<Node_heuristic<Tile, T>> buffer = finalizePath();
 
-        LinkedList<Coordinates> adjustedList = new LinkedList<>();
+        Stack<Coordinates> adjustedList = new Stack<>();
 
         Node_heuristic<Tile, T> currentNode;
 
-        Coordinates prec, next, current;
+        Coordinates next, current;
 
-        while (!buffer.isEmpty())
+        int count = 0;
+
+        while (!buffer.isEmpty() && count <= 3)
         {
             currentNode = buffer.pop();
 
             current = Rectangle.findMiddleCoor(currentNode.getItem().toRectangle());
 
-            if(currentNode.getParent() != null)
-                prec = Rectangle.findMiddleCoor(currentNode.getParent().getItem().toRectangle());
-            else
-                prec = null;
-
             if (!buffer.isEmpty())
-                next = Rectangle.findMiddleCoor(buffer.getFirst().getItem().toRectangle());
+                next = Rectangle.findMiddleCoor(buffer.peek().getItem().toRectangle());
             else
                 next = null;
 
             if (next != null)
-                adjustCoordinates(prec, current, next, mover, map);
+                adjustCoordinates(current, next, mover, map);
 
             adjustedList.push(current);
+
+            count++;
         }
 
         while (!adjustedList.isEmpty())
@@ -215,99 +212,14 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
     /**
      * <p>Ajuste les coordonnées des points à la surface du rectangle mover</p>
      * Etudie les alignements des points et la présence de tuile solide dans les cases diagonales.
-     * @param prec noeud précédent le noeud courant.
      * @param current noeud entrain d'être étudié.
      * @param next noeud suivant le noeud courant.
      * @param mover l'entité qui se déplace sous forme de rectangle.
      * @param map la carte.
      */
-    private void adjustCoordinates(Coordinates prec, Coordinates current, Coordinates next,
+    private void adjustCoordinates(Coordinates current, Coordinates next,
                                    Rectangle mover, IMap map)
     {
-        Coordinates coorInTile = map.getCoorinatesInTile(current);
-
-        if (isInSameYline(current, next))
-        {
-            if (current.getY() > next.getY())
-            {
-                //Tile solide diagonale haut gauche
-                if (map.isSolideTile(coorInTile.getX() - 1, coorInTile.getY() - 1))
-                {
-                    if ((!map.isSolideTile(coorInTile.getX() + 1, coorInTile.getY()) && ((!map.isSolideTile(coorInTile.getX() - 1, coorInTile.getY())))))
-                    {
-                        if (prec.getX() < current.getX())
-                            current.setCoordinates(current.getX() + mover.getWidth(), current.getY());
-                    }
-
-                } //Tile solide diagonale haut droite
-                else if (map.isSolideTile(coorInTile.getX() + 1, coorInTile.getY() - 1))
-                {
-                    if ((!map.isSolideTile(coorInTile.getX() + 1, coorInTile.getY()) && ((!map.isSolideTile(coorInTile.getX() - 1, coorInTile.getY())))))
-                    {
-                        if (prec.getX() > current.getX())
-                            current.setCoordinates(current.getX() - mover.getWidth(), current.getY());
-                    }
-                }
-            }
-            else
-            {
-                if (map.isSolideTile(coorInTile.getX() - 1, coorInTile.getY() + 1))
-                {
-                    if ((!map.isSolideTile(coorInTile.getX() + 1, coorInTile.getY()) && ((!map.isSolideTile(coorInTile.getX() - 1, coorInTile.getY())))))
-                    {
-                        if (prec.getX() < current.getX())
-                            current.setCoordinates(current.getX() + mover.getWidth(), current.getY());
-                    }
-                }
-                else if (map.isSolideTile(coorInTile.getX() + 1, coorInTile.getY() + 1))
-                {
-                    if ((!map.isSolideTile(coorInTile.getX() + 1, coorInTile.getY()) && ((!map.isSolideTile(coorInTile.getX() - 1, coorInTile.getY())))))
-                    {
-                        if ((prec.getX() > current.getX()))
-                            current.setCoordinates(current.getX() - mover.getWidth(), current.getY());
-                    }
-                }
-            }
-        }
-        else if (isInSameX_line(current, next))
-        {
-            if (current.getX() < next.getX())
-            {
-                //TODO check case diagonales à droite haut et bas
-                if (map.isSolideTile(coorInTile.getX() + 1, coorInTile.getY() + 1))
-                {
-                    if ((!map.isSolideTile(coorInTile.getX(), coorInTile.getY() + 1) && (!map.isSolideTile(coorInTile.getX(), coorInTile.getY() - 1)))) {
-                        if (prec.getY() < current.getY())
-                            current.setCoordinates(current.getX(), current.getY() - mover.getHeight());
-                    }
-                }
-                else if (map.isSolideTile(coorInTile.getX() + 1, coorInTile.getY() - 1))
-                {
-                    if ((!map.isSolideTile(coorInTile.getX(), coorInTile.getY() + 1) && (!map.isSolideTile(coorInTile.getX(), coorInTile.getY() - 1)))) {
-                        if (prec.getY() > current.getY())
-                            current.setCoordinates(current.getX(), current.getY() + mover.getHeight());
-                    }
-                }
-            }
-            else
-            {
-                //TODO check case diago gauche haut et bas
-                if (map.isSolideTile(coorInTile.getX() - 1, coorInTile.getY() - 1))
-                {
-                    if ((!map.isSolideTile(coorInTile.getX(), coorInTile.getY() + 1) && (!map.isSolideTile(coorInTile.getX(), coorInTile.getY() - 1)))) {
-                        if (prec.getY() > prec.getY())
-                           current.setCoordinates(current.getX(), current.getY() + mover.getHeight());
-                    }
-                }
-                else if (map.isSolideTile(coorInTile.getX() - 1, coorInTile.getY() + 1))
-                {
-                    if ((!map.isSolideTile(coorInTile.getX(), coorInTile.getY() + 1) && (!map.isSolideTile(coorInTile.getX(), coorInTile.getY() - 1)))) {
-                        if (prec.getY() < current.getY())
-                            current.setCoordinates(current.getX(), current.getY() - mover.getHeight());
-                    }
-                }
-            }
-        }
 
     }
 
@@ -344,9 +256,9 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
      * Enregistre le tout dans une liste
      * @return La liste
      */
-    private LinkedList<Node_heuristic<Tile, T>> finalizePath()
+    private Stack<Node_heuristic<Tile, T>> finalizePath()
     {
-        LinkedList<Node_heuristic<Tile, T>> list = new LinkedList<>();
+        Stack<Node_heuristic<Tile, T>> list = new Stack<>();
 
         Node_heuristic<Tile, T> node = goal;
 
@@ -372,6 +284,54 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
     }
 
     /**
+     * <p>Créé un rectangle représenter la partie de la carte à copier (position et bornes).</p>
+     * @see AbstractPathfinding_algo#createRectangle(Rectangle, Coordinates, IMap)
+     * @param mover le rectangle qui représente l'entité se déplaçant.
+     * @param goal le but.
+     * @param map la carte à copier.
+     */
+    @Override
+    protected void createRectangle(Rectangle mover, Coordinates goal, IMap map)
+    {
+
+        clear();
+
+        start = getMoverStartCorner(mover, goal);
+
+        //========Création du rectangle pour découper la carte=======
+        int boundX, boundY;
+
+        int x = Math.min(start.getX(), goal.getX()) / Tile.getWidth();
+        int y = Math.min(start.getY(), goal.getY()) / Tile.getHeight();
+
+        int width = Math.max(start.getX(), goal.getX()) / Tile.getWidth();
+        int height = Math.max(start.getY(), goal.getY()) / Tile.getHeight();
+
+
+        //Si rectangle trop petit, on l'agrandit pour trouver des chemins possibles
+        if (width < 15) {
+            width += 5;
+            x -= 5;
+        }
+        if (height < 15) {
+            height += 5;
+            y -= 5;
+        }
+
+        boundX = x + width;
+        boundY = y + height;
+
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        if (boundX > map.getWidthInTile() - 1) boundX = map.getWidthInTile();
+        if (boundY > map.getHeightInTile() - 1) boundY = map.getHeightInTile();
+
+        surface = new Rectangle(x, boundX, y, boundY);
+        //===============================================================
+
+    }
+
+    /**
      * <p>initialise les données avant de démarrer l'algorithme.</p>
      * utilise le champ surface pour le réajuster aux dimensions de l'array des tuiles
      * pour récupérer la partie de la map.
@@ -381,23 +341,6 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
      */
     private void setData(Rectangle mover, Coordinates goal, IMap map)
     {
-        int x, y, endx, endy;
-
-        //=================   Ajust the rectangle to the map   ============
-
-        x = surface.getBeginX() / Tile.getWidth();
-        y = surface.getBeginY() / Tile.getHeight();
-        endx = surface.getEndX() / Tile.getWidth();
-        endy = surface.getEndY() / Tile.getHeight();
-
-        if (x < 0) x = 0;
-        if (y < 0) y = 0;
-        if (endx > map.getWidth()) endx = map.getWidthInTile();
-        if (endy > map.getHeight()) endy = map.getHeightInTile();
-
-        surface = new Rectangle(x, endx, y, endy);
-        //===============================================================
-
 
         Tile[][] subMap = map.getsubMapInArray(surface);
 

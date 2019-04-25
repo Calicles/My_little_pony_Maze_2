@@ -80,16 +80,13 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
                 map
         );
 
-        if (!path.isEmpty()) {
-
+        if (path != null && !path.isEmpty()) {
             currentStep = path.pop();
-        }else
-            currentStep = null;
-
-        if (currentStep != null) {
-            //go();
-
+            if (Rectangle.isInBox(ownPosition, currentStep) && !path.isEmpty())
+                currentStep = path.pop();
         }
+        go();
+
     }
 
     /**
@@ -102,15 +99,30 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
     /**
      * <p>Calcul du vecteur en fonction de la prochaine position à atteindre.</p>
      */
-    private void go() { //TODO Retirer les "si null" une fois Dijkstra amélioré
-
-
-        ownPosition.setCoordinates(currentStep.getX() - ownPosition.getWidth() / 2, currentStep.getY() - ownPosition.getHeight() / 2);
-
+    private void go()
+    {
+        if(currentStep != null) {
+            if (inWidth()) {
+                if (currentStep.getY() <= ownPosition.getBeginY()) {
+                    movesUp();
+                } else
+                    movesDown();
+            } else if (inHeight()) {
+                if (currentStep.getX() < ownPosition.getBeginX()) {
+                    movesLeft();
+                } else if (currentStep.getX() > ownPosition.getEndX())
+                    movesRight();
+            } else {
+                if (currentStep.getY() < Rectangle.findMiddleCoor(ownPosition).getY()) {
+                    movesUp();
+                } else
+                    movesDown();
+            }
+        }
     }
 
     private boolean inHeight() {
-        return (currentStep.getY() >= ownPosition.getBeginY() && currentStep.getY() <= ownPosition.getEndY());
+        return (currentStep.getY() > ownPosition.getBeginY() && currentStep.getY() < ownPosition.getEndY());
     }
 
     private boolean inWidth() {

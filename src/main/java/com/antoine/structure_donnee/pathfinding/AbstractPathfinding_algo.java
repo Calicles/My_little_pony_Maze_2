@@ -106,13 +106,13 @@ public abstract class AbstractPathfinding_algo {
 
             } else if (goal.getX() < middleMover.getX()) {
 
-                return new Coordinates(mover.getEndX(), mover.getEndY());
+                return new Coordinates(mover.getBeginX(), mover.getEndY());
 
             } else {
 
                 return new Coordinates(middleMover.getX(), mover.getEndY());
             }
-        } else if (goal.getY() < mover.getEndY()) {
+        } else if (goal.getY() < mover.getBeginY()) {
 
             if (goal.getX() > middleMover.getX()) {
 
@@ -120,7 +120,7 @@ public abstract class AbstractPathfinding_algo {
 
             } else if (goal.getX() < middleMover.getX()) {
 
-                return new Coordinates(mover.getEndX(), mover.getBeginY());
+                return new Coordinates(mover.getBeginX(), mover.getBeginY());
 
             } else {
 
