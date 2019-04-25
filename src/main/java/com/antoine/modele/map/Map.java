@@ -65,8 +65,9 @@ public class Map extends AbstractTileMap implements IMap {
 
 
 		if (surface.getBeginX() < 0 || surface.getBeginY() < 0 ||
-				surface.getEndY() > map.length || surface.getBeginX() > map[0].length) {
-			throw  new IllegalArgumentException("surface inadaptée à la taille de la map");
+				surface.getEndY() > map.length || surface.getEndX() > map[0].length) {
+			throw  new IllegalArgumentException("surface inadaptée à la taille de la map" + surface.getBeginX() +", "+ surface.getEndX()+
+					", "+ surface.getBeginY()+", "+ surface.getEndY());
 		}
 
 		//Adapte la taille du tableau à la surface voulu
@@ -99,11 +100,12 @@ public class Map extends AbstractTileMap implements IMap {
 	}
 
 	@Override
-	public boolean isSolideTile(int i, int j)
+	public boolean isSolideTile(int j, int i)
 	{
 		if (i < 0 || j < 0 || i >= map.length || j >= map[0].length)
-			throw new IllegalArgumentException("coordonnées hors map");
+			throw new IllegalArgumentException("coordonnées hors map"+" i: "+ i+", j: "+j);
 
 		return map[i][j].isSolid();
 	}
+
 }

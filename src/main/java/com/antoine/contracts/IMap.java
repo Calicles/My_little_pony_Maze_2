@@ -36,4 +36,8 @@ public interface IMap {
     Coordinates getCoorinatesInTile(Coordinates current);
 
     boolean isSolideTile(int i, int j);
+
+    int getWidthInTile();
+
+    int getHeightInTile();
 }

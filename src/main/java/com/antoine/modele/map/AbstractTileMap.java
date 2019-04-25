@@ -46,7 +46,15 @@ public abstract class AbstractTileMap {
 	public int getHeight(){ return map.length * tile_height;}
 	public Tile[][] getMap(){return map;}
 	public HashMap<Integer, BufferedImage> getTileSet() {return tileSet;}
-	
+
+	public int getWidthInTile() {
+		return map[0].length;
+	}
+
+	public int getHeightInTile() {
+		return map.length;
+	}
+
 	public int[] getDimension() {
 		int[] tab= new int[2];
 		tab[0]= tileSet.get(0).getWidth() * map[0].length;
