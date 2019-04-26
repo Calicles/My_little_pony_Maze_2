@@ -26,7 +26,7 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
     /**
      * <p>Coordonnées utilisées pour mettre à jour la nécessité de recalculée l'itinéraire</p>
      */
-    private Coordinates currentPlayerPosition;
+    private Coordinates currentPlayerPosition, oldPlayerPos;
 
     /**
      * <p>Pile de coordonnée représentant un pathfinding</p>
@@ -55,6 +55,7 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
     public void setAttributes(Rectangle ownPosition, Rectangle player, IMap map) {
         super.setAttributes(ownPosition, player, map);
         currentPlayerPosition = new Coordinates(player.getBeginX(), player.getBeginY());
+        oldPlayerPos = new Coordinates(player.getBeginX(), player.getBeginY());
     }
 
 
@@ -71,22 +72,35 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
     @Override
     protected void manHuntPlayer() {
 
+        Coordinates middle = Rectangle.findMiddleCoor(ownPosition);
+        Rectangle nexus = new Rectangle(middle.getX() - 3, middle.getX() + 3, middle.getY() - 3, middle.getY() + 3);
 
-        currentPlayerPosition.setCoordinates(player1.getBeginX(), player1.getBeginY());
 
-        path = pathfinder.createPath(
-                ownPosition,
-                Rectangle.findMiddleCoor(player1),
-                map
-        );
 
-        if (path != null && !path.isEmpty()) {
-            currentStep = path.pop();
-            if (Rectangle.isInBox(ownPosition, currentStep) && !path.isEmpty())
+        currentPlayerPosition.setCoordinates(Rectangle.findMiddleCoor(player1));
+
+        if (!oldPlayerPos.equals(currentPlayerPosition) || currentStep == null) {
+            oldPlayerPos.setCoordinates(currentPlayerPosition.getX(), currentPlayerPosition.getY());
+
+            path = pathfinder.createPath(
+                    ownPosition, currentPlayerPosition,
+                    map
+            );
+            if (path != null && !path.isEmpty()) {
                 currentStep = path.pop();
+            }
         }
-        go();
 
+        if (currentStep != null) {
+            if (Rectangle.isInBox(nexus, currentStep)) {
+
+                if (path != null && !path.isEmpty())
+                    currentStep = path.pop();
+                else
+                    currentStep = null;
+            }
+        }
+        go(middle, nexus);
     }
 
     /**
@@ -98,34 +112,31 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
 
     /**
      * <p>Calcul du vecteur en fonction de la prochaine position à atteindre.</p>
+     * @param middle
+     * @param nexus
      */
-    private void go()
+    private void go(Coordinates middle, Rectangle nexus)
     {
+
         if(currentStep != null) {
-            if (inWidth()) {
-                if (currentStep.getY() <= ownPosition.getBeginY()) {
-                    movesUp();
-                } else
-                    movesDown();
-            } else if (inHeight()) {
-                if (currentStep.getX() < ownPosition.getBeginX()) {
-                    movesLeft();
-                } else if (currentStep.getX() > ownPosition.getEndX())
-                    movesRight();
-            } else {
-                if (currentStep.getY() < Rectangle.findMiddleCoor(ownPosition).getY()) {
-                    movesUp();
-                } else
-                    movesDown();
-            }
-        }
+
+            if (currentStep.getX() < middle.getX() && inHeight(nexus))
+                movesLeft();
+            else if (currentStep.getY() < middle.getY())
+                movesUp();
+            else if (currentStep.getX() > middle.getX() && inHeight(nexus))
+                movesRight();
+            else if (currentStep.getY() > middle.getY())
+                movesDown();
+        }else
+            released();
     }
 
-    private boolean inHeight() {
-        return (currentStep.getY() > ownPosition.getBeginY() && currentStep.getY() < ownPosition.getEndY());
+    private boolean inHeight(Rectangle nexus) {
+        return (currentStep.getY() >= nexus.getBeginY() && currentStep.getY() <= nexus.getEndY());
     }
 
-    private boolean inWidth() {
-        return (currentStep.getX() >= ownPosition.getBeginX() && currentStep.getX() <= ownPosition.getEndX());
+    private boolean inWidth(Rectangle nexus) {
+        return (currentStep.getX() >= nexus.getBeginX() && currentStep.getX() <= nexus.getEndX());
     }
 }

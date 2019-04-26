@@ -48,8 +48,8 @@ public abstract class AbstractPathfinding_algo {
         clear();
 
 
-        start = getMoverStartCorner(mover, goal);
-
+        //start = getMoverStartCorner(mover, goal);
+        start = Rectangle.findMiddleCoor(mover);
 
         //========Création du rectangle pour découper la carte=======
         int x = Math.min(start.getX(), goal.getX());
@@ -98,7 +98,7 @@ public abstract class AbstractPathfinding_algo {
 
         Coordinates middleMover = Rectangle.findMiddleCoor(mover);
 
-        if (goal.getY() > mover.getEndY()) {
+        /*if (goal.getY() > mover.getEndY()) {
 
             if (goal.getX() > middleMover.getX()) {
 
@@ -126,7 +126,7 @@ public abstract class AbstractPathfinding_algo {
 
                 return new Coordinates(middleMover.getX(), mover.getBeginY());
             }
-        } else {
+        } else {*/
 
             if (goal.getX() < mover.getBeginX()) {
 
@@ -135,7 +135,7 @@ public abstract class AbstractPathfinding_algo {
             }else
 
                 return new Coordinates(mover.getEndX(), middleMover.getY());
-        }
+        /*}*/
     }
 
 }

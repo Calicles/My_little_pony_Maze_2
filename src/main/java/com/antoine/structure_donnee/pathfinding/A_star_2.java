@@ -4,6 +4,7 @@ import com.antoine.contracts.IHeuristic;
 import com.antoine.contracts.IMap;
 import com.antoine.contracts.IPathfinding;
 import com.antoine.geometry.Coordinates;
+import com.antoine.geometry.Pythagore;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 import com.antoine.structure_donnee.Node_heuristic;
@@ -33,6 +34,9 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
     private IHeuristic<T> heuristic;
 
     private Node_heuristic<Tile, T> currentNode, adjacentNode, goal;
+
+    /**Sert à savoir si besoin de décaler le path à la taille du perso*/
+    private boolean isMoverSmallerThanTile;
 
     /**
      * <p>Constructeur plein</p>
@@ -98,7 +102,17 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
         setData(mover, goal, map);
 
         Coordinates currentNodeCoor;
-        int row, col;
+        int row, col, moverWidthInTile, moverHeightInTile;
+
+        moverWidthInTile = mover.getWidth() / Tile.getWidth();
+        if (moverWidthInTile %2 != 0 && moverWidthInTile > 1) moverWidthInTile--;
+        moverHeightInTile = mover.getHeight() / Tile.getHeight();
+        if (moverHeightInTile %2 != 0 && moverHeightInTile > 1) moverHeightInTile--;
+
+        if (moverWidthInTile < 1 && moverHeightInTile < 1)
+            isMoverSmallerThanTile = true;
+        else
+            isMoverSmallerThanTile = false;
 
         //+++++++++++++++++++++++++++++++++++    start's algorithm   +++++++++++++++++++++++++++++++++++++++++
 
@@ -106,9 +120,12 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
 
             currentNode = openList.first();
 
-            if (currentNode == this.goal) {
+            if ((isMoverSmallerThanTile && currentNode == this.goal) || (!isMoverSmallerThanTile && goalIsInProximalDist(moverWidthInTile, moverHeightInTile))) {
 
-                adapt_path_forMover(mover, map);
+                if(!isMoverSmallerThanTile) this.goal = currentNode;
+
+                //adapt_path_forMover(mover, map);
+                fillPath();
 
                 return path;
             }
@@ -146,15 +163,18 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
 
                     if (!closedList.contains(adjacentNode)) {
 
-                        if (adjacentNode.getWeight() > weight || adjacentNode.getWeight() == -1) {
+                        if (isMoverSmallerThanTile || !isRestrictTileArround(row, col, moverWidthInTile, moverHeightInTile)) {
 
-                            adjacentNode.setWeight(weight);
+                            if (adjacentNode.getWeight() > weight || adjacentNode.getWeight() == -1) {
 
-                            adjacentNode.setHeuristic(this.heuristic.getHeuristicCost(this));
+                                adjacentNode.setWeight(weight);
 
-                            adjacentNode.setParentNode(currentNode);
+                                adjacentNode.setHeuristic(this.heuristic.getHeuristicCost(this));
+
+                                adjacentNode.setParentNode(currentNode);
+                            }
+                            openList.add(adjacentNode);
                         }
-                        openList.add(adjacentNode);
                     }
                 }
             }
@@ -165,6 +185,59 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
 
         //If there, no result
         return null;
+    }
+
+    private void fillPath() {
+
+        Node_heuristic<Tile, T> node = goal;
+
+        while (node.getParent() != null)
+        {
+            path.push(Rectangle.findMiddleCoor(node.getItem().toRectangle()));
+
+            node = node.getParent();
+        }
+    }
+
+    private boolean goalIsInProximalDist(int moverWidthInTile, int moverHeightInTile) {
+        if (isInSameX_line(currentNode.getItem().toCoordinates(), goal.getItem().toCoordinates())) {
+            int square = Pythagore.calculDistanceInSquarre(currentNode.getItem().toCoordinates(), goal.getItem().toCoordinates());
+
+            int powTile = (int) (Math.pow(Tile.getWidth(), 2) * (moverWidthInTile + 1));
+
+            if (square <= powTile) {
+                boolean test = true;
+                return true;
+            }
+        } else if (isInSameY_line(currentNode.getItem().toCoordinates(), goal.getItem().toCoordinates())){
+            int square2 = Pythagore.calculDistanceInSquarre(currentNode.getItem().toCoordinates(), goal.getItem().toCoordinates());
+            int pow2 = (int) (Math.pow(Tile.getHeight(), 2) * (moverHeightInTile + 1));
+            if (square2 <= pow2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isRestrictTileArround(int row, int col, int moverWidthInTile, int moverHeightInTile) {
+
+        for (int i = -moverHeightInTile; i <= moverHeightInTile; i++)
+        {
+            if (i+row < 0 || i + row >= Matrix.length)
+                continue;
+
+            for (int j = -moverWidthInTile; j <= moverWidthInTile; j++)
+            {
+                //Out of map or current Node
+                if (j + col < 0 || j + col >= Matrix[0].length || (i + row == row && j + col == col))
+                    continue;
+
+                if (Matrix[i + row][j + col].getItem().isSolid())
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -229,7 +302,7 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
      * @param coor2 deuxième point.
      * @return true si les X sont égaux, false sinon.
      */
-    private boolean isInSameYline(Coordinates coor1, Coordinates coor2)
+    private boolean isInSameY_line(Coordinates coor1, Coordinates coor2)
     {
         return coor1.getX() == coor2.getX();
     }
@@ -247,7 +320,7 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
 
     private boolean isInSameLine(Coordinates prec, Coordinates current, Coordinates next)
     {
-        return (isInSameYline(prec, current) && isInSameYline(current, next) ||
+        return (isInSameY_line(prec, current) && isInSameY_line(current, next) ||
                 (isInSameX_line(prec, current) && isInSameX_line(current, next)));
     }
 
@@ -296,7 +369,8 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
 
         clear();
 
-        start = getMoverStartCorner(mover, goal);
+        //start = getMoverStartCorner(mover, goal);
+        start = Rectangle.findMiddleCoor(mover);
 
         //========Création du rectangle pour découper la carte=======
         int boundX, boundY;
