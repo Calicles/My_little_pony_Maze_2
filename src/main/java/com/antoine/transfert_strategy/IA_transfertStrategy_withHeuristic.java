@@ -129,7 +129,7 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
             else if (currentStep.getY() > middle.getY())
                 movesDown();
         }else
-            released();
+            goToPlayer();
     }
 
     private boolean inHeight(Rectangle nexus) {
