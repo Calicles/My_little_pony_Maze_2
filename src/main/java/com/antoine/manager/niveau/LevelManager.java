@@ -32,16 +32,6 @@ public class LevelManager implements Presentateur {
 		game.switchLevelRainbow();
 	}
 
-	public boolean isAppleSelectedAndRunning() {
-		return game.isAppleSelectedAndRunning();
-	}
-	public boolean isRaritySelectedAndRunning() {
-		return game.isRaritySelectedAndRunning();
-	}
-	public boolean isRainbowSelectedAndRunning() {
-		return game.isRainbowSelectedAndRunning();
-	}
-
 	public void playerMovesLeft(){
 		game.playerMovesLeft();
 	}
@@ -74,20 +64,6 @@ public class LevelManager implements Presentateur {
 		game.removeListener(listener);
 	}
 	
-
-	public boolean isLevelsNull() {
-		return game.isLevelsNull();
-	}
-
-	public boolean isLevelFlutterNull() {
-		return game.isLevelFlutterNull();
-	}
-
-	public boolean isLevelPinkyNull() {
-		return game.isLevelPinkyNull();
-	}
-
-
 	@Override
 	public void accept(IAfficheur visiteur) {
 		game.accept(visiteur);

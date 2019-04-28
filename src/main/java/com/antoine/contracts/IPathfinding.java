@@ -3,9 +3,7 @@ package com.antoine.contracts;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
-import com.antoine.structure_donnee.HeuristicBestDistance;
-import com.antoine.structure_donnee.Node;
-import com.antoine.structure_donnee.Node_heuristic;
+import com.antoine.structure_donnee.pathfinding.Node_heuristic;
 
 import java.util.Stack;
 

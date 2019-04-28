@@ -7,7 +7,6 @@ import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Pythagore;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
-import com.antoine.structure_donnee.Node_heuristic;
 
 import java.util.*;
 
@@ -99,10 +98,8 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
     {
         this.createRectangle(mover, goal, map);
 
-        setData(mover, goal, map);
-
-        Coordinates currentNodeCoor;
         int row, col, moverWidthInTile, moverHeightInTile;
+        Coordinates currentNodeCoor;
 
         moverWidthInTile = mover.getWidth() / Tile.getWidth();
         if (moverWidthInTile %2 != 0 && moverWidthInTile > 1) moverWidthInTile--;
@@ -114,13 +111,15 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
         else
             isMoverSmallerThanTile = false;
 
+        setData(goal, map);
+
         //+++++++++++++++++++++++++++++++++++    start's algorithm   +++++++++++++++++++++++++++++++++++++++++
 
         while (!openList.isEmpty()) {
 
             currentNode = openList.first();
 
-            if ((isMoverSmallerThanTile && currentNode == this.goal) || (!isMoverSmallerThanTile && goalIsInProximalDist(moverWidthInTile, moverHeightInTile))) {
+            if (currentNode == this.goal || (!isMoverSmallerThanTile && goalIsInProximalDist(moverWidthInTile, moverHeightInTile))) {
 
                 if(!isMoverSmallerThanTile) this.goal = currentNode;
 
@@ -130,7 +129,7 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
                 return path;
             }
 
-            //==========   Calcul index of currentNode in Matrix  ===========
+            //==========   for the calcul of index of the currentNode in Matrix  ===========
 
             currentNodeCoor = currentNode.getItem().toCoordinates();
 
@@ -187,6 +186,9 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
         return null;
     }
 
+    /**
+     * <p>Remonte la liste chaînée pour instruire le path.</p>
+     */
     private void fillPath() {
 
         Node_heuristic<Tile, T> node = goal;
@@ -241,62 +243,6 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
     }
 
     /**
-     * <p>Réaligne les points pour empêcher une collision entre l'entité qui se déplace et une tuile interdite.</p>
-     * @param mover l'entité se déplacant sous forme de rectangle.
-     * @param map la carte.
-     */
-    private void adapt_path_forMover(Rectangle mover, IMap map)
-    {
-        Stack<Node_heuristic<Tile, T>> buffer = finalizePath();
-
-        Stack<Coordinates> adjustedList = new Stack<>();
-
-        Node_heuristic<Tile, T> currentNode;
-
-        Coordinates next, current;
-
-        int count = 0;
-
-        while (!buffer.isEmpty() && count <= 3)
-        {
-            currentNode = buffer.pop();
-
-            current = Rectangle.findMiddleCoor(currentNode.getItem().toRectangle());
-
-            if (!buffer.isEmpty())
-                next = Rectangle.findMiddleCoor(buffer.peek().getItem().toRectangle());
-            else
-                next = null;
-
-            if (next != null)
-                adjustCoordinates(current, next, mover, map);
-
-            adjustedList.push(current);
-
-            count++;
-        }
-
-        while (!adjustedList.isEmpty())
-        {
-            path.push(adjustedList.pop());
-        }
-    }
-
-    /**
-     * <p>Ajuste les coordonnées des points à la surface du rectangle mover</p>
-     * Etudie les alignements des points et la présence de tuile solide dans les cases diagonales.
-     * @param current noeud entrain d'être étudié.
-     * @param next noeud suivant le noeud courant.
-     * @param mover l'entité qui se déplace sous forme de rectangle.
-     * @param map la carte.
-     */
-    private void adjustCoordinates(Coordinates current, Coordinates next,
-                                   Rectangle mover, IMap map)
-    {
-
-    }
-
-    /**
      * <p>Calcule si deux points sont alignés dans l'axe des Y</p>
      * @param coor1 premier point.
      * @param coor2 deuxième point.
@@ -316,33 +262,6 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
     private boolean isInSameX_line(Coordinates coor1, Coordinates coor2)
     {
         return coor1.getY() == coor2.getY();
-    }
-
-    private boolean isInSameLine(Coordinates prec, Coordinates current, Coordinates next)
-    {
-        return (isInSameY_line(prec, current) && isInSameY_line(current, next) ||
-                (isInSameX_line(prec, current) && isInSameX_line(current, next)));
-    }
-
-    /**
-     * <p>Déroule la liste chaînée du but jusqu'au départ.</p>
-     * Enregistre le tout dans une liste
-     * @return La liste
-     */
-    private Stack<Node_heuristic<Tile, T>> finalizePath()
-    {
-        Stack<Node_heuristic<Tile, T>> list = new Stack<>();
-
-        Node_heuristic<Tile, T> node = goal;
-
-        while (node != null)
-        {
-            list.push(node);
-
-            node = node.getParent();
-        }
-
-        return list;
     }
 
     /**
@@ -410,17 +329,16 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
      * utilise le champ surface pour le réajuster aux dimensions de l'array des tuiles
      * pour récupérer la partie de la map.
      * wrap l'ensemble des tuiles dans des noeuds pour former la matrice.
-     * @param mover représente l'entité qui se déplace sous forme de rectangle
      * @param map la carte
      */
-    private void setData(Rectangle mover, Coordinates goal, IMap map)
+    private void setData(Coordinates goal, IMap map)
     {
 
         Tile[][] subMap = map.getsubMapInArray(surface);
 
         Matrix = new Node_heuristic[subMap.length][subMap[0].length];
 
-        Node_heuristic<Tile, T> node = null;
+        Node_heuristic<Tile, T> node;
 
         for (int i = 0; i < subMap.length; i++) {
 

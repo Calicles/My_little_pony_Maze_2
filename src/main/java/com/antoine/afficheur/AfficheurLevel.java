@@ -15,10 +15,20 @@ import com.antoine.services.ImageReader;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+/**
+ * <b>Classe de lien entre la vue et le modèle.</b>
+ * <p>Visite le niveau pour afficher les composants</p>
+ *
+ * @author Antoine
+ */
 public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
 
 
-
+    /**
+     * @see IAfficheur#visit(IStructure)
+     *
+     * @param structure la structure à visiter
+     */
     @Override
     public void visit(IStructure structure) {
 
@@ -34,14 +44,27 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
 
     }
 
+    /**
+     * <p>Dessine ce qui n'est pas présent dans un Level3</p>
+     * @param structure à déssiner
+     */
     protected void drawLevel4(IStructure structure) {
         IEntity boss= structure.getBoss();
         Rectangle screen= structure.getScreen();
         drawLevel3(structure);
-        g.drawImage(boss.getImage(), playerScreenPositionX(boss, screen), playerScreenPositionY(boss, screen), null);
+
+        if (structure.isRunning())
+            g.drawImage(boss.getImage(), playerScreenPositionX(boss, screen), playerScreenPositionY(boss, screen), null);
     }
 
 
+    /**
+     * <p>Affichage principale</p>
+     * si le niveau est en court appelle
+     * @see AfficheurLevel#drawLevel(IStructure)
+     * sinon affiche l'image de fin.
+     * @param structure un niveau à afficher
+     */
     private void drawLevel1(IStructure structure) {
 
         if(!structure.isRunning()) {
@@ -52,12 +75,22 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
             drawLevel(structure);
 
     }
+
+    /**
+     * <p>Affiche les composants principaux d'un niveau.</p>
+     * @param structure à afficher
+     */
     private void drawLevel(IStructure structure) {
         IEntity player= structure.getPlayer();
         IMap map= structure.getMap();
         drawMap(map);
         g.drawImage(player.getImage(), player.getX(), player.getY(), null);
     }
+
+    /**
+     * <p>Affiche le fond du décors en posant les tuiles qui sont associées à un numéro.</p>
+     * @param mapStruct la carte.
+     */
     private void drawMap(IMap mapStruct) {
         HashMap<Integer, BufferedImage> tileSet= mapStruct.getTileSet();
         Tile[][] map= mapStruct.getMap();
@@ -72,6 +105,11 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
             }
         }
     }
+
+    /**
+     * <p>Affiche les composants d'un niveau de type 2.</p>
+     * @param structure à afficher
+     */
     private void drawLevel2(IStructure structure) {
         if(structure.isRunning()) {
             drawScreen(structure);
@@ -82,6 +120,10 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
         }
     }
 
+    /**
+     * <p>Affiche le joueur et le positionne relativement au repère de l'écran.</p>
+     * @param structure à afficher
+     */
     private void drawPlayer(IStructure structure) {
         IMap map = structure.getMap();
         IEntity player= structure.getPlayer();
@@ -89,6 +131,10 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
         g.drawImage(player.getImage(), player.getX(), screenPosY, null);
     }
 
+    /**
+     * <p>Affiche ce qui apparaît à l'écran.</p>
+     * @param structure à afficher
+     */
     private void drawScreen(IStructure structure) {
         IMap mapStruct= structure.getMap();
         Rectangle screen= structure.getScreen();
@@ -111,6 +157,13 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
             x= 0; y++;
         }
     }
+
+    /**
+     * <p>Calcule la coordonnée Y du joueur relativement au coordonnées de l'écran dans la carte.</p>
+     * @param player joueur
+     * @param map la carte
+     * @return la position traduite relativement à la position de l'écran.
+     */
     private int playerScreenPositionY(IEntity player, IMap map) {
         int coef;
         int tile_height= map.getTile_height();
@@ -118,6 +171,10 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
         return player.getY() - (coef * (tile_height * 20));
     }
 
+    /**
+     * <p>Affiche composant d'un niveau de type 3.</p>
+     * @param structure à afficher
+     */
     private void drawLevel3(IStructure structure) {
         if(structure.isRunning()) {
             drawScreenLevel3(structure);
@@ -128,6 +185,10 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
             }
     }
 
+    /**
+     * <p>Affiche les compostant de l'écran d'un niveau de type 3 (avec scrolling)</p>
+     * @param structure à afficher
+     */
     private void drawScreenLevel3(IStructure structure) {
         IMap mapStruct= structure.getMap();
         Rectangle screen= structure.getScreen();
@@ -156,6 +217,10 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
         }
     }
 
+    /**
+     * <p>Calcule les coordonnées du joueur relativement à l'écran.</p>
+     * @param structure à afficher
+     */
     private void drawPlayerLevel3(IStructure structure) {
         IEntity player= structure.getPlayer();
         Rectangle screen= structure.getScreen();
@@ -164,17 +229,24 @@ public class AfficheurLevel extends AbstractAfficheur implements IAfficheur {
         g.drawImage(player.getImage(), screenPosX, screenPosY, null);
     }
 
+    /**
+     * <p>Calcule coordonnée Y du joueur via l'écran.</p>
+     * @param player le joueur
+     * @param screen le rectangle qui représente les positions de l'écran sur la carte
+     * @return la position Y du joueur traduit en position écran
+     */
     private int playerScreenPositionY(IEntity player, Rectangle screen) {
         return player.getY() - screen.getBeginY();
     }
 
+    /**
+     * <p>Calcule coordonnées X.</p>
+     * @see AfficheurLevel#playerScreenPositionY(IEntity, Rectangle)
+     * @param player le joueur.
+     * @param screen l'écran.
+     * @return la position X du joueur sur l'écran.
+     */
     private int playerScreenPositionX(IEntity player, Rectangle screen) {
         return player.getX() - screen.getBeginX();
-    }
-
-    private void sleep(long sleep){
-        try{
-            Thread.sleep(sleep);
-        } catch (InterruptedException ignored) {}
     }
 }

@@ -2,15 +2,12 @@ package com.antoine.modele.level;
 
 import com.antoine.contracts.IEnnemi;
 import com.antoine.contracts.ILevel;
-import com.antoine.contracts.ITransfert_strategy;
 import com.antoine.contracts.LevelListener;
 import com.antoine.entity.Boss;
 import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
-import com.antoine.services.ImageReader;
 import com.antoine.structure_donnee.LevelState;
-import com.antoine.structure_donnee.Node;
 
 import java.util.List;
 import java.util.Stack;
@@ -92,6 +89,7 @@ public class Level4 extends Level3 implements ILevel {
 
                 before = System.currentTimeMillis();
                 while (!over && running) {
+                    event.setBooleanTable(LevelState.get(id), true);
                     loop();
                     after = System.currentTimeMillis();
                     sleep();

@@ -7,8 +7,6 @@ import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Pythagore;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
-import com.antoine.structure_donnee.Node;
-import com.antoine.structure_donnee.Node_heuristic;
 
 import java.util.*;
 import java.util.function.Predicate;

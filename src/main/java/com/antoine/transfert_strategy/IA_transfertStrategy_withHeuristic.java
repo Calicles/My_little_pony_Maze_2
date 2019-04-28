@@ -5,7 +5,7 @@ import com.antoine.contracts.IPathfinding;
 import com.antoine.contracts.ITransfert_strategy;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
-import com.antoine.structure_donnee.HeuristicBestDistance;
+import com.antoine.structure_donnee.pathfinding.HeuristicBestDistance;
 import com.antoine.structure_donnee.pathfinding.A_star_2;
 
 import java.util.Stack;

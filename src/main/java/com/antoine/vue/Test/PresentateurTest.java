@@ -61,26 +61,6 @@ public class PresentateurTest implements Presentateur {
     }
 
     @Override
-    public boolean isLevelsNull() {
-        return false;
-    }
-
-    @Override
-    public boolean isAppleSelectedAndRunning() {
-        return false;
-    }
-
-    @Override
-    public boolean isRainbowSelectedAndRunning() {
-        return false;
-    }
-
-    @Override
-    public boolean isRaritySelectedAndRunning() {
-        return false;
-    }
-
-    @Override
     public void switchLeveApple() {
 
     }
@@ -93,16 +73,6 @@ public class PresentateurTest implements Presentateur {
     @Override
     public void switchLevelRainbow() {
 
-    }
-
-    @Override
-    public boolean isLevelFlutterNull() {
-        return false;
-    }
-
-    @Override
-    public boolean isLevelPinkyNull() {
-        return false;
     }
 
     @Override

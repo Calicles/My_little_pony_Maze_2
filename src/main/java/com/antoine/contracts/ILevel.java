@@ -3,7 +3,6 @@ package com.antoine.contracts;
 import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
-import com.antoine.structure_donnee.Node;
 
 import java.awt.*;
 import java.util.List;
