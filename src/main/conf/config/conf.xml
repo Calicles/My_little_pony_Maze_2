@@ -207,7 +207,7 @@
 								<paramInjection id="levelTwilight_boss_positionY" value="-150" method="setY"/>
 							</parameters>
 						</injection>
-						<injection id="levelTwilight_boss_deplacement" class="com.antoine.transfert_strategy.IA_transfertStrategy_std" method="setDeplacement">
+						<injection id="levelTwilight_boss_deplacement" class="com.antoine.transfert_strategy.IA_transfertStrategy_withHeuristic" method="setDeplacement">
 							<parameters nbr="1">
 								<injection id="levelTwilight_boss_deplacement_vector" class="com.antoine.geometry.Coordinates" method="setVector">
 									<parameters nbr="2">
@@ -234,11 +234,19 @@
 			</parameters>
 		</bean>
 		<bean id="jukebox" class="com.antoine.manager.musique.Jukebox">
-			<parameters nbr="4">
-				<parameter id="appleMusic" method="setMusic" value="apple,/ressources/sons/bruitage/Indiana_Jones.wav"/>
+			<parameters nbr="12">
+				<parameter id="appleMusic" method="setMusic" value="apple,/ressources/sons/musics/01 We Got This Together.wav"/>
 				<parameter id="appleSon" method="setSound" value="apple,/ressources/sons/bruitage/stepSnow.wav"/>
-				<parameter id="rarityMusic" method="setMusic" value="rarity,/ressources/sons/bruitage/Open_Up_Your_Eyes.wav"/>
+				<parameter id="rarityMusic" method="setMusic" value="rarity,/ressources/sons/musics/02 I'm the Friend You Need.wav"/>
 				<parameter id="raritySon" method="setSound" value="rarity,/ressources/sons/bruitage/stepSnow.wav"/>
+				<parameter id="rainbowMusic" method="setMusic" value="rainbow,/ressources/sons/musics/03 Time To Be Awesome.wav"/>
+				<parameter id="rainbowSon" method="setSound" value="rainbow,/ressources/sons/bruitage/stepSnow.wav"/>
+				<parameter id="flutterMusic" method="setMusic" value="flutter,/ressources/sons/musics/07 Off To See the World.wav"/>
+				<parameter id="flutterSon" method="setSound" value="flutter,/ressources/sons/bruitage/stepSnow.wav"/>
+				<parameter id="pinkyMusic" method="setMusic" value="pinky,/ressources/sons/musics/04 One Small Thing.wav"/>
+				<parameter id="pinkySon" method="setSound" value="pinky,/ressources/sons/bruitage/stepSnow.wav"/>
+				<parameter id="twilightMusic" method="setMusic" value="twilight,/ressources/sons/musics/Open_Up_Your_Eyes.wav"/>
+				<parameter id="twilightSon" method="setSound" value="twilight,/ressources/sons/bruitage/stepSnow.wav"/>
 			</parameters>
 		</bean>
 	</beans>

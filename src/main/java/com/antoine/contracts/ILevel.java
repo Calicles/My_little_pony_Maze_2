@@ -1,10 +1,12 @@
 package com.antoine.contracts;
 
 import com.antoine.events.LevelChangeEvent;
+import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Stack;
 
 public interface ILevel {
     
@@ -62,4 +64,6 @@ public interface ILevel {
 
     int getId();
 
+    //TODO Remove after Test
+    Stack<Coordinates> getPath();
 }

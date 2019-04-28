@@ -21,7 +21,9 @@ public class ProgressBar extends JProgressBar implements LevelListener {
 
     @Override
     public void update(LevelChangeEvent lve) {
-        setValue(lve.getNumber_level_over());
+        String total = ""+lve.getNumber_level_finished()+ " / "+lve.getNumberOfLevel();
+        setString(total);
+        setValue(lve.getNumber_level_finished());
     }
 
     private class InnerBarUI extends BasicProgressBarUI {

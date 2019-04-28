@@ -5,6 +5,8 @@ import com.antoine.contracts.ITransfert_strategy;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 
+import java.util.Stack;
+
 public class Player_transferStrategy_std extends AbstractTransfer implements ITransfert_strategy {
 
 	public Player_transferStrategy_std(){
@@ -57,6 +59,12 @@ public class Player_transferStrategy_std extends AbstractTransfer implements ITr
 	@Override
 	public void startThinking() {
 
+	}
+
+	//TODO Remove after test
+	@Override
+	public Stack<Coordinates> getPath() {
+		return null;
 	}
 
 }

@@ -10,6 +10,7 @@ import com.antoine.geometry.DoubleBoxes;
 import com.antoine.geometry.Rectangle;
 
 import java.util.List;
+import java.util.Stack;
 
 public class Level3 extends AbstractLevel implements ILevel {
 	
@@ -172,6 +173,12 @@ public class Level3 extends AbstractLevel implements ILevel {
 	@Override
 	public void setEvent(LevelChangeEvent event) {
 
+	}
+
+	//TODO Remove after test
+	@Override
+	public Stack<Coordinates> getPath() {
+		return null;
 	}
 
 	@Override

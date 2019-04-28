@@ -1,6 +1,9 @@
 package com.antoine.contracts;
 
+import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
+
+import java.util.Stack;
 
 public interface IStructure {
 
@@ -21,4 +24,6 @@ public interface IStructure {
     int getMapHeight();
 
     int getMapWidth();
+
+    Stack<Coordinates> getPath();
 }

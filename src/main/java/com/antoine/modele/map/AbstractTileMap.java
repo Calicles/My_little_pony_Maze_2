@@ -35,6 +35,8 @@ public abstract class AbstractTileMap {
 		buffer = Map_reader.readMap(fileMapUrl);
 		this.tile_width= tileSet.get(0).getWidth();
 		this.tile_height= tileSet.get(0).getHeight();
+		Tile.setWidth(tile_width);
+		Tile.setHeight(tile_height);
 		initMap(buffer);
 	}
 	
@@ -44,7 +46,15 @@ public abstract class AbstractTileMap {
 	public int getHeight(){ return map.length * tile_height;}
 	public Tile[][] getMap(){return map;}
 	public HashMap<Integer, BufferedImage> getTileSet() {return tileSet;}
-	
+
+	public int getWidthInTile() {
+		return map[0].length;
+	}
+
+	public int getHeightInTile() {
+		return map.length;
+	}
+
 	public int[] getDimension() {
 		int[] tab= new int[2];
 		tab[0]= tileSet.get(0).getWidth() * map[0].length;
@@ -52,7 +62,7 @@ public abstract class AbstractTileMap {
 		return tab;
 	}
 
-	private void initMap(@org.jetbrains.annotations.NotNull int[][] map)
+	private void initMap(int[][] map)
 	{
 		this.map= new Tile[map.length][map[0].length];
 		int tile_num;

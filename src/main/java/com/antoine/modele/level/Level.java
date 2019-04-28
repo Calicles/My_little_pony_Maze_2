@@ -4,8 +4,10 @@ import com.antoine.contracts.IEntity;
 import com.antoine.contracts.ILevel;
 import com.antoine.contracts.LevelListener;
 import com.antoine.events.LevelChangeEvent;
+import com.antoine.geometry.Coordinates;
 
 import java.util.List;
+import java.util.Stack;
 
 public class Level extends AbstractLevel implements ILevel {
 	
@@ -68,6 +70,13 @@ public class Level extends AbstractLevel implements ILevel {
 	@Override
 	public void setEvent(LevelChangeEvent event) {
 
+	}
+
+
+	//TODO Remove after test
+	@Override
+	public Stack<Coordinates> getPath() {
+		return null;
 	}
 
 }

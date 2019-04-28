@@ -7,10 +7,10 @@ import com.antoine.entity.Boss;
 import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
-import com.antoine.services.ImageReader;
 import com.antoine.structure_donnee.LevelState;
 
 import java.util.List;
+import java.util.Stack;
 
 
 /**
@@ -54,6 +54,7 @@ public class Level4 extends Level3 implements ILevel {
     /*
     for test
      */
+    @Override
     public Boss getBoss(){return (Boss) boss;}
 
     @Override
@@ -88,6 +89,7 @@ public class Level4 extends Level3 implements ILevel {
 
                 before = System.currentTimeMillis();
                 while (!over && running) {
+                    event.setBooleanTable(LevelState.get(id), true);
                     loop();
                     after = System.currentTimeMillis();
                     sleep();
@@ -269,6 +271,13 @@ public class Level4 extends Level3 implements ILevel {
             return false;
         }
         return running;
+    }
+
+
+    //TODO Remove after Test
+    @Override
+    public Stack<Coordinates> getPath() {
+        return boss.getPath();
     }
 
 }

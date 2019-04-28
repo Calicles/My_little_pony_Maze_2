@@ -18,23 +18,11 @@ public interface Presentateur {
 
     void AddListener(LevelListener listener);
 
-    boolean isLevelsNull();
-
-    boolean isAppleSelectedAndRunning();
-
-    boolean isRainbowSelectedAndRunning();
-
-    boolean isRaritySelectedAndRunning();
-
     void switchLeveApple();
 
     void switchLevelRarity();
 
     void switchLevelRainbow();
-
-    boolean isLevelFlutterNull();
-
-    boolean isLevelPinkyNull();
 
     void playerMovesReleased();
 

@@ -6,13 +6,15 @@ import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
+import java.util.Stack;
+
 public class IA_transfertStrategy_std extends AbstractTransfer implements ITransfert_strategy {
 	
-	private Thread greyCell;
-	private Rectangle ownPosition, player1;
-	private Coordinates lastVector, lastHuntingVector;
-	private IMap map;
-	private boolean thinking, blocked;
+	protected Thread greyCell;
+	protected Rectangle ownPosition, player1;
+	protected Coordinates lastVector;
+	protected IMap map;
+	protected boolean thinking;
 	
 	public IA_transfertStrategy_std(Rectangle ownPosition, Rectangle player1, IMap map) {
 		super();
@@ -20,7 +22,6 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	
 	public IA_transfertStrategy_std() {
 		super();
-		lastHuntingVector = new Coordinates(0, 0);
 	}
 
 	@Override
@@ -50,6 +51,12 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		greyCell.start();
 	}
 
+	//TODO Remove after test
+	@Override
+	public Stack<Coordinates> getPath() {
+		return null;
+	}
+
 	@Override
 	public void think() {
 
@@ -72,7 +79,9 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	private void move(){
 
-		if (isPlayerNext()){
+		if (isPlayerNext(300)){
+
+			released();
 
 			manHuntPlayer();
 
@@ -120,7 +129,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	}
 
-	private void manHuntPlayer() {
+	protected void manHuntPlayer() {
 
 		Coordinates bossMidle= Rectangle.findMiddleCoor(ownPosition);
 		Coordinates playerMidle= Rectangle.findMiddleCoor(player1);
@@ -181,22 +190,8 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	}
 
-	private boolean checkLastHuntingVectorByY() {
-		if (lastHuntingVector.getY() < 0){
-			return checkOnUpTiles(ownPosition, map) != null;
-		}else
-			return checkOnDownTiles(ownPosition, map) != null;
-	}
-
-	private boolean checkLastHuntingVectorByX() {
-		if (lastHuntingVector.getX() < 0){
-			return checkLeftTiles(ownPosition, map) != null;
-		}else
-			return checkRightTiles(ownPosition, map) != null;
-	}
-
-	private boolean isPlayerNext(){
-		return Rectangle.isNext(ownPosition, player1, 300);
+	protected boolean isPlayerNext(int radius){
+		return Rectangle.isNext(ownPosition, player1, radius);
 	}
 
 	private void pause() {
@@ -217,16 +212,22 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	@Override
 	public void movesLeft() {
 
+		xDirection = -vector.getX();
+		yDirection = 0;
 	}
 
 	@Override
 	public void movesRight() {
 
+		xDirection = vector.getX();
+		yDirection = 0;
 	}
 
 	@Override
 	public void movesUp() {
 
+		yDirection = -vector.getY();
+		xDirection = 0;
 	}
 
 	@Override
@@ -253,7 +254,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 			return new Coordinates(0, 0);
 	}
 
-	private boolean directionIsNull(){
+	protected boolean directionIsNull(){
 		return xDirection == 0 && yDirection == 0;
 	}
 

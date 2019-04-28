@@ -1,11 +1,12 @@
 package com.antoine.contracts;
 
+import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 
 public interface IMap {
 
@@ -27,4 +28,16 @@ public interface IMap {
     HashMap<Integer, BufferedImage> getTileSet();
 
     Tile isSolidTileOnRoad(Rectangle rectangle);
+
+    List<Tile> getSubMap(Rectangle surface);
+
+    Tile[][] getsubMapInArray(Rectangle surface);
+
+    Coordinates getCoorinatesInTile(Coordinates current);
+
+    boolean isSolideTile(int i, int j);
+
+    int getWidthInTile();
+
+    int getHeightInTile();
 }

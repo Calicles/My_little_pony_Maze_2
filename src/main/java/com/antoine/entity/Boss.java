@@ -5,6 +5,8 @@ import com.antoine.contracts.IMap;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 
+import java.util.Stack;
+
 /**
  * <b>Classe qui représente un ennemi</b>
  * <p>possède une pseudo Intelligence Artificielle
@@ -75,5 +77,14 @@ public class Boss extends AbstractCharacter implements IEnnemi {
 	@Override
 	public void startThinking() {
 		deplacement.startThinking();
+	}
+
+
+
+	//TODO Remove after Test
+
+	@Override
+	public Stack<Coordinates> getPath() {
+		return deplacement.getPath();
 	}
 }

@@ -17,12 +17,6 @@ public interface IJeu {
 
     void switchLevelRainbow();
 
-    boolean isAppleSelectedAndRunning();
-
-    boolean isRaritySelectedAndRunning();
-
-    boolean isRainbowSelectedAndRunning();
-
     void playerMovesLeft();
 
     void playerMovesRight();
@@ -38,12 +32,6 @@ public interface IJeu {
     void addListener(LevelListener listener);
 
     void removeListener(LevelListener listener);
-
-    boolean isLevelsNull();
-
-    boolean isLevelFlutterNull();
-
-    boolean isLevelPinkyNull();
 
     int getScreenX();
 
