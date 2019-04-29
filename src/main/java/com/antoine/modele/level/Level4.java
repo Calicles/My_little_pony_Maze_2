@@ -82,6 +82,7 @@ public class Level4 extends Level3 implements ILevel {
 
                 if(count != 0){
                     gameLose();
+                    event.setBooleanTable(LevelState.get(id), true);
                 }
 
                 setAll();
@@ -89,7 +90,6 @@ public class Level4 extends Level3 implements ILevel {
 
                 before = System.currentTimeMillis();
                 while (!over && running) {
-                    event.setBooleanTable(LevelState.get(id), true);
                     loop();
                     after = System.currentTimeMillis();
                     sleep();
