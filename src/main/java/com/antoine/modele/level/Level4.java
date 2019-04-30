@@ -75,7 +75,7 @@ public class Level4 extends Level3 implements ILevel {
     @Override
     protected void initBoxes() {
         Rectangle screen= new Rectangle(10 * tile_width, 30*tile_width, 0,
-                19* tile_height);
+                20* tile_height);
         Rectangle scrollBox= new Rectangle(858, 950,
                 290, 350);
         this.boxes= new DoubleBoxes(screen, scrollBox);

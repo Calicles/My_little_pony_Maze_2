@@ -211,8 +211,8 @@
 							<parameters nbr="1">
 								<injection id="levelTwilight_boss_deplacement_vector" class="com.antoine.geometry.Coordinates" method="setVector">
 									<parameters nbr="2">
-										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementX" value="2" method="setX"/>
-										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementY" value="2" method="setY"/>
+										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementX" value="3" method="setX"/>
+										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementY" value="3" method="setY"/>
 									</parameters>
 								</injection>
 							</parameters>

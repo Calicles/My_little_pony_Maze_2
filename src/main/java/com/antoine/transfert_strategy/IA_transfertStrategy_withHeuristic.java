@@ -119,7 +119,6 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
      */
     private void go(Coordinates middle, Rectangle nexus)
     {
-
         if(currentStep != null) {
 
             if (currentStep.getX() < middle.getX() && inHeight(nexus))
@@ -130,6 +129,7 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
                 movesRight();
             else if (currentStep.getY() > middle.getY())
                 movesDown();
+
         }else {
                 goToPlayer();
         }

@@ -20,6 +20,8 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
     /**L'echelle utilisée pour les dimensions de la mini-carte**/
 	public static final int SCALE= 10;
 
+	private int tempo = 0;
+
 
     /**
      * @see IAfficheur#visit(IStructure)
@@ -66,6 +68,9 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
                 //N'affiche que les tiles solides, le reste est symbolisé par le fond unifié
                 if(map[i][j].getTile_num() > Tile.getSolidNum()) {
                     g.fillRect(x, y, width, height);
+
+                }else if (isExit(map[i][j])){
+                    drawExit(map[i][j]);
                 }
             }
         }
@@ -74,7 +79,29 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
 
         //Affiche le reste
         this.drawScreen(structure);
-        this.drawPlayer(structure.getPlayer(), Color.RED);
+        this.drawEntity(structure.getPlayer(), Color.RED);
+        this.drawEntity(structure.getBoss(), Color.BLACK);
+    }
+
+    private void drawExit(Tile tile) {
+        if (tempo % 20 != 0) {
+            Color old = g.getColor();
+            g.setColor(Color.BLUE);
+
+            int width = (Tile.getWidth() / SCALE) * 2;
+            int height = (Tile.getHeight() / SCALE) * 2;
+
+            g.fillRect(tile.getX() / SCALE, tile.getY() / SCALE, width, height);
+
+            g.setColor(old);
+        }
+        tempo++;
+        if (tempo > 100)
+            tempo = 0;
+    }
+
+    private boolean isExit(Tile tile) {
+        return tile.getTile_num() == -1;
     }
 
     /**
@@ -105,17 +132,19 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
      * @param entity personnage à afficher.
      * @param color la couleur à appliquer.
      */
-    private void drawPlayer(IEntity entity, Color color) {
-        int x, y;
+    private void drawEntity(IEntity entity, Color color) {
+        if(entity != null) {
+            int x, y;
 
-        Color old= g.getColor();
+            Color old = g.getColor();
 
-        x= entity.getX() / SCALE;
-        y= entity.getY() / SCALE;
+            x = entity.getX() / SCALE;
+            y = entity.getY() / SCALE;
 
-        g.setColor(color);
-        g.fillRect(x, y, 5, 5);
-        g.setColor(old);
+            g.setColor(color);
+            g.fillRect(x, y, 5, 5);
+            g.setColor(old);
+        }
     }
 
     /**
