@@ -20,13 +20,22 @@ public class Player extends AbstractCharacter implements IEntity {
 	@Override
 	public void movesLeft() {deplacement.movesLeft();}
 
+	/**
+	 * @see #movesLeft()
+	 */
 	@Override
 	public void movesRight() {deplacement.movesRight();}
 
+	/**
+	 * @see #movesLeft()
+	 */
 	@Override
 	public void movesUp() {deplacement.movesUp();}
 
-	@Override
+	/**
+	 * @see #movesLeft()
+	 */
+	 @Override
 	public void movesDown() {deplacement.movesDown();}
 
 

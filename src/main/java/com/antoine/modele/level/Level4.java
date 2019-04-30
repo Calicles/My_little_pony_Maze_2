@@ -6,6 +6,7 @@ import com.antoine.contracts.LevelListener;
 import com.antoine.entity.Boss;
 import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
+import com.antoine.geometry.DoubleBoxes;
 import com.antoine.geometry.Rectangle;
 import com.antoine.structure_donnee.LevelState;
 
@@ -69,6 +70,16 @@ public class Level4 extends Level3 implements ILevel {
 
     public void setLoseImagePath(String loseImagePath){
         this.loseImagePath= loseImagePath;
+    }
+
+    @Override
+    protected void initBoxes() {
+        Rectangle screen= new Rectangle(10 * tile_width, 30*tile_width, 0,
+                19* tile_height);
+        Rectangle scrollBox= new Rectangle(858, 950,
+                290, 350);
+        this.boxes= new DoubleBoxes(screen, scrollBox);
+
     }
 
     private void init() {

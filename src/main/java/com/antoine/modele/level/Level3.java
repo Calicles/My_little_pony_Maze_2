@@ -27,7 +27,7 @@ public class Level3 extends AbstractLevel implements ILevel {
 		initBoxes();
 	}
 
-	private void initBoxes() {
+	protected void initBoxes() {
 		Rectangle screen= new Rectangle(0, 20*tile_width, 20*tile_height,
 				40* tile_height);
 		Rectangle scrollBox= new Rectangle(5*tile_width, 15*tile_width,

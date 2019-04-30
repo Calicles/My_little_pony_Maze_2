@@ -107,7 +107,9 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
      * <p>Se passe du calcule de l'algorithme pour chasser le joueur.</p>
      */
     private void goToPlayer() {
+
         super.manHuntPlayer();
+        //TODO Adapter vecteur et chercher issue
     }
 
     /**
@@ -128,8 +130,9 @@ public class IA_transfertStrategy_withHeuristic extends IA_transfertStrategy_std
                 movesRight();
             else if (currentStep.getY() > middle.getY())
                 movesDown();
-        }else
-            goToPlayer();
+        }else {
+                goToPlayer();
+        }
     }
 
     private boolean inHeight(Rectangle nexus) {

@@ -97,7 +97,7 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		}
 	}
 
-	private void checkLastVectors() {
+	protected void checkLastVectors() {
 
 		Tile tile;
 		if(lastVector.getX() < 0 || lastVector.getX() > 0) {

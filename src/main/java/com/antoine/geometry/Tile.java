@@ -9,21 +9,19 @@ package com.antoine.geometry;
  */
 public class Tile {
 
-	/**
-	 * Représente l'état de la tuile, en dessous la tuile est traversable
-	 */
+	/**Représente l'état de la tuile, en dessous la tuile est traversable*/
 	private static final int SOLID= 6;
 
-	/**
-	 * La tuile portant ce numéro dans le champs tile_num est une sortie
-	 */
+	/**La tuile portant ce numéro dans le champs tile_num est une sortie*/
 	private static final int EXIT= -1;
 
+	/**Dimension de la tuile*/
 	private static int width, height;
 
 	/**Le numéro lié à l'image devant être affichée, ainsi qu'à l'état de la tuile (solide, sortie...)*/
 	private int tile_num;
 
+	/**Coordonnées dans la carte de la tuile*/
 	Coordinates coordinates;
 
 
@@ -41,14 +39,13 @@ public class Tile {
 		return height;
 	}
 
-
 	public int getTile_num() {return tile_num;}
 	public int getX() {return coordinates.getX();}
 	public int getY() {return coordinates.getY();}
 
 	/**
 	 * <p>Test la solidité</p>
-	 * @return true si tuile solide, false sinon
+	 * @return true si tuile solide (intraversable), false sinon
 	 */
 	public boolean isSolid() {return tile_num >= SOLID;}
 

@@ -3,7 +3,7 @@ package com.antoine.manager.niveau;
 import java.awt.Dimension;
 
 import com.antoine.contracts.*;
-import com.antoine.jeu.Game;
+import com.antoine.modele.Game;
 import com.antoine.manager.musique.Jukebox;
 
 

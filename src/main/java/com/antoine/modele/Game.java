@@ -1,4 +1,4 @@
-package com.antoine.jeu;
+package com.antoine.modele;
 
 import com.antoine.contracts.*;
 import com.antoine.events.LevelChangeEvent;
