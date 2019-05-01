@@ -10,7 +10,8 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 /**
- * <b>Classe de service, gère les lectures de fichiers</b>
+ * <b>Classe de service, gère les lectures de fichiers pour les cartes.</b>
+ *
  * @author antoine
  */
 public class Map_reader {

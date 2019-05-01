@@ -5,6 +5,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+/**
+ * <b>Classe de service, lit le fichier de configuration d'un personnage.</b>
+ *
+ * @author Antoine
+ */
 public class Character_reader {
 	
 	public static HashMap<Integer, BufferedImage[]> readCharactereAnimation(String url){

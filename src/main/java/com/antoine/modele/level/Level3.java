@@ -1,9 +1,6 @@
 package com.antoine.modele.level;
 
-import com.antoine.contracts.IEntity;
-import com.antoine.contracts.ILevel;
-import com.antoine.contracts.IMap;
-import com.antoine.contracts.LevelListener;
+import com.antoine.contracts.*;
 import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.DoubleBoxes;
@@ -12,8 +9,18 @@ import com.antoine.geometry.Rectangle;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * <b>Type de niveau qui gère le "scrolling".</b>
+ * La caméra doit suivre les déplacements du personnage.
+ * Les dimensions de la carte dépasse celle de l'écran.
+ * Les zones sont chargés que si le joueur se déplace vers celles-ci,
+ * créant un effet de déroulement.
+ *
+ * @author Antoine
+ */
 public class Level3 extends AbstractLevel implements ILevel {
-	
+
+	/**Double rectangle qui gère les dimensions de l'écran et la zone limite qui entraîne le déroulement de la carte*/
 	protected DoubleBoxes boxes;
 
 
@@ -27,6 +34,9 @@ public class Level3 extends AbstractLevel implements ILevel {
 		initBoxes();
 	}
 
+	/**
+	 * <p>Initialise les dimensions et les positions de l'écran et de la "scrollBox".</p>
+	 */
 	protected void initBoxes() {
 		Rectangle screen= new Rectangle(0, 20*tile_width, 20*tile_height,
 				40* tile_height);
@@ -35,6 +45,11 @@ public class Level3 extends AbstractLevel implements ILevel {
 		this.boxes= new DoubleBoxes(screen, scrollBox);
 	}
 
+	/**
+	 * @see IJeu#playerMovesUp()
+	 * gère également le déroulé de la carte si le joueur atteint la zone de "scroll".
+	 * Le déroulé de la carte est synchronisé sur le déplacement du joueur.
+	 */
 	 @Override
 	 public void playerMovesUp() {
 		Coordinates vector;
@@ -46,34 +61,11 @@ public class Level3 extends AbstractLevel implements ILevel {
 		scrollUp(vector);
 	 }
 
-	 protected void scrollUp(Coordinates vector){
-		 if(!screenOnTop() &&
-				 boxes.isPlayerOnTopScroll(player.getY()+ vector.getY()))
-			 boxes.scroll(0, vector.getY() );
-	 }
-
-	 protected void scrollDown(Coordinates vector){
-		 if(!screenOnBottom() &&
-				 boxes.isPlayerOnBottomScroll(player.getY()+
-						 player.getHeight() + vector.getY()))
-			 boxes.scroll(0, vector.getY());
-	 }
-
-	 protected void scrollLeft(Coordinates vector){
-		 if(!screenOnLeft() &&
-				 boxes.isPlayerOnLeftScroll(player.getX() + vector.getX()))
-			 boxes.scroll(vector.getX(), 0);
-
-	 }
-
-	 protected void scrollRight(Coordinates vector){
-		 if(!screenOnRight() &&
-				 boxes.isPlayerOnRightScroll(player.getX() + player.getWidth() + vector.getX()))
-			 boxes.scroll(vector.getX(), 0);
-	 }
-	 
-	 @Override
-	 public void playerMovesDown() {
+	/**
+	 * @see #playerMovesUp()
+	 */
+	@Override
+	public void playerMovesDown() {
 		Coordinates vector;
 
 		checkRunning();
@@ -81,7 +73,75 @@ public class Level3 extends AbstractLevel implements ILevel {
 		vector= player.memorizeMoves(map);
 
 		scrollDown(vector);
+	}
+
+	/**
+	 * @see #playerMovesUp()
+	 */
+	@Override
+	public void playerMovesLeft() {
+		Coordinates vector;
+
+		checkRunning();
+		player.movesLeft();
+		vector= player.memorizeMoves(map);
+
+		scrollLeft(vector);
+	}
+
+	/**
+	 * @see #playerMovesUp()
+	 */
+	@Override
+	public void playerMovesRight() {
+		Coordinates vector;
+
+		checkRunning();
+		player.movesRight();
+		vector= player.memorizeMoves(map);
+
+		scrollRight(vector);
+	}
+
+	/**
+	 * <p>Déroule la carte.</p>
+	 * @param vector le vecteur dont la carte sera déroulée.
+	 */
+	protected void scrollUp(Coordinates vector){
+		 if(!screenOnTop() &&
+				 boxes.isPlayerOnTopScroll(player.getY()+ vector.getY()))
+			 boxes.scroll(0, vector.getY() );
 	 }
+
+	/**
+	 * @see #scrollUp(Coordinates)
+	 */
+	 protected void scrollDown(Coordinates vector){
+		 if(!screenOnBottom() &&
+				 boxes.isPlayerOnBottomScroll(player.getY()+
+						 player.getHeight() + vector.getY()))
+			 boxes.scroll(0, vector.getY());
+	 }
+
+	/**
+	 * @see #scrollUp(Coordinates)
+	 */
+	 protected void scrollLeft(Coordinates vector){
+		 if(!screenOnLeft() &&
+				 boxes.isPlayerOnLeftScroll(player.getX() + vector.getX()))
+			 boxes.scroll(vector.getX(), 0);
+
+	 }
+
+	/**
+	 * @see #scrollUp(Coordinates)
+	 */
+	 protected void scrollRight(Coordinates vector){
+		 if(!screenOnRight() &&
+				 boxes.isPlayerOnRightScroll(player.getX() + player.getWidth() + vector.getX()))
+			 boxes.scroll(vector.getX(), 0);
+	 }
+
 
 	@Override
 	public void selected() {
@@ -98,40 +158,31 @@ public class Level3 extends AbstractLevel implements ILevel {
 		return false;
 	}
 
-	@Override
-	 public void playerMovesLeft() {
-		 Coordinates vector;
-
-		 checkRunning();
-		 player.movesLeft();
-		 vector= player.memorizeMoves(map);
-
-		 scrollLeft(vector);
-	 }
-	 
-	 @Override
-	 public void playerMovesRight() {
-		Coordinates vector;
-
-		checkRunning();
-		player.movesRight();
-		vector= player.memorizeMoves(map);
-
-   		scrollRight(vector);
-	 }
-	 
+	/**
+	 * <p>Calcule si l'écran à atteint la bordure de la map, devant alors stopper le scrolling.</p>
+	 * @return true si bord de la map atteint, false sinon.
+	 */
 	 private boolean screenOnRight() {
 		 return boxes.getScreenEndX() >= mapSize.getEndX();
 	 }
-	 
-	 private boolean screenOnLeft() {
-		 return boxes.getScreenBeginX() <= 0;
-	 }
 
+	/**
+	 * @see #screenOnRight()
+	 */
+	private boolean screenOnLeft() {
+		 return boxes.getScreenBeginX() <= 0;
+	}
+
+	/**
+	 * @see #screenOnRight()
+	 */
 	private boolean screenOnBottom() {
 		return boxes.getScreenEndY() >= mapSize.getEndY();
 	}
 
+	/**
+	 * @see #screenOnRight()
+	 */
 	private boolean screenOnTop() {
 		return boxes.getScreenBeginY() <= 0;
 	}

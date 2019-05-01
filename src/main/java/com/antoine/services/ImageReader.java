@@ -7,6 +7,7 @@ import java.io.IOException;
 
 /**
  * <p>Classe de service pour créer des BufferedImage.</p>
+ *
  * @author antoine
  */
 public class ImageReader {

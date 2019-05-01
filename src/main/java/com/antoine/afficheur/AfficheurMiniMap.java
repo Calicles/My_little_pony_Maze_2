@@ -17,9 +17,10 @@ import java.awt.*;
  */
 public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
 
-    /**L'echelle utilisée pour les dimensions de la mini-carte**/
+    /**L'echelle utilisée pour les dimensions de la mini-carte*/
 	public static final int SCALE= 10;
 
+	/**Utilisé pour ralentir l'effet de clignotant de la sortie sur la mini-map*/
 	private int tempo = 0;
 
 
@@ -35,6 +36,7 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
 
     /**
      * <p>Organise l'affichage de l'objet Graphics.</p>
+     * L'affichage de l'ensemble des composants est mis à l'echelle de la valeur de SCALE.
      * @param structure à afficher.
      */
     private void drawMiniMap(IStructure structure)
@@ -69,7 +71,7 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
                 if(map[i][j].getTile_num() > Tile.getSolidNum()) {
                     g.fillRect(x, y, width, height);
 
-                }else if (isExit(map[i][j])){
+                }else if (map[i][j].isExit()){
                     drawExit(map[i][j]);
                 }
             }
@@ -83,8 +85,14 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
         this.drawEntity(structure.getBoss(), Color.BLACK);
     }
 
+    /**
+     * <p>Dessine la sortie sur la mini-carte.</p>
+     * @param tile la tuile de sortie, pour coordonnées et taille.
+     */
     private void drawExit(Tile tile) {
-        if (tempo % 20 != 0) {
+        //Le tempo sert à faire clignoter la sortie sur la mini-carte
+        if (tempo % 20 != 0)
+        {
             Color old = g.getColor();
             g.setColor(Color.BLUE);
 
@@ -96,12 +104,10 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
             g.setColor(old);
         }
         tempo++;
+
+        //Evite les dépassements mémoires avec un nombre immense
         if (tempo > 100)
             tempo = 0;
-    }
-
-    private boolean isExit(Tile tile) {
-        return tile.getTile_num() == -1;
     }
 
     /**
@@ -128,7 +134,7 @@ public class AfficheurMiniMap extends AbstractAfficheur implements IAfficheur {
     }
 
     /**
-     * <p>Dessine un rectangle sur la mini-map pour simuler d'un personnage.</p>
+     * <p>Dessine un rectangle sur la mini-map pour simuler un personnage.</p>
      * @param entity personnage à afficher.
      * @param color la couleur à appliquer.
      */
