@@ -6,7 +6,12 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 /**
- * <b>Classe de service, lit le fichier de configuration d'un personnage.</b>
+ * <b>Classe de service, lit le fichier de configuration d'un personnage (sprites d'animation).</b>
+ * Fournit le tableau association entre un entier (représente une des 4 directions) et un tableau d'image
+ * (représente l'animation dans une direction).
+ *
+ * Le nombre de direction contenu dans le fichier et le nombre d'image d'animation par direction
+ * est dans le header du ficher.
  *
  * @author Antoine
  */

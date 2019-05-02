@@ -2,24 +2,38 @@ package com.antoine.son;
 
 import java.io.ByteArrayOutputStream;
 
+/**
+ * <b>Lecteur de bruitage.</b>
+ * Les octets du flux sont copiés dans tableau (en cas de réutilisation probable).
+ */
 public class SoundEffect extends SoundMaker {
 
+    /**Contient les octets du flux après copie*/
     private byte[] samples;
 
+    /**
+     * <p>Constructeur.</p>
+     * @param musicPath le path du fichier.
+     * @param volume le volume à appliquer.
+     */
     public SoundEffect(String musicPath, float volume) {
         super(musicPath, volume);
         samples = getAudioFileData();
     }
 
+    /**
+     * @see SoundMaker#implementRun()
+     * @return une Thread implémenté.
+     */
     @Override
     protected Thread implementRun() {
         return new Thread(()->{
             int bytesRead;
             byte[] buf;
-            while (true) {
+            while (using) {
                 bytesRead = 0;
-                while ((bytesRead <= samples.length)) {
-                    buf = adjustVolume(samples, bytesRead, 128);
+                while ((bytesRead <= samples.length) && using) {
+                    buf = adjustVolume(bytesRead, 128);
                     bytesRead += buf.length;
                     line.write(buf, 0, buf.length);
                 }
@@ -28,12 +42,19 @@ public class SoundEffect extends SoundMaker {
         });
     }
 
+    /**
+     * <p>Place le Thread en état de pause.</p>
+     */
     private synchronized void sleep() {
         try{
             wait();
         }catch (InterruptedException ignored){}
     }
 
+    /**
+     * <p>Copie les octets du flux d'entrée vers l'array samples</p>
+     * @return
+     */
     private byte[] getAudioFileData() {
         byte[] data = null;
         try {
@@ -53,15 +74,29 @@ public class SoundEffect extends SoundMaker {
         return data;
     }
 
-    protected byte[] adjustVolume(byte[] audioSamples, int start, int len) {
+    /**
+     * <p>Ajuste le volume d'une partie des octets contenu dans l'array samples.</p>
+     * La portion est délibérément réduite pour simuler l'ajustement du son en temps réel.
+     *
+     * @param start le premier octet à devoir être copié.
+     *
+     * @param len la longueur de la portion à copier à partir de start.
+     *
+     * @return un array copié à partir de la portion de l'array samples.
+     */
+    protected byte[] adjustVolume(int start, int len) {
         byte[] array = new byte[len];
+
         len = start + len;
-        if (len >= audioSamples.length)
-            len = audioSamples.length ;
-        for (int i = start; i < len; i+=2) {
+
+        if (len >= samples.length)
+            len = samples.length ;
+
+        for (int i = start; i < len; i+=2)
+        {
             // convert byte pair to int
-            short buf1 = audioSamples[i+1];
-            short buf2 = audioSamples[i];
+            short buf1 = samples[i+1];
+            short buf2 = samples[i];
 
             buf1 = (short) ((buf1 & 0xff) << 8);
             buf2 = (short) (buf2 & 0xff);

@@ -8,14 +8,33 @@ import com.antoine.geometry.Tile;
 
 import java.util.Stack;
 
+/**
+ * <b>Implémente une stratégie de déplacement pour un personnage non joueur.</b>
+ *
+ * @author Antoine
+ */
 public class IA_transfertStrategy_std extends AbstractTransfer implements ITransfert_strategy {
-	
+
+	/**Le Thread qui prend en charge les calcules de trajectoire,
+	 *  afin de soulager le temps de calcule du Thread qui gère la boucle de jeu*/
 	protected Thread greyCell;
+
+	/**Position de ce personnage et du joueur*/
 	protected Rectangle ownPosition, player1;
+
+	/**Le dernier vecteur de déplacement différent du vecteur nulle est enregistré*/
 	protected Coordinates lastVector;
+
+	/**La carte de jeu*/
 	protected IMap map;
+
+	/**True si le personnage n'a pas fini son cycle de calcule dans la recherche d'un chemin (dans ce cas pas de déplacement,
+	 * false si calcul terminé.
+	 */
 	protected boolean thinking;
-	
+
+	//==============================    Constructeur   ========================================
+
 	public IA_transfertStrategy_std(Rectangle ownPosition, Rectangle player1, IMap map) {
 		super();
 	}
@@ -23,6 +42,8 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	public IA_transfertStrategy_std() {
 		super();
 	}
+
+	//=========================================================================================
 
 	@Override
 	public void setVector(Coordinates vector){
@@ -57,6 +78,9 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		return null;
 	}
 
+	/**
+	 * <p>Réveille le Thread de calcule, mis en pause après avoir trouvé un chemin ou un vecteur de déplacement</p>
+	 * */
 	@Override
 	public void think() {
 
@@ -66,18 +90,24 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		}
 	}
 
+	/**
+	 * <p>Construit les instructions du Thread greyCell.</p>
+	 */
 	private void buildThinkPattern() {
 		greyCell= new Thread(()->{
 			thinking= true;
 			while(true){
-				move();
+				search();
 				pause();
 			}
 		});
 		
 	}
 
-	private void move(){
+	/**
+	 * <p></p>
+	 */
+	private void search(){
 
 		if (isPlayerNext(300)){
 

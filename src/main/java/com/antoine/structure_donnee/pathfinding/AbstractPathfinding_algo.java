@@ -16,13 +16,13 @@ import java.util.Stack;
 public abstract class AbstractPathfinding_algo {
 
 
-    /**
-     * <p>Le path en coordonnée</p>
-     */
+    /**Le path en coordonnée*/
     protected Stack<Coordinates> path;
 
+    /**Coordonnées de départ de la recherche*/
     protected Coordinates start;
 
+    /**La surface comprise dans la recherche, évite de calculée dans toute la carte*/
     protected Rectangle surface;
 
 
@@ -36,11 +36,26 @@ public abstract class AbstractPathfinding_algo {
 
     //================================================
 
-
+    /**
+     * <p>Doit initialisé les structures de donnée pour l'algorithme.</p>
+     */
     protected abstract void createDataStruct();
 
+    /**
+     * <p>Recherche le meilleur chemin pour un déplacement.</p>
+     * @param mover la surace et coordonnées de l'entité qui doit se déplacer.
+     * @param goal coordonnées du but à atteindre.
+     * @param map la carte.
+     * @return une pile contenant une suite de coordonnées à atteindre.
+     */
     public abstract Stack<Coordinates> createPath(Rectangle mover, Coordinates goal, IMap map);
 
+    /**
+     * <p>Initialise la sous-surface dans la carte pour traiter la recherche.</p>
+     * @param mover entité qui se déplace.
+     * @param goal coordonnées du but.
+     * @param map la carte.
+     */
     protected void createRectangle(Rectangle mover, Coordinates goal, IMap map) {
 
         //Reset les données, si précédent appel

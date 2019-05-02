@@ -2,27 +2,35 @@ package com.antoine.son;
 
 import java.io.IOException;
 
+/**
+ * <b>Classe de lecteur de musique.</b>
+ * Ne lit que les fichiers .wav
+ *
+ * @author Antoine
+ */
 public class MusicPlayer extends SoundMaker {
 
-    protected Thread thread;
+    /**Etat pour savoir si la musique est entrain d'être utilisée ou si en pause*/
     boolean playing;
-    boolean levelRunning;
+
 
     /**
-     * <p>Initialise les états</p>
+     * <p>Initialise le Thread et les états</p>
      *
-     * @param musicPath du fichier .wav
+     * @param musicPath le path du fichier .wav
      * @param volume
      */
     public MusicPlayer(String musicPath, float volume) {
         super(musicPath, volume);
 
-        thread = implementRun();
-        thread.setDaemon(true);
         playing=true;
-        levelRunning= true;
+        using= true;
     }
 
+    /**
+     * <p>Teste si le Thread doit se mettre en pause.</p>
+     * @see #pause()
+     */
     protected void testSleep() {
         synchronized (this) {
             if (!playing) {
@@ -34,6 +42,10 @@ public class MusicPlayer extends SoundMaker {
         }
     }
 
+    /**
+     * <p>Implémente les actions du Thread.</p>
+     * @return un Thread implémenté.
+     */
     @Override
     protected Thread implementRun(){
         return new Thread(()-> {
@@ -41,7 +53,7 @@ public class MusicPlayer extends SoundMaker {
                 int totalRead = 0;
                 byte bytes[] = new byte[1042];
 
-                while ((totalRead = ais.read(bytes, 0, bytes.length)) != -1 && levelRunning) {
+                while ((totalRead = ais.read(bytes, 0, bytes.length)) != -1 && using) {
 
                     testSleep();
                     bytes = adjustVolume(bytes);
@@ -64,17 +76,33 @@ public class MusicPlayer extends SoundMaker {
 
     /**
      * <p>arrêt définitif.</p>
+     * Le Thread sort de la boucle et meurt.
      */
-    public void arret(){
-        levelRunning= false;
+    public void arret()
+    {
+        using= false;
+
+        synchronized(this){
+            playing= false;
+        }
     }
 
+    /**
+     * <p>Redémarre le Thread.</p>
+     * @see SoundMaker#play()
+     */
     @Override
     public void play(){
         super.play();
         playing = true;
     }
 
+    /**
+     * <p>Ajuste le volume de la musique.</p>
+     * les bytes sont multipliés par le coefficient volume.
+     * @param audioSamples array de byte en train d'être lus.
+     * @return une copie dont le volume est ajusté.
+     */
     protected byte[] adjustVolume(byte[] audioSamples) {
         byte[] array = new byte[audioSamples.length];
 

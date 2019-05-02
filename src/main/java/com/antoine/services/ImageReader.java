@@ -6,14 +6,14 @@ import java.io.IOException;
 
 
 /**
- * <p>Classe de service pour créer des BufferedImage.</p>
+ * <p>Classe de service pour créer des BufferedImage à partir de son path.</p>
  *
  * @author antoine
  */
 public class ImageReader {
 
     /**
-     * Importe le fichier sous forme de BufferedImage.
+     * <p>Importe le fichier sous forme de BufferedImage.</p>
      * @param imageUrl url du fichier
      * @return une BufferedImage
      * @throws RuntimeException si erreur à la lecture du fichier
