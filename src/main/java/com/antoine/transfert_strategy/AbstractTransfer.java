@@ -23,6 +23,14 @@ public abstract class AbstractTransfer {
 	}
 
 	/**
+	 * <p>Donne une valeur nul au vecteur de déplacement.</p>
+	 */
+	public void released() {
+		xDirection= 0;
+		yDirection= 0;
+	}
+
+	/**
 	 * <p>Enregistre la translation.</p>
 	 * @param position la position du personnage.
 	 * @param map la carte, utilisé pour collision avec zone inaccessible.

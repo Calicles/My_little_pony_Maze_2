@@ -105,7 +105,7 @@
 		</bean>
 		<bean id="levelFlutter" class="com.antoine.modele.level.Level2">
 			<parameters nbr="3">
-				<parameter id="levelFlutterEndImage" value="/ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<parameter id="levelFlutterEndImage" value="/ressources/images/fin/transition6.png" method="setEndImageUrl" />
 				<injection id="levelFlutter_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">
 						<paramInjection id="levelFlutter_player_animationFilePath" value="/ressources/setPonyAnimation/setFlutter.txt" method="setAnimation"/>
@@ -137,7 +137,7 @@
 		</bean>
 		<bean id="levelPinky" class="com.antoine.modele.level.Level3">
 			<parameters nbr="3">
-				<parameter id="levelPinkyEndImage" value="/ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<parameter id="levelPinkyEndImage" value="/ressources/images/fin/transition5.png" method="setEndImageUrl" />
 				<injection id="levelPinky_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">
 						<paramInjection id="levelPinky_player_animationFilePath" value="/ressources/setPonyAnimation/setPinky.txt" method="setAnimation"/>
@@ -169,7 +169,7 @@
 		</bean>
 		<bean id="levelTwilight" class="com.antoine.modele.level.Level4">
 			<parameters nbr="5">
-				<parameter id="levelTwilightEndImage" value="/ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<parameter id="levelTwilightEndImage" value="/ressources/images/fin/final/fin0.png" method="setEndImageUrl" />
 				<parameter id="levelTwilightLoseImage" value="/ressources/images/fin/discord3.png" method="setLoseImagePath"/>
 				<injection id="levelTwilight_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">

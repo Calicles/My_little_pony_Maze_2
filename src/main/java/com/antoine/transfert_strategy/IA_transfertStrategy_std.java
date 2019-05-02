@@ -1,5 +1,6 @@
 package com.antoine.transfert_strategy;
 
+import com.antoine.contracts.IEntity;
 import com.antoine.contracts.IMap;
 import com.antoine.contracts.ITransfert_strategy;
 import com.antoine.geometry.Coordinates;
@@ -105,7 +106,10 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 	}
 
 	/**
-	 * <p></p>
+	 * <p>Calcul la meilleure direction à prendre.</p>
+	 * Donne une valeur au vecteur de déplacement xDirection et yDirection
+	 * et ajuste les valeurs selon la présence du joueur dans un périmètre (poursuite)
+	 * pu la présence de mur.
 	 */
 	private void search(){
 
@@ -120,13 +124,24 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		}
 		this.adaptVectors(ownPosition, map);
 	}
-	
+
+	/**
+	 * <p>Change la direction du personnage.</p>
+	 * Si le vecteur de déplacement n'est pas le vecteur nul on garde le cap,
+	 * sinon on recalcul une autre direction selon le dernier vecteur
+	 * pour ne pas partir dans le sens inverse et faire les mêmes aller-retours
+	 * inféfiniment.
+	 */
 	private void findWay() {
 		if(xDirection == 0 && yDirection == 0) {
 			checkLastVectors();
 		}
 	}
 
+	/**
+	 * <p>Regarde le dernier vecteur de déplcemet pour en calculer un nouveau.</p>
+	 * @see #findWay()
+	 */
 	protected void checkLastVectors() {
 
 		Tile tile;
@@ -159,6 +174,11 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	}
 
+	/**
+	 * <p>Prend en chasse le joueur.</p>
+	 * Calcule une direction à prendre selon la position du joueur vis à vis du personnage.
+	 * Calcul les collisions avec mur et en cas de vecteur nul (après ajustage) définit une autre direction.
+	 */
 	protected void manHuntPlayer() {
 
 		Coordinates bossMidle= Rectangle.findMiddleCoor(ownPosition);
@@ -220,10 +240,19 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 
 	}
 
+	/**
+	 * <p>Teste si le joueur est dans un périmètre donné.</p>
+	 * @param radius le rayon à tester.
+	 * @return true si la distance entre les personnage est plus petite que le rayon,
+	 * false sinon.
+	 */
 	protected boolean isPlayerNext(int radius){
 		return Rectangle.isNext(ownPosition, player1, radius);
 	}
 
+	/**
+	 * <p>Place en état de pause le Thread de calcule de trajectoire une fois un vecteur de déplacement trouvé.</p>
+	 */
 	private void pause() {
 		try {
 			synchronized(this) {
@@ -233,12 +262,9 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		}catch(InterruptedException ignored) {}
 	}
 
-	@Override
-	public void released() {
-		xDirection= 0;
-		yDirection= 0;
-	}
-
+	/**
+	 * <p>Donne une valeur au vecteur de déplacement selon l'une des quatres directions cardinales.</p>
+	 */
 	@Override
 	public void movesLeft() {
 
@@ -246,6 +272,9 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		yDirection = 0;
 	}
 
+	/**
+	 * @see #movesLeft()
+	 */
 	@Override
 	public void movesRight() {
 
@@ -253,6 +282,9 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		yDirection = 0;
 	}
 
+	/**
+	 * @see #movesLeft()
+	 */
 	@Override
 	public void movesUp() {
 
@@ -260,11 +292,15 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		xDirection = 0;
 	}
 
+	/**
+	 * @see #movesLeft()
+	 */
 	@Override
 	public void movesDown() {
 		yDirection= vector.getY();
 		xDirection= 0;
 	}
+
 
 	@Override
 	public Coordinates memorizeMoves(Rectangle position, IMap map) {
@@ -272,6 +308,12 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 		return null;
 	}
 
+	/**
+	 * <p>Vérifie si la recherche de direction est terminée.</p>
+	 * Enregistre le vecteur calculé (si non nul) dans lastVector.
+	 *
+	 * @return le vecteur calculé ssi l'opération est terminée, le vecteur nul sinon.
+	 */
 	public Coordinates memorizeMoves() {
 		if(!thinking) {
 			// finished thinking
@@ -284,6 +326,10 @@ public class IA_transfertStrategy_std extends AbstractTransfer implements ITrans
 			return new Coordinates(0, 0);
 	}
 
+	/**
+	 * <p>Test si le vecteur de déplacement en cours de calcul est le vecteur nul.</p>
+	 * @return true si les valeurs de xDirection et yDirection sont le vecteur nul, false sinon
+	 */
 	protected boolean directionIsNull(){
 		return xDirection == 0 && yDirection == 0;
 	}

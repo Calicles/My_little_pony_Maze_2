@@ -14,20 +14,31 @@ import com.antoine.vue.listeners.SliderChangeMusicListener;
 import com.antoine.vue.listeners.SliderChangeSoundListener;
 import com.antoine.vue.panel.*;
 
+/**
+ * <b>Classe de fenêtre graphique.</b>
+ *
+ * @author Antoine
+ */
 public class Frame extends JFrame {
 
+	/**Le panel d'affichage des niveaux du jeu*/
 	private SpecialPanel panel;
 	
 	public Frame() {
 		init();
 	}
 
+	/**
+	 * <p>Initialise l'ensemble des composants de la fenêtre.</p>
+	 */
 	private void init(){
 
 		Border lowered, raised, bevel;
 		lowered = BorderFactory.createLoweredBevelBorder();
 		raised = BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder());
 		bevel = BorderFactory.createRaisedBevelBorder();
+
+		Container container = this.getContentPane();
 
 		Presentateur presentateur= new LevelManager();
 
@@ -86,23 +97,28 @@ public class Frame extends JFrame {
 
 		panel= new SpecialPanel(presentateur);
 		panel.setBorder(lowered);
-		this.setLayout(new BorderLayout());
-		this.add(barre, BorderLayout.NORTH);
-		this.add(panel, BorderLayout.CENTER);
-		this.add(panelBas, BorderLayout.SOUTH);
+		container.setLayout(new BorderLayout());
+		container.add(barre, BorderLayout.NORTH);
+		container.add(panel, BorderLayout.CENTER);
+		container.add(panelBas, BorderLayout.SOUTH);
 
-		this.add(innerGauche, BorderLayout.WEST);
-		this.add(innerDroit, BorderLayout.EAST);
+		container.add(innerGauche, BorderLayout.WEST);
+		container.add(innerDroit, BorderLayout.EAST);
 
 		this.addKeyListener(new InternImageListener());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
-		this.setTitle("My Little Pony");
+		this.setTitle("My Little Pony - Le Labyrinthe de Discord -");
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
-	
+
+	/**
+	 * <b>Classe de listener interne.</b>
+	 * Définit les actions selon les touches préssées par le joueur.
+	 * Les quatres touches directionnelles.
+	 */
 	private class InternImageListener implements KeyListener {
 
 		@Override
@@ -118,21 +134,40 @@ public class Frame extends JFrame {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			if ((e.getKeyCode() == KeyEvent.VK_RIGHT) || (e.getKeyCode() == KeyEvent.VK_LEFT)||
-					(e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_DOWN))
+			if ((isKeyRight(e) || isKeyLeft(e)||
+					isKeyUp(e) || isKeyDown(e)))
 				panel.playerMovesReleased();
 		}
 
 		private void moves(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+			if (isKeyRight(e))
 				panel.playerMovesRight();
-			else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+
+			else if (isKeyLeft(e)) {
 				panel.playerMovesLeft();
-			} else if (e.getKeyCode() == KeyEvent.VK_UP)
+
+			} else if (isKeyUp(e))
 				panel.playerMovesUp();
-			else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+
+			else if (isKeyDown(e))
 				panel.playerMovesDown();
 
+		}
+
+		private boolean isKeyLeft(KeyEvent e) {
+			return e.getKeyCode() == KeyEvent.VK_LEFT;
+		}
+
+		private boolean isKeyRight(KeyEvent e) {
+			return e.getKeyCode() == KeyEvent.VK_RIGHT;
+		}
+
+		private boolean isKeyUp(KeyEvent e) {
+			return e.getKeyCode() == KeyEvent.VK_UP;
+		}
+
+		private boolean isKeyDown(KeyEvent e) {
+			return e.getKeyCode() == KeyEvent.VK_DOWN;
 		}
 		
 	}
