@@ -8,8 +8,10 @@ import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.DoubleBoxes;
 import com.antoine.geometry.Rectangle;
+import com.antoine.services.ImageReader;
 import com.antoine.structure_donnee.LevelState;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Stack;
 
@@ -48,6 +50,9 @@ public class Level4 extends Level3 implements ILevel {
     /**image affichée lorsque le joueur est attrapé*/
     private String loseImagePath;
 
+    /**Path d'image de fin de jeu.*/
+    private int numberEndAnimationImages;
+
 
     public Level4(){
         super();
@@ -82,8 +87,15 @@ public class Level4 extends Level3 implements ILevel {
         event = lve;
     }
 
-    public void setLoseImagePath(String loseImagePath){
+    public void setLoseImagePath(String loseImagePath)
+    {
         this.loseImagePath= loseImagePath;
+
+    }
+
+    public void setNumberEndAnimationImages(String numberEndAnimationImages)
+    {
+        this.numberEndAnimationImages = Integer.parseUnsignedInt(numberEndAnimationImages);
     }
 
     /**
@@ -139,6 +151,8 @@ public class Level4 extends Level3 implements ILevel {
             }
             //On place l'état du jeu à fini dans l'event
             event.setBooleanTable(LevelState.get(id), false);
+
+            end();
         });
     }
 
@@ -329,6 +343,32 @@ public class Level4 extends Level3 implements ILevel {
         return false;
     }
 
+    /**
+     * <p>Active l'animation de fin.</p>
+     */
+    private void end()
+    {
+        BufferedImage animation;        System.out.println("in   " + numberEndAnimationImages);
+        String[] path = endImageUrl.split("0");
+
+        sleep(2000);
+
+        for (int i = numberEndAnimationImages; i > 0; i--)
+        {
+            System.out.println("in   " + path[0]+i+path[1]);
+            endImageUrl = path[0] + i + path[1];
+
+            fireUpdate();
+
+            sleep(50);
+        }
+
+        endImageUrl = path[0] + path[1];
+
+        fireUpdate();
+
+        sleep(5000);
+    }
     @Override
     public void playerMovesLeft() {
         player.movesLeft();
@@ -349,12 +389,20 @@ public class Level4 extends Level3 implements ILevel {
         player.movesDown();
     }
 
+    /**
+     * <p>Préviens les écoutants d'un changement.</p>
+     */
     private void fireUpdate(){
         for (LevelListener l:listeners){
             l.update(event);
         }
     }
 
+    /**
+     * <p>Teste l'état du jeu (enc ours ou terminé) et ajoute l'état de joueur attrapé.</p>
+     * @see AbstractLevel#isRunning()
+     * @return true si le joueur est entrain de jouer, false si fin de niveau ou joueur attrapé.
+     */
     @Override
     public boolean isRunning(){
         if(running && over){
