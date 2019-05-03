@@ -15,6 +15,8 @@ public abstract class AbstractImage {
 	 */
 	protected BufferedImage image;
 
+	protected AbstractImage(){}
+
 	public void setImage(String imageUrl) {
 		image= ImageReader.lireImage(imageUrl);
 	}

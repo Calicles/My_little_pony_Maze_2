@@ -33,7 +33,9 @@ public class HeuristicBestDistance implements IHeuristic<Integer> {
     }
 
     /**
-     * <p>Utilisé pour initialiser le comparateur de la structure de donnée de l'algorithme.</p>
+     * <p>Utilisé pour initialiser le comparateur de la structure de donnée de l'algorithme (la liste des éléments non
+     *  encore examinée, mais suceptible de l'être).</p>
+     *  Le fait d'avoir une structure de donnée triée accélère significativement l'algorithme.
      * @see IHeuristic#getComparator()
      * @return la plus petite distance
      */

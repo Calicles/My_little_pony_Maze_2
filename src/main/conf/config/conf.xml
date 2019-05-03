@@ -105,7 +105,7 @@
 		</bean>
 		<bean id="levelFlutter" class="com.antoine.modele.level.Level2">
 			<parameters nbr="3">
-				<parameter id="levelFlutterEndImage" value="/ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<parameter id="levelFlutterEndImage" value="/ressources/images/fin/transition6.png" method="setEndImageUrl" />
 				<injection id="levelFlutter_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">
 						<paramInjection id="levelFlutter_player_animationFilePath" value="/ressources/setPonyAnimation/setFlutter.txt" method="setAnimation"/>
@@ -137,7 +137,7 @@
 		</bean>
 		<bean id="levelPinky" class="com.antoine.modele.level.Level3">
 			<parameters nbr="3">
-				<parameter id="levelPinkyEndImage" value="/ressources/images/fin/apple.png" method="setEndImageUrl" />
+				<parameter id="levelPinkyEndImage" value="/ressources/images/fin/transition5.png" method="setEndImageUrl" />
 				<injection id="levelPinky_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">
 						<paramInjection id="levelPinky_player_animationFilePath" value="/ressources/setPonyAnimation/setPinky.txt" method="setAnimation"/>
@@ -168,16 +168,17 @@
 			</parameters>
 		</bean>
 		<bean id="levelTwilight" class="com.antoine.modele.level.Level4">
-			<parameters nbr="5">
-				<parameter id="levelTwilightEndImage" value="/ressources/images/fin/apple.png" method="setEndImageUrl" />
+			<parameters nbr="6">
+				<parameter id="levelTwilightEndImage" value="/ressources/images/fin/final/fin0.png" method="setEndImageUrl" />
 				<parameter id="levelTwilightLoseImage" value="/ressources/images/fin/discord3.png" method="setLoseImagePath"/>
+				<parameter id="levelTwilightNumberEndAnimationImages" method="setNumberEndAnimationImages" value="32"/>
 				<injection id="levelTwilight_player" class="com.antoine.entity.Player" method="setPlayer">
 					<parameters nbr="3">
 						<paramInjection id="levelTwilight_player_animationFilePath" value="/ressources/setPonyAnimation/setTwilight.txt" method="setAnimation"/>
 						<injection id="levelTwilight_player_position" class="com.antoine.geometry.Coordinates" method="setPosition">
 							<parameters nbr="2">
-								<paramInjection id="levelTwilight_player_positionX" value="315" method="setX"/>
-								<paramInjection id="levelTwilight_player_positionY" value="850" method="setY"/>
+								<paramInjection id="levelTwilight_player_positionX" value="880" method="setX"/>
+								<paramInjection id="levelTwilight_player_positionY" value="300" method="setY"/>
 							</parameters>
 						</injection>
 						<injection id="levelTwilight_player_deplacement" class="com.antoine.transfert_strategy.Player_transferStrategy_std" method="setDeplacement">
@@ -203,7 +204,7 @@
 						<paramInjection id="levelTwilight_boss_animationFilePath" value="/ressources/setPonyAnimation/setDiscord.txt" method="setAnimation"/>
 						<injection id="levelTwilight_boss_position" class="com.antoine.geometry.Coordinates" method="setPosition">
 							<parameters nbr="2">
-								<paramInjection id="levelTwilight_boss_positionX" value="70" method="setX"/>
+								<paramInjection id="levelTwilight_boss_positionX" value="110" method="setX"/>
 								<paramInjection id="levelTwilight_boss_positionY" value="-150" method="setY"/>
 							</parameters>
 						</injection>
@@ -211,8 +212,8 @@
 							<parameters nbr="1">
 								<injection id="levelTwilight_boss_deplacement_vector" class="com.antoine.geometry.Coordinates" method="setVector">
 									<parameters nbr="2">
-										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementX" value="2" method="setX"/>
-										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementY" value="2" method="setY"/>
+										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementX" value="3" method="setX"/>
+										<paramInjection id="levelTwilight_boss_deplacement_vector_deplacementY" value="3" method="setY"/>
 									</parameters>
 								</injection>
 							</parameters>

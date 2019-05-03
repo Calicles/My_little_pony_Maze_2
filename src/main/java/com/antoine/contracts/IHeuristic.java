@@ -7,7 +7,9 @@ import java.util.Comparator;
 
 /**
  * <b>Interface une heuristique de recherche</b>
- * @param <T> le type de retour utilisé dans les calcules
+ * @param <T> le type de retour utilisé dans les calcules.
+ *
+ * @author Antoine
  */
 public interface IHeuristic<T> {
 

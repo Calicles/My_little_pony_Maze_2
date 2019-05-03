@@ -15,14 +15,10 @@ import com.antoine.services.Character_reader;
  */
 public abstract class AbstractCharacter extends AbstractImage {
 
-	/**
-	 * contient les sprites par clé de direction.
-	 */
+	/**contient les sprites par clé de direction.*/
 	protected HashMap<Integer,BufferedImage[]> animation;
 
-	/**
-	 * coordonnées du personnage
-	 */
+	/**coordonnées du personnage*/
 	protected Rectangle position;
 
 	/**
@@ -50,23 +46,21 @@ public abstract class AbstractCharacter extends AbstractImage {
 	 */
 	protected int animIndex;
 
-	/**
-	 * Sert à ralentir l'annimation.
-	 */
+	/**Sert à ralentir l'annimation*/
 	protected int tempo;
 
 
+
+	protected AbstractCharacter(){super();}
+
 	/**
-	 * Doit être appelé après setAnimation()
-	 * lors de l'injection
+	 * <p>Doit être appelé après setAnimation()
+	 * lors de l'injection</p>
+	 * Les dimensions du rectangle sont fourni par les dimensions de l'image de la superclasse.
 	 * @param position les coordonnées de départ du personnage
 	 */
 	public void setPosition(Coordinates position) {
 		this.position= new Rectangle(position, position.getX() + getWidth(), position.getY() + getHeight());
-	}
-
-	public void translateTo(Coordinates newPosition){
-		position.setCoordinates(newPosition);
 	}
 
 	public void setAnimation(String animationSet){
@@ -93,9 +87,13 @@ public abstract class AbstractCharacter extends AbstractImage {
 	}
 
 
+	public void translateTo(Coordinates newPosition) {
+		position.setCoordinates(newPosition);
+	}
+
 	/**
 	 * Change la valeur de la clé de animation selon
-	 * la valeur de
+	 * la valeur du vecteur de déplacement.
 	 * @param vector le vecteur de déplacement
 	 */
 	protected void changeSprite(Coordinates vector) {
@@ -115,15 +113,14 @@ public abstract class AbstractCharacter extends AbstractImage {
 			}
 			updateIndex();
 			image = animation.get(direction)[animIndex];
-
 		}
 	}
 
-
 	/**
-	 * change le sprite séléctionné
+	 * <p>change le sprite séléctionné
 	 * pour simuler l'animation
-	 * lors de l'affichage
+	 * lors de l'affichage</p>
+	 * Utilise le coefficient tempo pour ralentir l'animation.
 	 */
 	public void updateIndex() {
 		tempo++;

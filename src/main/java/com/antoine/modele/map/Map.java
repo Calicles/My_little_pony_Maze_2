@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * <b>Représente une carte standard d'un niveau.</b>
+ */
 public class Map extends AbstractTileMap implements IMap {
 	
 

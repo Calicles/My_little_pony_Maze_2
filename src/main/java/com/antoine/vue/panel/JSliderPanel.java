@@ -1,13 +1,17 @@
 package com.antoine.vue.panel;
 
-import com.antoine.manager.musique.Jukebox;
-
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
 
+/**
+ * <b>Classe de slider customisé avec une image.</b>
+ *
+ * @author Antoine
+ */
 public  class JSliderPanel extends JSlider {
 
+    /**L'image personnalisée pour le slide*/
     Icon knobImage;
 
     public JSliderPanel(String iconPath, int minValue, int maxValue, int value, boolean tickPaintable){
@@ -26,6 +30,9 @@ public  class JSliderPanel extends JSlider {
         super.setFocusable(false);
     }
 
+    /**
+     * @see JSliderPanel#getPreferredSize()
+     */
     @Override
     public Dimension getPreferredSize(){
 
@@ -33,18 +40,30 @@ public  class JSliderPanel extends JSlider {
     }
 
 
-
+    /**
+     * <b>Classe interne au slider personnaliée pour gérer l'UI qui affiche le slide.</b>
+     *
+     * @author Antoine
+     */
     private class ThumbIconSliderUI extends BasicSliderUI {
 
-
-        public ThumbIconSliderUI( JSlider aSlider ) {
-
+        /**
+         * <p>Fournit le slider.</p>
+         * @param aSlider le slider.
+         */
+        public ThumbIconSliderUI( JSlider aSlider )
+        {
             super( aSlider );
-
         }
 
+        /**
+         * <p>Peint l'image personnaliée sur le slider.</p>
+         * @see BasicSliderUI#paintThumb(Graphics)
+         * @param g graphics qui produit l'affichage.
+         */
         @Override
-        public void paintThumb(Graphics g)  {
+        public void paintThumb(Graphics g)
+        {
             Rectangle knobRect = thumbRect;
             g.translate(knobRect.x, knobRect.y);
 
@@ -53,9 +72,14 @@ public  class JSliderPanel extends JSlider {
             g.translate(-knobRect.x, -knobRect.y);
         }
 
+        /**
+         * <p>Adapte la taille du slider à l'image personnalisée.</p>
+         * @see BasicSliderUI#getThumbSize()
+         * @return les dimensions du slider adaptée à l'image personnalisée.
+         */
         @Override
-        protected Dimension getThumbSize(){
-
+        protected Dimension getThumbSize()
+        {
             return new Dimension(knobImage.getIconWidth(), knobImage.getIconHeight());
         }
 

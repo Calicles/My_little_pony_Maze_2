@@ -1,4 +1,4 @@
-package com.antoine.jeu;
+package com.antoine.modele;
 
 import com.antoine.contracts.*;
 import com.antoine.events.LevelChangeEvent;
@@ -37,7 +37,9 @@ public class Game implements IJeu {
     /**L'évènement qui prévient les listeners d'un chagement d'état**/
     private LevelChangeEvent event;
 
-
+    /**
+     * <p>Initialise les premiers niveaux.</p>
+     */
     public Game()  {
         String configPath= String.valueOf(getClass().getResource("/config/conf.xml"));
 

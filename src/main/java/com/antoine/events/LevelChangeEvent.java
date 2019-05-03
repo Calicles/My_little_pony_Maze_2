@@ -16,7 +16,7 @@ public class LevelChangeEvent {
     /**Entier dont les bits sont utilisées en sémantique booléenne**/
     private int booleanTable = 0;
 
-    /**Nombre de niveaux dans le jeu**/
+    /**Nombre de niveaux contenu dans le jeu**/
     private int numberOfLevel;
 
     /**Nombre de niveau terminé par le joueur**/
