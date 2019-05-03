@@ -8,6 +8,7 @@ import com.antoine.events.LevelChangeEvent;
 import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.DoubleBoxes;
 import com.antoine.geometry.Rectangle;
+import com.antoine.manager.musique.Jukebox;
 import com.antoine.services.ImageReader;
 import com.antoine.structure_donnee.LevelState;
 
@@ -348,14 +349,12 @@ public class Level4 extends Level3 implements ILevel {
      */
     private void end()
     {
-        BufferedImage animation;        System.out.println("in   " + numberEndAnimationImages);
         String[] path = endImageUrl.split("0");
 
         sleep(2000);
 
         for (int i = numberEndAnimationImages; i > 0; i--)
         {
-            System.out.println("in   " + path[0]+i+path[1]);
             endImageUrl = path[0] + i + path[1];
 
             fireUpdate();
@@ -366,8 +365,6 @@ public class Level4 extends Level3 implements ILevel {
         endImageUrl = path[0] + path[1];
 
         fireUpdate();
-
-        sleep(5000);
     }
     @Override
     public void playerMovesLeft() {
