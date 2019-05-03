@@ -11,7 +11,7 @@ import com.antoine.geometry.Tile;
 import java.util.*;
 
 /**
- * <b>Implémente l'algorithme A*,
+ * <b>Implémente l'algorithme A* (trouve un chemin plus rapidement que Dijkstra, mais pas forcément le plus court),
  * avec en complément placement du path en fonction de la surface de l'entité qui se déplace</b>
  *
  * @param <T> Le type utilisé pour le calcule de l'heuristique
@@ -20,10 +20,10 @@ import java.util.*;
  */
 public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfinding {
 
-    /**Sous matrice découpée dans la map*/
+    /**Sous-matrice découpée dans la map*/
     private Node_heuristic<Tile, T>[][] Matrix;
 
-    /**Liste des tuiles selectionnées pour examen*/
+    /**Liste des tuiles selectionnées pour examen dans le calcul du meilleur chemin*/
     private TreeSet<Node_heuristic<Tile, T>> openList;
 
     /**listes des tuiles examinées*/
@@ -66,12 +66,19 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
         return (Stack<Coordinates>) path.clone();
     }
 
-
+    /**
+     * @see IPathfinding#getAdjacentNode()
+     * @return une tuile adjacente à celle en cours d'examen.
+     */
     @Override
     public Node_heuristic getAdjacentNode() {
         return this.adjacentNode;
     }
 
+    /**
+     * @see IPathfinding#getGoalNode()
+     * @return la tuile contenant les coordonnées du but à atteindre.
+     */
     @Override
     public Node_heuristic getGoalNode() {
         return this.goal;
@@ -180,7 +187,7 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
             openList.remove(currentNode);
             closedList.add(currentNode);
         }
-        //++++++++++++++++++++++++++++++++++++++++  END   +++++++++++++++++++++++++++++++++++
+        //++++++++++++++++++++++++++++++++++++++++  ALGORITHM'S END   +++++++++++++++++++++++++++++++++++
 
         //If there, no result
         return null;
@@ -201,6 +208,14 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
         }
     }
 
+    /**
+     * <p>Calcule si une tuile est dans une certaine distance du but.</p>
+     * Ce calcule sert à éviter une incapacité de trouver un chemin si le personnage est plus grand qu'une tuile.
+     * En effet l'alorithme empêcherait la tuile contenant le but dêtre trouvée si elle se situe près d'un mur.
+     * @param moverWidthInTile longueur du personnage traduite en tuile (si sa longueur fait deux tuiles...).
+     * @param moverHeightInTile hauteur du personnage en tuile.
+     * @return vrai si la tuile actuelle est proche du but(selon les dimensions du personnages en tuils), false sinon.
+     */
     private boolean goalIsInProximalDist(int moverWidthInTile, int moverHeightInTile) {
         if (isInSameX_line(currentNode.getItem().toCoordinates(), goal.getItem().toCoordinates())) {
             int square = Pythagore.calculDistanceInSquarre(currentNode.getItem().toCoordinates(), goal.getItem().toCoordinates());
@@ -221,6 +236,16 @@ public class A_star_2<T> extends AbstractPathfinding_algo implements IPathfindin
         return false;
     }
 
+    /**
+     * <p>Calcule si les tuiles adjacentes aux tuiles (elles-mêmes adjacentes à celles examinée) sont proches
+     * d'une tuile solide.</p>
+     * @param row ligne dans la matrice de la tuile en cours d'examen.
+     * @param col colonne de la tuile en cours d'exament.
+     * @param moverWidthInTile longueur, en tuile, du personnage.
+     * @param moverHeightInTile hauteur, en tuile, du personnage.
+     * @return true si une tuile solide est à une distance inférieur de la longueur, en tuile du personnage
+     *  ou de sa hauteur, false sinon.
+     */
     private boolean isRestrictTileArround(int row, int col, int moverWidthInTile, int moverHeightInTile) {
 
         for (int i = -moverHeightInTile; i <= moverHeightInTile; i++)

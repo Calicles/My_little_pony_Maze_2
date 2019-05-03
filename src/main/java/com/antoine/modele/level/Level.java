@@ -9,8 +9,16 @@ import com.antoine.geometry.Coordinates;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * <b>Représente un niveau de abse.</b>
+ * Le déroulement de ce type de niveau s'appui sur un Thread externe pour faire tourner la boucle logique de jeu.
+ * La taille de la carte ne doit pas dépassé celle de l'écran.
+ *
+ * @author Antoine
+ */
 public class Level extends AbstractLevel implements ILevel {
-	
+
+	/**Si le niveau est celui en cours*/
 	private boolean selected;
 
 	public Level(){

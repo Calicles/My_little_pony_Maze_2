@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="labyrinthe:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/labyrinthe_jar</output-path>
+    <output-path>$USER_HOME$/cnam/NFA019/Projet/executable</output-path>
     <root id="archive" name="labyrinthe.jar">
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />

@@ -10,7 +10,10 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 /**
- * <b>Classe de service, gère les lectures de fichiers</b>
+ * <b>Classe de service, gère les lectures des fichiers pour initialiser une carte d'un niveau.</b>
+ * Une carte dans un fichier est sous une forme de Matrice avec un header donnant le nombre de lignes
+ * et le nombre de colonnes.
+ *
  * @author antoine
  */
 public class Map_reader {
@@ -19,7 +22,7 @@ public class Map_reader {
 	/**
 	 * <p>lit la matrice du fichier .txt</p>
 	 * @param fileUrl path du fichier
-	 * @return la matrice sous forme d'int
+	 * @return la matrice sous forme d'int.
 	 */
 	public static int[][] readMap(String fileUrl){
 		int[][] map= null;
@@ -48,8 +51,9 @@ public class Map_reader {
 
 	/**
 	 * <p>lit l'association numéro/image à partir du fichier .txt</p>
-	 * @param fileUrl path
-	 * @return une Map de l'association
+	 * Retourne le "tileSet, association nombre entier / image.
+	 * @param fileUrl path du fichier contenant l'association.
+	 * @return un tableau associatif de l'association
 	 */
 	public static HashMap<Integer, BufferedImage> readTileSet(String fileUrl){
 		HashMap<Integer, BufferedImage> tileSet= new HashMap<>();
@@ -76,6 +80,11 @@ public class Map_reader {
 		return tileSet;
 	}
 
+	/**
+	 * <p>Créer un objet BufferedReader.</p>
+	 * @param path le path du fichier à lire.
+	 * @return le Reader prêt à l'emploi.
+	 */
 	private static BufferedReader createReader(String path){
 		return new BufferedReader(new InputStreamReader(Map_reader.class.getResourceAsStream(path)));
 	}

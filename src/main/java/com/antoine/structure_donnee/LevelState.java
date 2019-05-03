@@ -1,5 +1,11 @@
 package com.antoine.structure_donnee;
 
+/**
+ * <b>Enumération utilisée dans les évènements d'un niveau de jeu.</b>
+ * @see com.antoine.events.LevelChangeEvent
+ *
+ * @author Antoine
+ */
 public enum LevelState {
 
     APPLE_RUNNING,

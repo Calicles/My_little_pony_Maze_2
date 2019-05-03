@@ -5,19 +5,45 @@ import com.antoine.geometry.Coordinates;
 import com.antoine.geometry.Rectangle;
 import com.antoine.geometry.Tile;
 
+/**
+ * <b>Défini les règle de gestion des déplacements de personnage (joueur ou non joueur)</b>
+ * Utilisé dans le pattern Strategy.
+ */
 public abstract class AbstractTransfer {
 
+	/**Le vecteur de déplacement possible au personnage*/
 	protected Coordinates vector;
+
+	/**Le vecteur dont le joueur va être translaté, après réajustage de calcule de collision*/
 	protected int xDirection, yDirection;
 
 
 	public void setVector(Coordinates vector){
 		this.vector= vector;
 	}
-	
+
+	/**
+	 * <p>Donne une valeur nul au vecteur de déplacement.</p>
+	 */
+	public void released() {
+		xDirection= 0;
+		yDirection= 0;
+	}
+
+	/**
+	 * <p>Enregistre la translation.</p>
+	 * @param position la position du personnage.
+	 * @param map la carte, utilisé pour collision avec zone inaccessible.
+	 * @return le vecteur ajusté.
+	 */
 	abstract Coordinates memorizeMoves(Rectangle position, IMap map);
 
 
+	/**
+	 * <p>Ajuste le vecteur de daplacement par projection avec une zone inaccessible.</p>
+	 * @param position la position du personnage.
+	 * @param map la carte de jeu.
+	 */
 	protected void adaptVectors(Rectangle position, IMap map) {
 		
 		//On cherche si vecteur null pas de calcul
@@ -43,7 +69,12 @@ public abstract class AbstractTransfer {
 		}
 		
 	}
-	
+
+	/**
+	 * <p>Vérifie si collision possible dans une direction donnée.</p>
+	 * @param position la position du joueur.
+	 * @param map la carte de jeu.
+	 */
 	private void checkLeft(Rectangle position, IMap map) {
 		
 		Tile tile;
@@ -63,7 +94,10 @@ public abstract class AbstractTransfer {
 		}
 		yDirection= 0;
 	}
-	
+
+	/**
+	 * @see #checkLeft(Rectangle, IMap)
+	 */
 	private void checkRight(Rectangle position, IMap map) {
 		
 		Tile tile;
@@ -81,7 +115,10 @@ public abstract class AbstractTransfer {
 		}
 		yDirection= 0;
 	}
-	
+
+	/**
+	 * @see #checkLeft(Rectangle, IMap)
+	 */
 	private void checkUp(Rectangle position, IMap map) {
 		
 		Tile tile;
@@ -101,7 +138,10 @@ public abstract class AbstractTransfer {
 		}
 		xDirection= 0;
 	}
-	
+
+	/**
+	 * @see #checkLeft(Rectangle, IMap)
+	 */
 	private void checkDown(Rectangle position, IMap map) {
 		
 		Tile tile;
@@ -117,7 +157,14 @@ public abstract class AbstractTransfer {
 		}
 		xDirection= 0;
 	}
-	
+
+	/**
+	 * <p>Vérifie si une tuile est inaccessible dans une direction</p>
+	 * L'examen prend en compte la taille du personnage, il peut en effet être sur plusieurs tuiles.
+	 * @param position la position et dimensions du personnage.
+	 * @param map la carte de jeu.
+	 * @return une tuile si elle bloque le passage, null sinon.
+	 */
 	protected Tile checkOnDownTiles(Rectangle position, IMap map) {
 
 		int x, y, endX;
@@ -128,6 +175,10 @@ public abstract class AbstractTransfer {
 
 		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, y));
 	}
+
+	/**
+	 * @see #checkOnDownTiles(Rectangle, IMap)
+	 */
 	protected Tile checkOnUpTiles(Rectangle position, IMap map) {
 
 		int x, y, endX;
@@ -138,6 +189,10 @@ public abstract class AbstractTransfer {
 		
 		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), endX, y));
 	}
+
+	/**
+	 * @see #checkOnDownTiles(Rectangle, IMap)
+	 */
 	protected Tile checkRightTiles(Rectangle position, IMap map) {
 		
 		int x, y, endY;
@@ -148,7 +203,10 @@ public abstract class AbstractTransfer {
 
 		return map.isSolidTileOnRoad(new Rectangle(new Coordinates(x, y), x, endY));
 	}
-	
+
+	/**
+	 * @see #checkOnDownTiles(Rectangle, IMap)
+	 */
 	protected Tile checkLeftTiles(Rectangle position, IMap map) {
 		
 		int x, y, endY;

@@ -16,30 +16,23 @@ import org.xml.sax.helpers.DefaultHandler;
 
 
 /**
- * <b>Classe de container et d'injection de dépendance.</b>
+ * <b>Classe de service container et d'injection de dépendance.</b>
  * <p>gère une mémoire cache pour reconstituer les beans</p>
+ *
  * @author antoine
  */
 public class Assembler {
 
-	/*
-	association entre l'id du bean et sa classe
-	 */
+	/**association entre l'id du bean et sa classe*/
 	private Map<String, String> id_class;
 
-	/*
-	association entre id bean et l'id de ses paramètres sous forme d'array
-	 */
+	/**association entre id bean et l'id de ses paramètres sous forme d'array*/
 	private Map<String, String[]> idBean_idParameters;
 
-	/*
-	id_paramètre et leur valeur
-	 */
+	/**id_paramètre et leur valeur*/
 	private Map<String, String> idParam_value;
 
-	/*
-	id_paramètre et leur méthode d'injection
-	 */
+	/**id_paramètre et leur méthode d'injection*/
 	private Map<String, String> idParam_methods;
 
 	/**
@@ -56,7 +49,7 @@ public class Assembler {
 
 
 	/**
-	 *
+	 * <p>Parse le fichier XML.</p>
 	 */
 	private void parse(String filePath) {
 		SAXParserFactory factory= SAXParserFactory.newInstance();
@@ -74,7 +67,7 @@ public class Assembler {
 
 	/**
 	 *
-	 * @param id correspondant au fichier de config
+	 * @param id correspondant aux Ids du fichier de configuration des beans.
 	 * @return une instance
 	 */
 	public Object newInstance(String id) {
@@ -87,7 +80,7 @@ public class Assembler {
 
 	/**
 	 *
-	 * @param id corrspondant au fichier de config
+	 * @param id corrspondant aux Ids du fichier de configuration des beans
 	 * @return une instance
 	 */
 	private Object getBean(String id) {
@@ -173,15 +166,11 @@ public class Assembler {
 	 */
 	class XMLHandler extends DefaultHandler {
 
-		/*
-		id du bean courrant, au fil de la lecture du document
-		 */
+		/**id du bean courrant, au fil de la lecture du document*/
 		private Stack<String> currentBean= new Stack<>();
 
-		/*
-		utilisé pour ranger le paramètre au prochain index libre
-		dans l'array de la Map idBean_parameters
-		 */
+		/**utilisé pour ranger le paramètre au prochain index libre
+		dans l'array de la Map idBean_parameters*/
 		private Stack<Integer> indexCurrentBean= new Stack<>();
 
 		/**
